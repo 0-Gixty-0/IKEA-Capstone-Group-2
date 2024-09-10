@@ -2,7 +2,7 @@
 name: New Task Template
 about: Template for creating new tasks
 title: "[TASK] - Task-XXX - Example Title"
-labels: ''
+labels: Task
 assignees: ''
 
 ---
