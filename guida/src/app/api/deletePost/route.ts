@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "../../prisma";
+import prisma from "../../../../src/db";
 
 export async function DELETE(req: NextRequest) {
   const { postId } = await req.json();
