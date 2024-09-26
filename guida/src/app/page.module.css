@@ -1,0 +1,21 @@
+.fullScreen {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #1E252B;
+}
+
+.header {
+    color: red;
+    font-size: 20px;
+}
+
+.postContainer{
+    margin: auto;
+    width: 60%;
+    height: 100%;
+    background-color: red;
+}
