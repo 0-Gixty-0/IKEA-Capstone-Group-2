@@ -24,7 +24,7 @@ export async function GET(request : Request) {
     try {
         const { searchParams } = new URL(request.url)
         const postId = searchParams.get('id')
-        const authorId = Number(searchParams.get('author'))
+        const authorId = Number(searchParams.get('authorId'))
         const published = searchParams.get('published')
 
         if (postId) {
@@ -37,10 +37,9 @@ export async function GET(request : Request) {
             }
 
             return NextResponse.json({
-                message: `Successfully retrieved post: ${postId}`,
+                message: `Successfully retrieved post with id: ${postId}`,
                 post: post
             }, {status: 200})
-
         }
 
         const where: {
@@ -51,19 +50,17 @@ export async function GET(request : Request) {
         if (authorId) {
             where.authorId = { equals: authorId };
         }
-        if (published !== undefined) {
+        if (published !== null) {
             where.published = { equals: published === 'true' }; // Convert string to boolean
         }
 
-        else {
-            const posts = await prisma.post.findMany({
-                where: Object.keys(where).length ? where : undefined
-            })
-            return NextResponse.json({
-                message: `Successfully retrieved ${posts.length} posts`,
-                posts: posts
-                }, {status: 200})
-        }
+        const posts = await prisma.post.findMany({
+            where: Object.keys(where).length ? where : undefined
+        })
+        return NextResponse.json({
+            message: `Successfully retrieved ${posts.length} posts`,
+            posts: posts
+            }, {status: 200})
     } catch (error) {
         return NextResponse.json({ error: 'Something went wrong when fetching post!' }, { status: 500 });
     }
@@ -86,7 +83,7 @@ export async function PUT(request: Request) {
         });
 
         return NextResponse.json({
-            message: `Successfully updated post: ${id}`,
+            message: `Successfully updated post with id: ${id}`,
             post: updatedPost
         }, {status: 200}); // Return the updated post
     } catch (error) {
@@ -106,7 +103,14 @@ export async function POST(request: Request) {
 
         // Update the post in the database
         const createdPost = await prisma.post.create({
-            data: post // The fields to update
+            data: {
+                title: post.title,
+                content: post.content,
+                published: post.published,
+                author: {
+                    connect: { id: post.authorId }
+                }
+            } // The fields to update
         });
 
         return NextResponse.json({
