@@ -5,14 +5,20 @@ import { NextResponse } from 'next/server';
 
 
 /**
- * Fetch a user based on it's id
+ * Fetch a user based on it's id, if no id is provided, all users are returned
  * @param req 
  * @returns Response with the users id, email and name.
  */
-
-
 export async function GET(req: Request) {
     try {
+        const {searchParams} = await new URL(req.url)
+        if (searchParams.get("id") == null) {
+            const allUsers = await prisma.user.findMany({
+
+            }) 
+            return NextResponse.json(allUsers)
+        }
+
         const userid = getId(req)
 
         if (!userid) {
@@ -26,6 +32,7 @@ export async function GET(req: Request) {
         return NextResponse.json({ error: 'Something went wrong!' }, { status: 500 });
     }  
 }
+
 
 /**
  * Creates a new user in the data base
