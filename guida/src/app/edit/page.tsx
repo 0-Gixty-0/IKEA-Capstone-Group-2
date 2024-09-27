@@ -1,35 +1,34 @@
-'use client'
-import React, { useState, useEffect } from 'react';
+"use client";
+import React, { useState, useEffect } from "react";
 
 interface Article {
-  id: number,
-  title: string,
-  content: string,
-  published: boolean,
-  authorId: number
+  id: number;
+  title: string;
+  content: string;
+  published: boolean;
+  authorId: number;
 }
 
-export default function EditArticle(article : Article) {
+export default function EditArticle(article: Article) {
   // Set up state for the article properties
-  const [post, setPost] = useState(null)
-  const [title, setTitle] = useState<string>()
-  const [content, setContent] = useState<string>()
-  const [published, setPublished] = useState<boolean>()
+  const [post, setPost] = useState<Article | null>(null);
+  const [title, setTitle] = useState<string>();
+  const [content, setContent] = useState<string>();
+  const [published, setPublished] = useState<boolean>();
 
   useEffect(() => {
     // Fetch the post from the /api/posts endpoint
     async function fetchPost() {
       try {
-        const response = await fetch('/api/posts');
+        const response = await fetch("/api/posts");
         if (!response.ok) {
-          throw new Error('Failed to fetch post');
+          throw new Error("Failed to fetch post");
         }
         const data = await response.json();
         setPost(data); // Set the fetched post data in the state
-        setTitle(data.title)
-        setContent(data.content)
-        setPublished(data.published)
-
+        setTitle(data.title);
+        setContent(data.content);
+        setPublished(data.published);
       } catch (err) {
         console.error(err);
       }
@@ -39,16 +38,16 @@ export default function EditArticle(article : Article) {
   }, []);
 
   // Function to handle form submission for editing the post
-  async function handleSubmit(e: { preventDefault: () => void; }) {
+  async function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault();
     try {
-      const response = await fetch('/api/posts', {
-        method: 'PUT', // Send a PUT request to update the post
+      const response = await fetch("/api/posts", {
+        method: "PUT", // Send a PUT request to update the post
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: post.id, // Send the post id along with the updated data
+          id: post?.id, // Send the post id along with the updated data
           title,
           content,
           published,
@@ -56,18 +55,18 @@ export default function EditArticle(article : Article) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update post');
+        throw new Error("Failed to update post");
       }
 
       const updatedPost = await response.json();
-      alert('Post updated successfully!');
+      alert("Post updated successfully!");
     } catch (err) {
       console.error(err);
-      alert('Failed to update post');
+      alert("Failed to update post");
     }
   }
 
-  const handleSelectChange = (targetValue : string) => {
+  const handleSelectChange = (targetValue: string) => {
     const value = targetValue === "true"; // Convert string to boolean
     setPublished(value); // Update the state
   };
@@ -80,9 +79,9 @@ export default function EditArticle(article : Article) {
           <label>
             Title:
             <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </label>
         </div>
@@ -90,8 +89,8 @@ export default function EditArticle(article : Article) {
           <label>
             Content:
             <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
             />
           </label>
         </div>
@@ -99,8 +98,8 @@ export default function EditArticle(article : Article) {
           <label>
             Published:
             <select
-                value={published ? 'true' : 'false'} // ...force the select's value to match the state variable...
-                onChange={e => handleSelectChange(e.target.value)} // ... and update the state variable on any change!
+              value={published ? "true" : "false"} // ...force the select's value to match the state variable...
+              onChange={(e) => handleSelectChange(e.target.value)} // ... and update the state variable on any change!
             >
               <option value={"true"}>True</option>
               <option value={"false"}>False</option>
@@ -111,4 +110,4 @@ export default function EditArticle(article : Article) {
       </form>
     </div>
   );
-};
+}
