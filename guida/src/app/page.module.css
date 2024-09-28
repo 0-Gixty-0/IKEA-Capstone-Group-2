@@ -11,7 +11,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 60%;
+  width: 80%;
   color: #f7f7f7;
   gap: 0.8rem;
   margin-top: 2rem;
@@ -24,7 +24,7 @@
   background-color: #262d34;
   border-radius: 8px;
   margin: 10px 0;
-  padding: 20px;
+  padding: 30px;
   list-style: none;
 }
 .post h2 {

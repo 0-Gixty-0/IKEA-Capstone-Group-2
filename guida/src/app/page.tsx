@@ -1,61 +1,38 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+// Imports
+import React from "react";
 import styles from "./page.module.css";
+import { useFetchPosts } from "../hooks/useFetchPosts"; // Adjust the import path as needed
 
-interface Post {
-  id: number;
-  title: string;
-  content: string;
-  published: boolean;
-  authorId: number;
-}
-
-export default function Home() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch("/api/posts");
-        if (!response.ok) {
-          throw new Error("Failed to fetch posts");
-        }
-        const data = await response.json();
-        setPosts(data.posts || []); // Ensure data.posts is an array
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
+const Home: React.FC = () => {
+  const { posts, loading, error } = useFetchPosts(); // Use the custom hook
 
   return (
     <div className={styles.fullScreen}>
       <div className={styles.postContainer}>
         <h1>Feed</h1>
+        {error && <div>Error: {error}</div>} {/* Display error if any */}
         <ul>
           {loading
-            ? Array.from({ length: posts.map.length + 1 }).map((_, index) => (
+            ? Array.from({ length: 5 }, (_, index) => (
                 <li
                   key={index}
                   className={`${styles.skeleton} ${styles["skeleton-post"]}`}
-                ></li>
+                ></li> // Render skeleton loaders while loading
               ))
-            : posts.map((post) => (
-                <li key={post.id} className={styles.post}>
+            : posts.map(({ id, title, content }) => (
+                <li key={id} className={styles.post}>
                   <div className={styles.postContent}>
-                    <h2>{post.title}</h2>
-                    <p>{post.content}</p>
+                    <h2>{title}</h2>
+                    <p>{content}</p>
                   </div>
-                </li>
+                </li> // Render posts once they are fetched
               ))}
         </ul>
       </div>
     </div>
   );
-}
+};
+
+export default Home; // Export the Home component as default
