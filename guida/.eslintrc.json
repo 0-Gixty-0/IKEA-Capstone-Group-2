@@ -6,7 +6,10 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "next/core-web-vitals"
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:testing-library/react",
+    "plugin:jest-dom/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
