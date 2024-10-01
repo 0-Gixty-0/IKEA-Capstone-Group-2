@@ -1,0 +1,68 @@
+.fullScreen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.postContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  color: #f7f7f7;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.postContainer ul {
+  width: 80%;
+}
+.post {
+  background-color: #262d34;
+  border-radius: 8px;
+  margin: 10px 0;
+  padding: 30px;
+  list-style: none;
+}
+.post h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+.post p {
+  margin: 0;
+  font-size: 0.7rem;
+}
+
+.postContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.skeleton {
+  background-color: #3a3f44;
+  border-radius: 4px;
+  margin: 10px 0;
+  width: 100%;
+  animation: flash 1.5s ease-in-out infinite;
+  list-style: none;
+}
+
+.skeleton-post {
+  height: 100px;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
