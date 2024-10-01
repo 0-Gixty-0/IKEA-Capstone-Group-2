@@ -32,7 +32,7 @@ describe("DeleteButton", () => {
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
 
     // Check if the fetch was called with the correct URL and options
-    expect(fetch).toHaveBeenCalledWith("/api/deletePost", {
+    expect(fetch).toHaveBeenCalledWith("/api/posts", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
