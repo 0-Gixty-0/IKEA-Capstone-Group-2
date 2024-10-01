@@ -6,6 +6,14 @@ export interface Post {
   authorId: number;
 }
 
+export interface SubmittablePost {
+  id: number | null;
+  title: string;
+  content: string | null;
+  published: boolean;
+  authorId: number;
+}
+
 export interface FetchPostsParams {
   id?: number;
   authorId?: number;
