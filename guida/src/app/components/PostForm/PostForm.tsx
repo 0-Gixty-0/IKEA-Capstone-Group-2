@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {Post, SubmittablePost} from "@/types";
+import {useSubmitPost} from "@/hooks/useSubmitPost";
 
 interface IPostForm {
-    handleSubmit: (e: { preventDefault: () => void; }, post: SubmittablePost) => void,
     post?: Post,
     submitText: string
 }
 
 export default function PostForm(props: IPostForm) {
-    const { handleSubmit, post, submitText } = props;
+    const { post, submitText } = props;
     const [title, setTitle] = useState<string>(props.post ? props.post.title : '')
     const [content, setContent] = useState<string>(props.post ? props.post.content : '')
     const [published, setPublished] = useState<boolean>(props.post ? props.post.published : false)
@@ -26,6 +26,8 @@ export default function PostForm(props: IPostForm) {
         setPublished(value); // Update the state
     };
 
+    const { submitPost, loading, error } = useSubmitPost();
+
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -37,7 +39,7 @@ export default function PostForm(props: IPostForm) {
             published,
         };
 
-        handleSubmit(e, postToSubmit);
+        submitPost(postToSubmit);
     }
 
     return (
