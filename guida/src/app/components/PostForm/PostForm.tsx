@@ -5,11 +5,13 @@ import styles from "./styles.module.css"
 
 interface IPostForm {
     post?: Post,
-    submitText: string
+    submitText: string,
+    onClose: () => void
 }
 
 export default function PostForm(props: IPostForm) {
-    const { post, submitText } = props;
+    const { post, submitText, onClose} = props;
+    const { submitPost, loading, error, success } = useSubmitPost();
     const [valueError, setValueError] = useState<boolean>(false)
     const [titleError, setTitleError] = useState<boolean>(false);
     const [contentError, setContentError] = useState<boolean>(false);
@@ -25,12 +27,16 @@ export default function PostForm(props: IPostForm) {
         }
     }, [post]);
 
+    useEffect(() => {
+        if (success) {
+            onClose()
+        }
+    }, [success]);
+
     const handleSelectChange = (targetValue : string) => {
         const value = targetValue === "true"; // Convert string to boolean
         setPublished(value); // Update the state
     };
-
-    const { submitPost, loading, error } = useSubmitPost();
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
