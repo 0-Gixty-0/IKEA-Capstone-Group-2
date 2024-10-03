@@ -94,3 +94,39 @@
     padding: 10px;
     font-size: 11px;
 }
+
+@keyframes blinkText {
+    0% {
+        color: #d90000;
+    }
+    50% {
+        color: #7a1919;
+    }
+    100% {
+        color: #d90000;
+    }
+}
+
+@keyframes blinkBorder {
+    0% {
+        border: 2px solid #d90000
+    }
+    50% {
+        border: 2px solid #7a1919;
+    }
+    100% {
+        border: 2px solid #d90000
+    }
+}
+
+.errorMessage {
+    color: #d90000;
+    text-decoration: underline;
+    margin-bottom: 8px;
+    animation: blinkText 1.5s ease-in-out 1;
+}
+
+.errorBorder {
+    border: 2px solid #d90000;
+    animation: blinkBorder 1.5s ease-in-out 1;
+}

@@ -10,6 +10,9 @@ interface IPostForm {
 
 export default function PostForm(props: IPostForm) {
     const { post, submitText } = props;
+    const [valueError, setValueError] = useState<boolean>(false)
+    const [titleError, setTitleError] = useState<boolean>(false);
+    const [contentError, setContentError] = useState<boolean>(false);
     const [title, setTitle] = useState<string>(props.post ? props.post.title : '')
     const [content, setContent] = useState<string>(props.post ? props.post.content : '')
     const [published, setPublished] = useState<boolean>(props.post ? props.post.published : false)
@@ -32,40 +35,61 @@ export default function PostForm(props: IPostForm) {
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const postToSubmit: SubmittablePost = {
-            id: post?.id || null,
-            title,
-            content,
-            authorId: post?.authorId || 1, //TODO MODIFY TO INCLUDE NEW POST FOR LOGGED IN USER
-            published,
-        };
+        if (title === '') {
+            setTitleError(true)
+            setValueError(true)
+        }
+        if (content === '') {
+            setContentError(true)
+            setValueError(true)
+        }
 
-        submitPost(postToSubmit);
+        if (title !== '' && content !== '') {
+            const postToSubmit: SubmittablePost = {
+                id: post?.id || null,
+                title,
+                content,
+                authorId: post?.authorId || 1, //TODO MODIFY TO INCLUDE NEW POST FOR LOGGED IN USER
+                published,
+            };
+
+            submitPost(postToSubmit);
+        }
     }
 
     return (
         <div className={styles.postFormOverlay}>
             <div className={styles.postFormContent}>
-                <h2>Edit Article</h2>
+                <h2>{submitText}</h2>
                 <hr/>
                 <form onSubmit={onSubmit}>
                     <div className={styles.postFormElement}>
                         <label>
-                            Title:
+                            * Title:
                         </label>
                         <input
+                            className={titleError ? styles.errorBorder : ''}
                             type="text"
                             value={title}
-                            onChange={(e) => setTitle(e.target.value)}
+                            onChange={(e) => {
+                                setTitle(e.target.value)
+                                setTitleError(false);
+                                setValueError(false)
+                            }}
                         />
                     </div>
                     <div className={styles.postFormElement}>
                         <label>
-                            Content:
+                            * Content:
                         </label>
                         <textarea
+                            className={contentError ? styles.errorBorder : ''}
                             value={content}
-                            onChange={(e) => setContent(e.target.value)}
+                            onChange={(e) => {
+                                setContent(e.target.value)
+                                setContentError(false)
+                                setValueError(false)
+                            }}
                         />
                     </div>
                     <div className={styles.postFormElement}>
@@ -82,6 +106,8 @@ export default function PostForm(props: IPostForm) {
                     </div>
                     <button type="submit">{submitText}</button>
                 </form>
+                {valueError && <p className={styles.errorMessage}>Required fields are missing!</p>}
+                {error && <p className={styles.errorMessage}>{error}</p>}
             </div>
         </div>
     )
