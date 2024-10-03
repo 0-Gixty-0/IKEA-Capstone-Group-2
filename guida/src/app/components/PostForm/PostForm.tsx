@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Post, SubmittablePost} from "@/types";
 import {useSubmitPost} from "@/hooks/useSubmitPost";
+import styles from "./styles.module.css"
 
 interface IPostForm {
     post?: Post,
@@ -43,31 +44,34 @@ export default function PostForm(props: IPostForm) {
     }
 
     return (
-        <div className="post-form">
-            <h2>Edit Article</h2>
-            <form onSubmit={onSubmit}>
-                <div>
-                    <label>
-                        Title:
+        <div className={styles.postFormOverlay}>
+            <div className={styles.postFormContent}>
+                <h2>Edit Article</h2>
+                <hr/>
+                <form onSubmit={onSubmit}>
+                    <div className={styles.postFormElement}>
+                        <label>
+                            Title:
+                        </label>
                         <input
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                         />
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Content:
+                    </div>
+                    <div className={styles.postFormElement}>
+                        <label>
+                            Content:
+                        </label>
                         <textarea
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                         />
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Published:
+                    </div>
+                    <div className={styles.postFormElement}>
+                        <label>
+                            Published:
+                        </label>
                         <select
                             value={published ? 'true' : 'false'} // ...force the select's value to match the state variable...
                             onChange={e => handleSelectChange(e.target.value)} // ... and update the state variable on any change!
@@ -75,10 +79,10 @@ export default function PostForm(props: IPostForm) {
                             <option value={"true"}>True</option>
                             <option value={"false"}>False</option>
                         </select>
-                    </label>
-                </div>
-                <button type="submit">{submitText}</button>
-            </form>
+                    </div>
+                    <button type="submit">{submitText}</button>
+                </form>
+            </div>
         </div>
     )
 }

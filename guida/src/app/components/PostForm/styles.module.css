@@ -1,0 +1,96 @@
+.postFormOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.postFormContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 70vh;
+    max-width: 50vw;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.7) 3px 3px 4px;
+}
+
+.postFormContent h2 {
+    color: black;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.postFormContent hr {
+    width: 80%;
+    height: 3px;
+    background-color: black;
+}
+
+.postFormContent form {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+}
+
+.postFormContent button {
+    margin-top: auto;
+    width: 40%;
+    min-height: 30px;
+    align-self: center;
+    background-color: #222;
+    border-radius: 4px;
+    border-style: none;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Farfetch Basis","Helvetica Neue",Arial,sans-serif;
+    font-weight: 400;
+    max-width: none;
+    outline: none;
+    overflow: hidden;
+    padding: 8px;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.postFormContent button:hover, .postFormContent button:focus {
+    opacity: .9;
+}
+
+.postFormElement {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 5px;
+}
+
+.postFormElement label {
+    color: black;
+}
+
+.postFormElement textarea {
+    width: 300px;
+    height: 100px;
+    resize: both;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 10px;
+    font-size: 11px;
+}
