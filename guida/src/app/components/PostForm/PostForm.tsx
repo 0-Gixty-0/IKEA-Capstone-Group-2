@@ -92,6 +92,9 @@ export default function PostForm(props: IPostForm) {
     return (
         <div className={styles.postFormOverlay}>
             <div className={styles.postFormContent}>
+                <button className={styles.closeButton} onClick={onClose}>
+                    &times;
+                </button>
                 <h2>{submitText}</h2>
                 <hr/>
                 <form onSubmit={onSubmit}>
@@ -136,7 +139,7 @@ export default function PostForm(props: IPostForm) {
                             <option value={"false"}>False</option>
                         </select>
                     </div>
-                    <button type="submit">{submitText}</button>
+                    <button className={styles.submitButton} type="submit">{submitText}</button>
                 </form>
                 {valueError && <p className={styles.errorMessage}>Required fields are missing!</p>}
                 {error && <p className={styles.errorMessage}>{error}</p>}

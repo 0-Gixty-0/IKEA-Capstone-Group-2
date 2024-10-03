@@ -12,6 +12,7 @@
 }
 
 .postFormContent {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,7 +44,7 @@
     overflow: auto;
 }
 
-.postFormContent button {
+.submitButton {
     margin-top: auto;
     width: 40%;
     min-height: 30px;
@@ -68,7 +69,7 @@
     touch-action: manipulation;
 }
 
-.postFormContent button:hover, .postFormContent button:focus {
+.submitButton:hover, .submitButton:focus {
     opacity: .9;
 }
 
@@ -129,4 +130,24 @@
 .errorBorder {
     border: 2px solid #d90000;
     animation: blinkBorder 1.5s ease-in-out 1;
+}
+
+.closeButton {
+    position: absolute; /* Position it relative to the modal */
+    top: 5px; /* Space from the top */
+    right: 10px; /* Space from the right */
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    color: #ff0000; /* Red color for the close button */
+    font-size: 24px; /* Larger font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+.closeButton:hover {
+    color: #af2222; /* Slightly lighter red on hover */
+}
+
+.closeButton:focus {
+    outline: none; /* Remove the default outline */
 }
