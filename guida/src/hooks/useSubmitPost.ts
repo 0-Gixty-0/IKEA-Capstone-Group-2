@@ -1,6 +1,13 @@
 // hooks/useSubmitPost.ts
 import { useState } from "react";
 import {SubmittablePost} from "@/types";
+
+/**
+ * Custom hook used for submitting posts.
+ * * If post id is provided api method is set as PUT, updating post with passed post data.
+ * * If post id is not provided api method is set as POST, creating a new post with passed post data
+ * Returns hook, loading status, error status, and success status
+ */
 export const useSubmitPost = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
