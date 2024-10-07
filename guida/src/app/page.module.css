@@ -21,11 +21,12 @@
   width: 80%;
 }
 .post {
-  background-color: #262d34;
+  background-color: #494949;
   border-radius: 8px;
   margin: 10px 0;
   padding: 30px;
   list-style: none;
+  cursor: pointer;
 }
 .post h2 {
   margin: 0;
