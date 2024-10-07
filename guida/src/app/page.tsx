@@ -3,7 +3,7 @@
 // Imports
 import React from "react";
 import styles from "./page.module.css";
-import { useFetchPosts } from "../hooks/useFetchPosts"; // Adjust the import path as needed
+import { useFetchPosts } from "@/hooks/useFetchPosts";
 
 const Home: React.FC = () => {
   const { posts, loading, error } = useFetchPosts(); // Use the custom hook
