@@ -1,12 +1,35 @@
 "use client";
 
 // Imports
-import React from "react";
+import React, { useState } from "react";
 import styles from "./page.module.css";
 import { useFetchPosts } from "@/hooks/useFetchPosts";
+import Modal from "@/app/components/Modal";
 
 const Home: React.FC = () => {
   const { posts, loading, error } = useFetchPosts(); // Use the custom hook
+  const [clickedPost, setClickedPost] = useState<{
+    id: number;
+    title: string;
+    content: string;
+  } | null>(null);
+
+  const handlePostClick = (post: {
+    id: number;
+    title: string;
+    content: string;
+  }) => {
+    setClickedPost(post);
+  };
+
+  const closeModal = () => {
+    setClickedPost(null);
+  };
+
+  const handlePostDelete = async () => {
+    closeModal(); // Close the modal
+    window.location.reload(); // Refresh the site
+  };
 
   return (
     <div className={styles.fullScreen}>
@@ -22,7 +45,11 @@ const Home: React.FC = () => {
                 ></li> // Render skeleton loaders while loading
               ))
             : posts.map(({ id, title, content }) => (
-                <li key={id} className={styles.post}>
+                <li
+                  key={id}
+                  className={styles.post}
+                  onClick={() => handlePostClick({ id, title, content })}
+                >
                   <div className={styles.postContent}>
                     <h2>{title}</h2>
                     <p>{content}</p>
@@ -31,6 +58,12 @@ const Home: React.FC = () => {
               ))}
         </ul>
       </div>
+      {clickedPost && (
+        <Modal onClose={closeModal} postId={clickedPost.id} onDelete={handlePostDelete}>
+          <h2>{clickedPost.title}</h2>
+          <p>{clickedPost.content}</p>
+        </Modal>
+      )}
     </div>
   );
 };

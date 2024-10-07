@@ -2,29 +2,31 @@ import React from "react";
 
 interface DeleteButtonProps {
   style?: React.CSSProperties;
-  postId: number; // Ensure postId is always a valid number
+  postId: number;
+  onDelete: () => void; // Add onDelete prop
 }
 
-const DeleteButton: React.FC<DeleteButtonProps> = ({ style, postId }) => {
+const DeleteButton: React.FC<DeleteButtonProps> = ({ style, postId, onDelete }) => {
   const deleteHandle = async () => {
     if (!postId) {
       console.error("Invalid post ID");
       return; // Exit early if postId is invalid
     }
-
+  
+    console.log("Deleting post with ID: ", postId);
+  
     try {
-      const response = await fetch("/api/posts", {
+      const response = await fetch(`/api/posts?id=${postId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ postId }), // Using postId directly
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         console.log("Post deleted: ", data);
-        // You can add user feedback here if needed
+        onDelete(); // Call onDelete after successful deletion
       } else {
         console.error("Failed to delete Post");
         // Optionally notify the user about the failure
