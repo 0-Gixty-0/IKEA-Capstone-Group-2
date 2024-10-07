@@ -19,3 +19,9 @@ export interface FetchPostsParams {
   authorId?: number;
   published?: boolean;
 }
+
+export enum UserRole {
+  ADMIN = "ADMIN",
+  USER = "USER",
+}
+
