@@ -5,6 +5,7 @@ import styles from './styles.module.css'
 import Link from 'next/link';
 import {useRegisterUser} from "@/hooks/useRegisterUser";
 import {SubmittableUser, UserRole} from "@/types";
+import Preloader from "@/app/components/Preloader/Preloader";
 
 /**
  * SignupForm component renders the signup form and handles requests to signup for an account
@@ -206,6 +207,7 @@ export default function RegisterForm() {
                 </form>
                 {valueError && <p className={`${styles.messageText} ${flash ? styles.flash : ''}`}>{valueError}</p>}
                 {message && <p className={styles.message}>{message}</p>}
+                {loading && <Preloader/>}
                 {showLoginRoute && <Link href='/login'>To Login</Link>}
                 {!showLoginRoute && (
                     <div>
