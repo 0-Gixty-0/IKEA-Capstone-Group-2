@@ -2,6 +2,14 @@ import {useState} from "react";
 import {SubmittableUser} from "@/types";
 import bcrypt from "bcryptjs";
 
+/**
+ * Custom hook for registering new users.
+ * User data has non-hashed password and this is handled in the hook
+ * and user data is updated accordingly.
+ * Hook calls user API with POST method creating new user.
+ * * On success updates success status to true.
+ * * On failure updates error message.
+ */
 export const useRegisterUser = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -29,7 +37,7 @@ export const useRegisterUser = () => {
             }
 
             const result = await response.json();
-            alert('User registered successfully!')
+            setSuccess(true)
         } catch (err) {
             console.error(err)
             setError('Failed to register user')

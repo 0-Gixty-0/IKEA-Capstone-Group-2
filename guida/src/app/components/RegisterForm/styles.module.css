@@ -17,6 +17,8 @@
     align-items: center;
     max-height: 70vh;
     max-width: 50vw;
+    min-height: 50vh;
+    min-width: 20vw;
     background-color: white;
     border-radius: 8px;
     box-shadow: rgba(0, 0, 0, 0.7) 3px 3px 4px;
@@ -116,6 +118,8 @@
 }
 
 .messageText {
+    margin-top: 8px;
+    margin-bottom: 4px;
     color: red; /* Default color */
     transition: color 0.5s ease-in-out; /* Smooth color transition */
 }
@@ -128,4 +132,9 @@
     0% { opacity: 1; color: red; }
     50% { opacity: 0; color: red; }
     100% { opacity: 1; color: red; }
+}
+
+.message {
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
