@@ -39,7 +39,6 @@ export default function LoginForm() {
     const handleSubmit = async (event : React.FormEvent) => {
         event.preventDefault()
         setFlash(false)
-        console.log("The credentials sent to handleSignIn are " + loginUsername + ' ' + loginPassword)
         await handleSignIn(loginUsername, loginPassword)
     };
 
@@ -57,6 +56,21 @@ export default function LoginForm() {
         }
     }
 
+    /**
+     * Handles a specific error that occurs when the credentials aren't in the database
+     * @param error 
+     * @returns "Invalid username or password" to display as error to the user
+     */
+
+    const handleError = (error: string) => {
+        if (error == "CredentialsSignin") {
+            return "Invalid username or password"
+        }
+    }
+    /**
+     * Client logic to validate inputed username, currently only rule is not an empty string.
+     * @param value 
+     */
     const validateUsername = (value: string) => {
         if (value === '') {
             setValidUsername(false)
@@ -101,11 +115,10 @@ export default function LoginForm() {
                         : <button className={styles.disableSubmit} disabled={true}>Login</button>
 }
                 </form>
-                
-                {error && <p className={`${styles.messageText} ${flash ? styles.flash : ''}`}>{error}</p>}
+                {error && <p className={`${styles.messageText} ${flash ? styles.flash : ''}`}>{handleError(error)}</p>}
                 {message && <p>{message}</p>}
                 <div>
-                    <Link href='/registerTest'>Create new user</Link>
+                    <Link href='/register'>Create new user</Link>
                 </div>
             </div>
         </div>
