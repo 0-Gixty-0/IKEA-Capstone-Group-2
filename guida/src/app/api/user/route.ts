@@ -1,6 +1,7 @@
 import prisma from "@/db";
 import User from '@prisma/client'
 import { NextResponse } from 'next/server';
+import {SubmittableUser} from "@/types";
 
 
 
@@ -42,13 +43,35 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
     try {
-        const {email, name} = await req.json()
+        const user : SubmittableUser = await req.json()
 
-        if (!email || !name) {
-            return NextResponse.json({error: "not valid name or email"}, {status: 400 })
+        // Retrieve the Role records that match the roles provided in submittableUser
+        const roles = await prisma.role.findMany({
+            where: {
+                name: {
+                    in: user.roles,
+                },
+            },
+        });
+
+        // If roles are not found, throw an error (optional)
+        if (roles.length === 0) {
+            throw new Error("No matching roles found for user.");
+        }
+
+        if (!user.email || !user.password || !user.username) {
+            return NextResponse.json({error: "Invalid or missing attributes for user"}, {status: 400 })
         }
         const newUser = await prisma.user.create({
-            data: {email: email, name: name}
+            data: {
+                email: user.email,
+                username: user.username,
+                password: user.password,
+                name: user.name,
+                roles: {
+                    connect: roles.map((role) => ({ id: role.id })),
+                },
+            }
         })
         return NextResponse.json(newUser, {status: 201});
         
@@ -65,14 +88,36 @@ export async function POST(req: Request) {
  */
 export async function PUT(req: Request) {
     try {
-        const {id, email, name} = await req.json()
-        console.log(id)
-        if (Number.isNaN(Number(id))) {
+        const user : SubmittableUser = await req.json()
+
+        // Retrieve the Role records that match the roles provided in submittableUser
+        const roles = await prisma.role.findMany({
+            where: {
+                name: {
+                    in: user.roles,
+                },
+            },
+        });
+
+        // If roles are not found, throw an error (optional)
+        if (roles.length === 0) {
+            throw new Error("No matching roles found for user.");
+        }
+
+        if (Number.isNaN(Number(user.id))) {
             return NextResponse.json({error: 'not a valid id'}, {status: 400})
         }
         const updatedUser = await prisma.user.update({
-            where: {id: Number(id)},
-            data: {email: email, name: name}
+            where: {id: Number(user.id)},
+            data: {
+                email: user.email,
+                username: user.username,
+                password: user.password,
+                name: user.name,
+                roles: {
+                    connect: roles.map((role) => ({ id: role.id })),
+                },
+            }
         })
         return NextResponse.json(updatedUser, {status: 201})
         
@@ -83,9 +128,9 @@ export async function PUT(req: Request) {
 }
 
 /**
- * Detelets a user based on it's id
+ * Deletes a user based on it's id
  * @param req 
- * @returns A message if it was successfull and the deleted user.
+ * @returns A message if it was successfully and the deleted user.
  */
 export async function DELETE(req: Request) {
     try {

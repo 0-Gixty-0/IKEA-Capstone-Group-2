@@ -14,8 +14,23 @@ export interface SubmittablePost {
   authorId: number;
 }
 
+export interface SubmittableUser {
+  id: number | null;
+  email: string;
+  username: string;
+  password: string;
+  name: string | null;
+  roles: UserRole[];
+}
+
 export interface FetchPostsParams {
   id?: number;
   authorId?: number;
   published?: boolean;
 }
+
+export enum UserRole {
+  ADMIN = "ADMIN",
+  USER = "USER",
+}
+
