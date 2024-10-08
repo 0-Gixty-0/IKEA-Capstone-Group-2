@@ -1,8 +1,10 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import styles from './styles.module.css'
 import Link from 'next/link';
+import {useRegisterUser} from "@/hooks/useRegisterUser";
+import {SubmittableUser, UserRole} from "@/types";
 
 /**
  * SignupForm component renders the signup form and handles requests to signup for an account
@@ -13,7 +15,7 @@ export default function RegisterForm() {
     const [signupEmail, setSignupEmail] = useState<string>('');
     const [signupPassword, setSignupPassword] = useState<string>('');
     const [signupUsername, setSignupUsername] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
+    const [valueError, setValueError] = useState<string | null>(null);
     const [message, setMessage] = useState<string | null>(null);
     const [validName, setValidName] = useState<boolean>(false)
     const [validEmail, setValidEmail] = useState<boolean>(false)
@@ -22,18 +24,37 @@ export default function RegisterForm() {
     const [showLoginRoute, setShowLoginRoute] = useState<boolean>(false)
     const [flash, setFlash] = useState<boolean>(false);
 
+    const {registerUser, loading, error, success} = useRegisterUser();
+
     /**
-     * Effect used to apply flash effect to error message.
-     * Triggers on error message state updating.
+     * Effect used to apply flash effect to valueError message.
+     * Triggers on valueError message state updating.
      */
     useEffect(() => {
         if (error) {
+            setValueError(error)
             setFlash(true);
             // Remove flash class after animation is complete
             const timer = setTimeout(() => setFlash(false), 1000); // Duration matches CSS animation
             return () => clearTimeout(timer);
+        } else {
+            setValueError(null)
+            setFlash(false)
+            setMessage(null)
         }
     }, [error]);
+
+    /**
+     * Effect for updating on success message.
+     * Activates on success message changing
+     */
+    useEffect(() => {
+        if (success) {
+            setMessage('User created and saved!')
+            setShowLoginRoute(true)
+            setValueError(null);
+        }
+    }, [success]);
 
     /**
      * Validates inputted password to be of correct syntax.
@@ -88,9 +109,8 @@ export default function RegisterForm() {
     }
 
     /**
-     * Handles creation of user. Attempts to run saveUser server action.
-     * On success sets success message and displays link to login route.
-     * On failure sets error message and sets flash effect on error message
+     * Handles creation of user. Attempts to run registerUser hook creating new user.
+     * Default role of new user is standard "USER".
      * @param event Submit form event
      */
     const handleSubmitCreateUser = (event : React.FormEvent) => {
@@ -98,19 +118,20 @@ export default function RegisterForm() {
             event.preventDefault()
             setFlash(false)
 
-            try {
-                // TODO Update saveUser route to handle submit
-                // await saveUser(signupName, signupEmail, signupPassword);
-                setMessage('User created and saved!')
-                setShowLoginRoute(true)
-                setError(null);
-            } catch (error) {
-                setError('Failed to create user')
-                setMessage(null)
-                setFlash(true)
+            const userToSubmit: SubmittableUser = {
+                id: null,
+                email: signupEmail,
+                username: signupUsername,
+                password: signupPassword,
+                name: signupName,
+                roles: [UserRole.USER] // Default value for new user is standard user role
             }
+
+            await registerUser(userToSubmit)
         }
-        runCreate(event)
+        runCreate(event).catch((error) => {
+            console.error("Error occurred while creating user:", error);
+        });
     };
 
     return (
@@ -176,12 +197,15 @@ export default function RegisterForm() {
                         />
                     </div>
                     {(validEmail && validPassword && validName && validUsername)
-                        ? <button type="submit" className={styles.submitButton}>Create Account</button>
+                        ? <button type="submit"
+                                  className={success ? styles.disableSubmit : styles.submitButton}
+                                  disabled={!!success}>Create Account
+                          </button>
                         : <button className={styles.disableSubmit} disabled={true}>Create Account</button>
                     }
                 </form>
-                {error && <p className={`${styles.messageText} ${flash ? styles.flash : ''}`}>{error}</p>}
-                {message && <p>{message}</p>}
+                {valueError && <p className={`${styles.messageText} ${flash ? styles.flash : ''}`}>{valueError}</p>}
+                {message && <p className={styles.message}>{message}</p>}
                 {showLoginRoute && <Link href='/login'>To Login</Link>}
                 {!showLoginRoute && (
                     <div>
