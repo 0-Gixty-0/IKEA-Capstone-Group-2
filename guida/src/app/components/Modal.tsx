@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./Modal.module.css";
 import DeleteButton from "./DeleteButton";
-import EditButton from "./editButton";
 
 interface ModalProps {
   onClose: () => void;
@@ -15,11 +14,10 @@ const Modal: React.FC<ModalProps> = ({ onClose, children, postId, onDelete }) =>
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <DeleteButton postId={postId} onDelete={onDelete} /> {/* Pass onDelete to DeleteButton */}
-        <EditButton postId={postId} /> {/* Add EditButton */}
         <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
-        {children}
+        {children} {/* Display the children passed, which can be PostForm or post details */}
       </div>
     </div>
   );
