@@ -24,18 +24,20 @@ export default auth((req) => {
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-    console.log(isApiAuthRoute)
-    console.log(isPublicRoute)
-    console.log(isAuthRoute)
-
     // Always accept API routes for authentication purposes
     if (isApiAuthRoute) {
         console.log('Middleware log - ALLOWED ACCESS TO PATH: ', req.url)
         return NextResponse.next();
     }
 
+    // Always accept request to /api/user where request method is POST.
+    // This allows registration of new users through API when not logged in
+    if (nextUrl.pathname.startsWith('/api/user') && req.method === 'POST') {
+        return NextResponse.next()
+    }
+
     // Always accept page routes for authentication purposes
-    // For example /login. However if logged in redirect to default route
+    // For example /login. However, if logged in redirect to default route
     if(isAuthRoute) {
         if(isLoggedIn) {
             console.log('Middleware log - DENIED ACCESS TO PATH: ', req.url)
@@ -46,7 +48,7 @@ export default auth((req) => {
         return NextResponse.next();
     }
 
-    // If not logged in and is not public route deny access and redirect to login
+    // If not logged in and is not public route deny access and redirect to login page
     if (!isLoggedIn && !isPublicRoute) {
         console.log('Middleware log - DENIED ACCESS TO PATH: ', req.url)
         console.log("Middleware log - REDIRECTED TO: /login")

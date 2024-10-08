@@ -1,4 +1,4 @@
-import NextAuth from "next-auth"
+import NextAuth, {NextAuthConfig} from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/db";
 import bcrypt from "bcryptjs";
@@ -8,6 +8,14 @@ function isUserRole(value: any): value is UserRole {
     return Object.values(UserRole).includes(value);
 }
 
+/**
+ * Next-auth configuration
+ * * Session strategy of jwt token
+ * * Uses credentials provider defined with username and password
+ * * Authorize method constructs user assigned to session in callback
+ * * Token callback assign id and roles to token
+ * * Session callback assigns user id and user roles from token
+ */
 export const authConfig = {
     session: { strategy: "jwt" },
     providers: [
@@ -46,7 +54,7 @@ export const authConfig = {
                                 userRoles.push(role.name)
                             }})
                         return {
-                            id: String(user.id),
+                            id: user.id.toString(),
                             name: user.name,
                             username: user.username,
                             email: user.email,
@@ -61,7 +69,7 @@ export const authConfig = {
         })],
     callbacks: {
         async jwt({ token, user }) {
-            if (user) {
+            if (user && user.id) {
                 token.id = user.id
                 token.roles = user.roles // Store user role in the JWT token
             }
@@ -73,8 +81,11 @@ export const authConfig = {
             return session;
         },
     },
-} satisfies NextAuthOptions
+} satisfies NextAuthConfig
 
+/**
+ * Next-auth returns hooks globally available
+ */
 export const {
     auth,
     handlers,

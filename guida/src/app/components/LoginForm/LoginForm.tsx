@@ -105,7 +105,7 @@ export default function LoginForm() {
                 {error && <p className={`${styles.messageText} ${flash ? styles.flash : ''}`}>{error}</p>}
                 {message && <p>{message}</p>}
                 <div>
-                    <Link href='/registerTest'>Create new user</Link>
+                    <Link href='/register'>Create new user</Link>
                 </div>
             </div>
         </div>

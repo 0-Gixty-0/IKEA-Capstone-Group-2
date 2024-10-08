@@ -1,7 +1,8 @@
 import { NextAuthConfig } from "next-auth";
 
 /**
- * NextAuthConfig required for callback methods due to pg unable to run in Edge environment
+ * NextAuthConfig required for callback methods. Edge run environment.
+ * DO NOT REMOVE
  */
 export default {
     providers: [],

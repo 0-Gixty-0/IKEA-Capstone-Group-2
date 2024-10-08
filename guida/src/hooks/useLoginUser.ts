@@ -1,6 +1,9 @@
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import {SignInCredentials} from "@/lib/auth-action";
 
+/**
+ * Login hook handles signIn of user from form data
+ */
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -8,8 +11,7 @@ export const useLogin = () => {
   const handleSignIn = async (username: string, password: string, redirectUrl = '/') => {
     setLoading(true);
     setError(null);
-    console.log('Recieved by handleSignIn are: ' + username + ' ' + password)
-    const res = await signIn('credentials', {
+    const res = await SignInCredentials({
       redirect: false, // Prevent automatic redirection
       username,
       password  // Credentials: { username, password }

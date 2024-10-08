@@ -22,7 +22,6 @@ interface PostRequestPost {
  * @constructor
  */
 export async function GET(request : Request) {
-    console.log('RAN THAT SHIT')
     try {
         const { searchParams } = new URL(request.url)
         const postId = searchParams.get('id')
