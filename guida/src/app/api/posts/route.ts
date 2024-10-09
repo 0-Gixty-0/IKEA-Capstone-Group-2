@@ -60,6 +60,7 @@ export async function GET(request: Request) {
 
     const posts = await prisma.post.findMany({
       where: Object.keys(where).length ? where : undefined,
+      orderBy: { createdAt: 'desc' },
     });
     return NextResponse.json(
       {
