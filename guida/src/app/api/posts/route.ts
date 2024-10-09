@@ -27,6 +27,7 @@ export async function GET(request: Request) {
     const postId = searchParams.get("id");
     const authorId = Number(searchParams.get("authorId"));
     const published = searchParams.get("published");
+    const sortOrder = searchParams.get("sortrder") || 'desc';
 
     if (postId) {
       const post = await prisma.post.findUnique({
@@ -60,7 +61,7 @@ export async function GET(request: Request) {
 
     const posts = await prisma.post.findMany({
       where: Object.keys(where).length ? where : undefined,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: sortOrder },
     });
     return NextResponse.json(
       {
