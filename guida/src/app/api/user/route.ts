@@ -126,36 +126,44 @@ export async function PUT(req: Request) {
     try {
         const user : SubmittableUser = await req.json()
 
-        // Retrieve the Role records that match the roles provided in submittableUser
-        const roles = await prisma.role.findMany({
-            where: {
-                name: {
-                    in: user.roles,
-                },
-            },
-        });
+        const session = await auth()
 
-        // If roles are not found, throw an error (optional)
-        if (roles.length === 0) {
-            throw new Error("No matching roles found for user.");
-        }
+        if (session) {
+            if (session.user.roles.includes(UserRole.ADMIN) || session.user.id === user.id?.toString()) {
+                // Retrieve the Role records that match the roles provided in submittableUser
+                const roles = await prisma.role.findMany({
+                    where: {
+                        name: {
+                            in: user.roles,
+                        },
+                    },
+                });
 
-        if (Number.isNaN(Number(user.id))) {
-            return NextResponse.json({error: 'not a valid id'}, {status: 400})
-        }
-        const updatedUser = await prisma.user.update({
-            where: {id: Number(user.id)},
-            data: {
-                email: user.email,
-                username: user.username,
-                password: user.password,
-                name: user.name,
-                roles: {
-                    connect: roles.map((role) => ({ id: role.id })),
-                },
+                // If roles are not found, throw an error (optional)
+                if (roles.length === 0) {
+                    throw new Error("No matching roles found for user.");
+                }
+
+                if (Number.isNaN(Number(user.id))) {
+                    return NextResponse.json({error: 'not a valid id'}, {status: 400})
+                }
+                const updatedUser = await prisma.user.update({
+                    where: {id: Number(user.id)},
+                    data: {
+                        email: user.email,
+                        username: user.username,
+                        password: user.password,
+                        name: user.name,
+                        roles: {
+                            connect: roles.map((role) => ({ id: role.id })),
+                        },
+                    }
+                })
+                return NextResponse.json(updatedUser, {status: 201})
+            } else {
+                return NextResponse.json({ error: 'Not allowed!' }, { status: 405 })
             }
-        })
-        return NextResponse.json(updatedUser, {status: 201})
+        }
         
     } catch (error) {
         console.log(error)
