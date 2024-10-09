@@ -2,7 +2,7 @@ import prisma from "@/db";
 import {NextResponse} from 'next/server';
 import {SubmittableUser, UserRole} from "@/types";
 import {auth} from "@/auth";
-import { Prisma } from "@prisma/client";
+import {Prisma} from "@prisma/client";
 
 /**
  * Fetch a user based on it's id, if no id is provided, all users are returned
@@ -56,6 +56,8 @@ export async function GET(req: Request) {
                 where: {id: userid}
             })
             return NextResponse.json(user)
+        } else {
+            return NextResponse.json({ error: 'Not allowed!' }, { status: 405 })
         }
     } catch (error) {
         return NextResponse.json({ error: 'Something went wrong!' }, { status: 500 });
@@ -71,37 +73,43 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
     try {
-        const user : SubmittableUser = await req.json()
+        const session = await auth()
 
-        // Retrieve the Role records that match the roles provided in submittableUser
-        const roles = await prisma.role.findMany({
-            where: {
-                name: {
-                    in: user.roles,
+        if (session && session.user.roles.includes(UserRole.ADMIN)) {
+            const user : SubmittableUser = await req.json()
+
+            // Retrieve the Role records that match the roles provided in submittableUser
+            const roles = await prisma.role.findMany({
+                where: {
+                    name: {
+                        in: user.roles,
+                    },
                 },
-            },
-        });
+            });
 
-        // If roles are not found, throw an error (optional)
-        if (roles.length === 0) {
-            throw new Error("No matching roles found for user.");
-        }
-
-        if (!user.email || !user.password || !user.username) {
-            return NextResponse.json({error: "Invalid or missing attributes for user"}, {status: 400 })
-        }
-        const newUser = await prisma.user.create({
-            data: {
-                email: user.email,
-                username: user.username,
-                password: user.password,
-                name: user.name,
-                roles: {
-                    connect: roles.map((role) => ({ id: role.id })),
-                },
+            // If roles are not found, throw an error (optional)
+            if (roles.length === 0) {
+                throw new Error("No matching roles found for user.");
             }
-        })
-        return NextResponse.json(newUser, {status: 201});
+
+            if (!user.email || !user.password || !user.username) {
+                return NextResponse.json({error: "Invalid or missing attributes for user"}, {status: 400 })
+            }
+            const newUser = await prisma.user.create({
+                data: {
+                    email: user.email,
+                    username: user.username,
+                    password: user.password,
+                    name: user.name,
+                    roles: {
+                        connect: roles.map((role) => ({ id: role.id })),
+                    },
+                }
+            })
+            return NextResponse.json(newUser, {status: 201});
+        } else {
+            return NextResponse.json({ error: 'Not allowed!' }, { status: 405 })
+        }
         
     } catch (error) {
         return NextResponse.json({error: `could not create user}` + error}, {status: 500})
