@@ -50,12 +50,37 @@ export default function PostForm(props: IPostForm) {
         if (success) {
             onClose()
         }
-    }, [success]);
+    }, [success, onClose]);
 
     const handleSelectChange = (targetValue : string) => {
         const value = targetValue === "true"; // Convert string to boolean
         setPublished(value); // Update the state
     };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    
+        if (title === "") {
+          setTitleError(true);
+          setValueError(true);
+        }
+        if (content === "") {
+          setContentError(true);
+          setValueError(true);
+        }
+    
+        if (title !== "" && content !== "") {
+          const postToSubmit: SubmittablePost = {
+            id: post?.id || null,
+            title,
+            content,
+            authorId: post?.authorId || 1, // TODO: MODIFY TO INCLUDE NEW POST FOR LOGGED IN USER
+            published,
+          };
+    
+          submitPost(postToSubmit);
+        }
+      };
 
     /**
      * Validates that title and content have been filled out. If not sets valueError state to true displaying

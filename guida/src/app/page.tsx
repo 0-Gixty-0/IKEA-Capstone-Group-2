@@ -12,15 +12,18 @@ const Home: React.FC = () => {
   const { posts, loading, error } = useFetchPosts(); // Use the custom hook
   const [clickedPost, setClickedPost] = useState<Post | null>(null); // Ensure the type is Post or null
   const [isEditing, setIsEditing] = useState(false); // Track if we're editing
+  const [isCreating, setIsCreating] = useState(false); // Track if we're creating a new post
 
   const handlePostClick = (post: Post) => {
     setClickedPost(post); // Pass the full post object
     setIsEditing(false); // Reset editing state
+    setIsCreating(false); // Reset creating state
   };
 
   const closeModal = () => {
     setClickedPost(null);
     setIsEditing(false); // Reset editing state
+    setIsCreating(false); // Reset creating state
   };
 
   const handlePostDelete = async () => {
@@ -32,11 +35,18 @@ const Home: React.FC = () => {
     setIsEditing(true); // Set editing state to true
   };
 
+  const handleCreatePost = () => {
+    setClickedPost(null);
+    setIsEditing(false);
+    setIsCreating(true); // Set creating state to true
+  };
+
   return (
     <div className={styles.fullScreen}>
       <div className={styles.postContainer}>
         <h1>Feed</h1>
         {error && <div>Error: {error}</div>} {/* Display error if any */}
+        <button onClick={handleCreatePost}>Create New Post</button> {/* Add button to create new post */}
         <ul>
           {loading
             ? Array.from({ length: 5 }, (_, index) => (
@@ -59,24 +69,25 @@ const Home: React.FC = () => {
               ))}
         </ul>
       </div>
-      {clickedPost && (
-        <Modal 
-          onClose={closeModal} 
-          postId={clickedPost.id} 
-          onDelete={handlePostDelete} 
-        >
-          {isEditing ? (
+      {(clickedPost || isCreating) && (
+        <Modal onClose={closeModal} 
+        postId={clickedPost?.id ?? 0} 
+        onDelete={handlePostDelete}>
+          {isEditing || isCreating ? (
             <PostForm
-              post={clickedPost} // Pass the full clicked post to PostForm
-              submitText="Update Post" // Change submit text for editing
+              post={clickedPost || undefined} // Pass the full clicked post to PostForm
+              submitText={isCreating ? "Create Post" : "Update Post"} // Change submit text for editing
               onClose={closeModal} // Close modal on submit
             />
           ) : (
             <>
-              <h2>{clickedPost.title}</h2>
-              <p>{clickedPost.content}</p>
-              <button onClick={handleEditPost}>Edit Post</button> {/* Add Edit button directly */}
-            </>
+              {clickedPost && ( // Add null check before accessing clickedPost properties
+                <>
+                  <h2>{clickedPost.title}</h2>
+                  <p>{clickedPost.content}</p>
+                  <button onClick={handleEditPost}>Edit Post</button> {/* Add Edit button directly */}
+                </>
+              )}            </>
           )}
         </Modal>
       )}
