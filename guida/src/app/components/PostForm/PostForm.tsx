@@ -82,7 +82,7 @@ export default function PostForm(props: IPostForm) {
                 id: post?.id || null,
                 title,
                 content,
-                authorId: post?.authorId || 1, //TODO MODIFY TO INCLUDE NEW POST FOR LOGGED IN USER
+                authorId: post?.authorId || null,
                 published,
             };
 

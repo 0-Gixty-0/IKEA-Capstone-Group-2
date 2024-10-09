@@ -163,6 +163,8 @@ export async function PUT(req: Request) {
             } else {
                 return NextResponse.json({ error: 'Not allowed!' }, { status: 405 })
             }
+        } else {
+            return NextResponse.json({ error: 'You must be logged in!' }, { status: 405 })
         }
         
     } catch (error) {
@@ -180,20 +182,23 @@ export async function DELETE(req: Request) {
     try {
         const userid = getId(req)
 
+        if (!userid) {
+            return NextResponse.json({error: 'not a valid id'}, {status: 400})
+        }
+
         const session = await auth()
 
         if (session) {
             if (session.user.roles.includes(UserRole.ADMIN)) {
-                if (!userid) {
-                    return NextResponse.json({error: 'not a valid id'}, {status: 400})
-                }
                 const user = await prisma.user.delete({
                     where: {id: userid}
                 })
-                return NextResponse.json({message: "User deleted succesfully", user: user})
+                return NextResponse.json({message: "User deleted successfully", user: user})
+            } else {
+                return NextResponse.json({ error: 'Not allowed' }, { status: 405 })
             }
         } else {
-            return NextResponse.json({ error: 'Not allowed!' }, { status: 405 })
+            return NextResponse.json({ error: 'You must be logged in!' }, { status: 405 })
         }
     } catch (error) {
         return NextResponse.json({ error: 'Something went wrong! Could not delete user' }, { status: 500 });

@@ -11,7 +11,7 @@ export interface SubmittablePost {
   title: string;
   content: string | null;
   published: boolean;
-  authorId: number;
+  authorId: number | null;
 }
 
 export interface SubmittableUser {
