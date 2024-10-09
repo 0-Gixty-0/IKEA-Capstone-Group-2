@@ -180,13 +180,21 @@ export async function DELETE(req: Request) {
     try {
         const userid = getId(req)
 
-        if (!userid) {
-            return NextResponse.json({error: 'not a valid id'}, {status: 400})
+        const session = await auth()
+
+        if (session) {
+            if (session.user.roles.includes(UserRole.ADMIN)) {
+                if (!userid) {
+                    return NextResponse.json({error: 'not a valid id'}, {status: 400})
+                }
+                const user = await prisma.user.delete({
+                    where: {id: userid}
+                })
+                return NextResponse.json({message: "User deleted succesfully", user: user})
+            }
+        } else {
+            return NextResponse.json({ error: 'Not allowed!' }, { status: 405 })
         }
-        const user = await prisma.user.delete({
-            where: {id: userid}
-        })
-        return NextResponse.json({message: "User deleted succesfully", user: user})
     } catch (error) {
         return NextResponse.json({ error: 'Something went wrong! Could not delete user' }, { status: 500 });
     }
