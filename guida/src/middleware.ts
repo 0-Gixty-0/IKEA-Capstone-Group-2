@@ -30,12 +30,6 @@ export default auth((req) => {
         return NextResponse.next();
     }
 
-    // Always accept request to /api/user where request method is POST.
-    // This allows registration of new users through API when not logged in
-    if (nextUrl.pathname.startsWith('/api/user') && req.method === 'POST') {
-        return NextResponse.next()
-    }
-
     // Always accept page routes for authentication purposes
     // For example /login. However, if logged in redirect to default route
     if(isAuthRoute) {

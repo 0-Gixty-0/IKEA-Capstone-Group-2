@@ -1,9 +1,8 @@
 import prisma from "@/db";
-import User from '@prisma/client'
-import { NextResponse } from 'next/server';
-import {SubmittableUser} from "@/types";
-
-
+import {NextResponse} from 'next/server';
+import {SubmittableUser, UserRole} from "@/types";
+import {auth} from "@/auth";
+import { Prisma } from "@prisma/client";
 
 /**
  * Fetch a user based on it's id, if no id is provided, all users are returned
@@ -13,22 +12,51 @@ import {SubmittableUser} from "@/types";
 export async function GET(req: Request) {
     try {
         const {searchParams} = await new URL(req.url)
-        if (searchParams.get("id") == null) {
-            const allUsers = await prisma.user.findMany({
 
-            }) 
-            return NextResponse.json(allUsers)
+        const session = await auth()
+
+        if (session) {
+            let selectStatement : Prisma.UserSelect = {};
+
+            if (session.user.roles.includes(UserRole.ADMIN) || session.user.id === searchParams.get('id')) {
+                selectStatement = {
+                    id: true,
+                    email: true,
+                    password: true,
+                    username: true,
+                    name: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    roles: true,
+                }
+            } else {
+                selectStatement = {
+                    id: true,
+                    email: true,
+                    name: true,
+                    createdAt: true,
+                    roles: true,
+                }
+            }
+
+            if (searchParams.get("id") == null) {
+                const allUsers = await prisma.user.findMany({
+                    select: selectStatement
+                })
+                return NextResponse.json(allUsers)
+            }
+
+            const userid = getId(req)
+
+            if (!userid) {
+                return NextResponse.json({error: 'not a valid id'}, {status: 400})
+            }
+            const user = await prisma.user.findFirst({
+                select: selectStatement,
+                where: {id: userid}
+            })
+            return NextResponse.json(user)
         }
-
-        const userid = getId(req)
-
-        if (!userid) {
-            return NextResponse.json({error: 'not a valid id'}, {status: 400})
-        }
-        const user = await prisma.user.findFirst({
-            where: {id: userid}
-        })
-        return NextResponse.json(user)
     } catch (error) {
         return NextResponse.json({ error: 'Something went wrong!' }, { status: 500 });
     }  
