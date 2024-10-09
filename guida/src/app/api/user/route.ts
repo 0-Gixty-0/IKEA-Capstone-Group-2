@@ -7,15 +7,18 @@ import {SubmittableUser} from "@/types";
 
 /**
  * Fetch a user based on it's id, if no id is provided, all users are returned
+ * 
  * @param req 
- * @returns Response with the users id, email and name.
+ * @returns Response with the users id, email and username, 
+ *          name, roles, creation date and last updated date.
  */
 export async function GET(req: Request) {
     try {
         const {searchParams} = await new URL(req.url)
         if (searchParams.get("id") == null) {
             const allUsers = await prisma.user.findMany({
-
+                select: {id: true, email: true, username: true, 
+                        name: true, roles: true, createdAt: true, updatedAt: true}
             }) 
             return NextResponse.json(allUsers)
         }
@@ -26,7 +29,9 @@ export async function GET(req: Request) {
             return NextResponse.json({error: 'not a valid id'}, {status: 400})
         }
         const user = await prisma.user.findFirst({
-            where: {id: userid}
+            where: {id: userid},
+            select: {id: true, email: true, username: true, 
+                name: true, roles: true, createdAt: true, updatedAt: true}
         })
         return NextResponse.json(user)
     } catch (error) {
