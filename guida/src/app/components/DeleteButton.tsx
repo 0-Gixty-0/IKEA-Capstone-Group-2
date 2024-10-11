@@ -13,6 +13,11 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ style, postId, onDelete }) 
       return; // Exit early if postId is invalid
     }
   
+    const confirmed = window.confirm("Are you sure you want to delete this post?");
+    if (!confirmed) {
+      return;
+    }
+
     console.log("Deleting post with ID: ", postId);
   
     try {

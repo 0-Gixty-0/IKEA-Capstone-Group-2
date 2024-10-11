@@ -1,7 +1,7 @@
 "use client";
 
 // Imports
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import { useFetchPosts } from "@/hooks/useFetchPosts";
 import Modal from "@/app/components/Modal";
@@ -13,6 +13,13 @@ const Home: React.FC = () => {
   const [clickedPost, setClickedPost] = useState<Post | null>(null); // Ensure the type is Post or null
   const [isEditing, setIsEditing] = useState(false); // Track if we're editing
   const [isCreating, setIsCreating] = useState(false); // Track if we're creating a new post
+  const [displayedPosts, setDisplayedPosts] = useState<Post[]>([])
+
+  useEffect(() => {
+    if(!loading) {
+      setDisplayedPosts(posts)
+    }
+  }, [loading])
 
   const handlePostClick = (post: Post) => {
     setClickedPost(post); // Pass the full post object
@@ -28,7 +35,7 @@ const Home: React.FC = () => {
 
   const handlePostDelete = async () => {
     closeModal(); // Close the modal
-    window.location.reload(); // Refresh the site
+    setDisplayedPosts((displayedPosts) => displayedPosts.filter((post) => post.id !== clickedPost?.id))
   };
 
   const handleEditPost = () => {
@@ -41,33 +48,53 @@ const Home: React.FC = () => {
     setIsCreating(true); // Set creating state to true
   };
 
+  const handleSuccess = (post: Post) => {
+    setDisplayedPosts((prevPosts) => {
+      const postIndex = prevPosts.findIndex((p) => p.id === post.id);
+      if (postIndex !== -1) {
+
+        const updatedPosts = [...prevPosts];
+        updatedPosts[postIndex] = post;
+        return updatedPosts;
+      } else {
+
+        return [post, ...prevPosts];
+      }
+    });
+    closeModal();
+  };
+
   return (
     <div className={styles.fullScreen}>
       <div className={styles.postContainer}>
         <h1>Feed</h1>
         {error && <div>Error: {error}</div>} {/* Display error if any */}
         <button onClick={handleCreatePost}>Create New Post</button> {/* Add button to create new post */}
-        <ul>
-          {loading
-            ? Array.from({ length: 5 }, (_, index) => (
-                <li
-                  key={index}
-                  className={`${styles.skeleton} ${styles["skeleton-post"]}`}
-                ></li> // Render skeleton loaders while loading
-              ))
-            : posts.map(({ id, title, content, published, authorId }) => (
-                <li
-                  key={id}
-                  className={styles.post}
-                  onClick={() => handlePostClick({ id, title, content, published, authorId })} // Pass complete post
-                >
-                  <div className={styles.postContent}>
-                    <h2>{title}</h2>
-                    <p>{content}</p>
-                  </div>
-                </li> // Render posts once they are fetched
-              ))}
-        </ul>
+        {loading ? (
+          Array.from({ length: 5 }, (_, index) => (
+            <li
+              key={index}
+              className={`${styles.skeleton} ${styles["skeleton-post"]}`}
+            ></li> // Render skeleton loaders while loading
+          ))
+        ) : displayedPosts.length === 0 ? (
+          <div>All posts read</div> // Display message when there are no posts
+        ) : (
+          <ul>
+            {displayedPosts.map(({ id, title, content, published, authorId }) => (
+              <li
+                key={id}
+                className={styles.post}
+                onClick={() => handlePostClick({ id, title, content, published, authorId })} // Pass complete post
+              >
+                <div className={styles.postContent}>
+                  <h2>{title}</h2>
+                  <p>{content}</p>
+                </div>
+              </li> // Render posts once they are fetched
+            ))}
+          </ul>
+        )}
       </div>
       {(clickedPost || isCreating) && (
         <Modal onClose={closeModal} 
@@ -77,7 +104,8 @@ const Home: React.FC = () => {
             <PostForm
               post={clickedPost || undefined} // Pass the full clicked post to PostForm
               submitText={isCreating ? "Create Post" : "Update Post"} // Change submit text for editing
-              onClose={closeModal} // Close modal on submit
+              onClose={closeModal}
+              onSuccess={handleSuccess} // Close modal on submit
             />
           ) : (
             <>

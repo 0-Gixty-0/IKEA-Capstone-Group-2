@@ -12,7 +12,8 @@ import styles from "./styles.module.css"
 interface IPostForm {
     post?: Post,
     submitText: string,
-    onClose: () => void
+    onClose: () => void,
+    onSuccess: (post: Post) => void
 }
 
 /**
@@ -23,8 +24,8 @@ interface IPostForm {
  * @constructor
  */
 export default function PostForm(props: IPostForm) {
-    const { post, submitText, onClose} = props;
-    const { submitPost, loading, error, success } = useSubmitPost();
+    const { post, submitText, onClose, onSuccess} = props;
+    const { submitPost, loading, error, success, result } = useSubmitPost();
     const [valueError, setValueError] = useState<boolean>(false)
     const [titleError, setTitleError] = useState<boolean>(false);
     const [contentError, setContentError] = useState<boolean>(false);
@@ -47,10 +48,10 @@ export default function PostForm(props: IPostForm) {
      * Calls callback function onClose upon successful submit
      */
     useEffect(() => {
-        if (success) {
-            onClose()
+        if (success && result) {
+            onSuccess(result.post)
         }
-    }, [success, onClose]);
+    }, [success]);
 
     const handleSelectChange = (targetValue : string) => {
         const value = targetValue === "true"; // Convert string to boolean

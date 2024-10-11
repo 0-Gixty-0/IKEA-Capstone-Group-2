@@ -1,6 +1,11 @@
 // hooks/useSubmitPost.ts
 import { useState } from "react";
-import {SubmittablePost} from "@/types";
+import {Post, SubmittablePost} from "@/types";
+
+interface PostResult {
+    message: string;
+    post: Post
+}
 
 /**
  * Custom hook used for submitting posts.
@@ -12,6 +17,7 @@ export const useSubmitPost = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<boolean | null>(null)
+    const [result, setResult] = useState<PostResult | null>(null)
 
     const submitPost = async (post: SubmittablePost): Promise<void> => {
         setLoading(true);
@@ -30,9 +36,9 @@ export const useSubmitPost = () => {
                 throw new Error('Failed to submit post');
             }
 
-            const result = await response.json();
-            alert(post.id ? 'Post updated successfully!' : 'Post created successfully!');
+            const responseResult = await response.json();
             setSuccess(true)
+            setResult(responseResult)
         } catch (err) {
             console.error(err);
             setError(post.id ? 'Failed to update post' : 'Failed to create post');
@@ -42,5 +48,5 @@ export const useSubmitPost = () => {
         }
     };
 
-    return { submitPost, loading, error, success };
+    return { submitPost, loading, error, success, result };
 };
