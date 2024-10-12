@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Post, SubmittablePost} from "@/types";
 import {useSubmitPost} from "@/hooks/useSubmitPost";
 import styles from "./styles.module.css"
+import Preloader from "@/app/components/Preloader/Preloader";
 
 /**
  * PostForm props consists of:
@@ -81,7 +82,7 @@ export default function PostForm(props: IPostForm) {
                 id: post?.id || null,
                 title,
                 content,
-                authorId: post?.authorId || 1, //TODO MODIFY TO INCLUDE NEW POST FOR LOGGED IN USER
+                authorId: post?.authorId || null,
                 published,
             };
 
@@ -141,6 +142,7 @@ export default function PostForm(props: IPostForm) {
                     </div>
                     <button className={styles.submitButton} type="submit">{submitText}</button>
                 </form>
+                {loading && <Preloader/>}
                 {valueError && <p className={styles.errorMessage}>Required fields are missing!</p>}
                 {error && <p className={styles.errorMessage}>{error}</p>}
             </div>
