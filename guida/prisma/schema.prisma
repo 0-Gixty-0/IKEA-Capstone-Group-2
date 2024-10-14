@@ -10,8 +10,13 @@ datasource db {
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
+  username String @unique
+  password String
   name  String?
   posts Post[]
+  roles Role[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Post {
@@ -24,3 +29,10 @@ model Post {
   updatedAt DateTime @updatedAt
   author    User     @relation(fields: [authorId], references: [id])
 }
+
+model Role {
+  id Int @id @default(autoincrement())
+  name String
+  users User[]
+}
+

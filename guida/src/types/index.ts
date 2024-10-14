@@ -12,7 +12,16 @@ export interface SubmittablePost {
   title: string;
   content: string | null;
   published: boolean;
-  authorId: number;
+  authorId: number | null;
+}
+
+export interface SubmittableUser {
+  id: number | null;
+  email: string;
+  username: string;
+  password: string;
+  name: string | null;
+  roles: UserRole[];
 }
 
 // Modal-related interfaces
@@ -28,4 +37,14 @@ export interface FetchPostsParams {
   id?: number;
   authorId?: number;
   published?: boolean;
+<<<<<<< HEAD
 }
+=======
+}
+
+export enum UserRole {
+  ADMIN = "ADMIN",
+  USER = "USER",
+}
+
+>>>>>>> origin/develop
