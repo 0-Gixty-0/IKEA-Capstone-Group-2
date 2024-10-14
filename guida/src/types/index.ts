@@ -1,3 +1,4 @@
+// Post-related interfaces
 export interface Post {
   id: number;
   title: string;
@@ -14,6 +15,15 @@ export interface SubmittablePost {
   authorId: number;
 }
 
+// Modal-related interfaces
+export interface ModalProps {
+  onClose: () => void;
+  children: React.ReactNode;
+  postId: number;
+  onDelete: () => void;
+}
+
+// Fetch-related interfaces
 export interface FetchPostsParams {
   id?: number;
   authorId?: number;
