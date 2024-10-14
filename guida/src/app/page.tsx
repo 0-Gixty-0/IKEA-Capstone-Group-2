@@ -1,13 +1,18 @@
-// guida/src/app/page.tsx
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import Modal from "@/app/components/PostDetailModal/PostDetailModal";
 import PostForm from "@/app/components/PostForm/PostForm";
 import { usePostManagement } from "@/hooks/usePostManagement";
 
 const HomeScreen: React.FC = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const {
     posts,
     loading,
@@ -22,6 +27,10 @@ const HomeScreen: React.FC = () => {
     handleCreatePost,
     handleSuccess,
   } = usePostManagement();
+
+  if (!isClient) {
+    return null; // or a loading spinner
+  }
 
   return (
     <div className={styles.fullScreen}>
