@@ -37,9 +37,6 @@ export interface FetchPostsParams {
   id?: number;
   authorId?: number;
   published?: boolean;
-<<<<<<< HEAD
-}
-=======
 }
 
 export enum UserRole {
@@ -47,4 +44,3 @@ export enum UserRole {
   USER = "USER",
 }
 
->>>>>>> origin/develop
