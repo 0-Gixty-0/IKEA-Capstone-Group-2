@@ -11,9 +11,10 @@ import Preloader from "@/app/components/Preloader/Preloader";
  * * OnClose: callback function called on successful submit
  */
 interface IPostForm {
-    post?: Post,
-    submitText: string,
-    onClose: () => void
+  post?: Post;
+  submitText: string;
+  onClose: () => void;
+  onSuccess: (post: Post) => void;
 }
 
 /**
@@ -24,58 +25,89 @@ interface IPostForm {
  * @constructor
  */
 export default function PostForm(props: IPostForm) {
-    const { post, submitText, onClose} = props;
-    const { submitPost, loading, error, success } = useSubmitPost();
-    const [valueError, setValueError] = useState<boolean>(false)
-    const [titleError, setTitleError] = useState<boolean>(false);
-    const [contentError, setContentError] = useState<boolean>(false);
-    const [title, setTitle] = useState<string>(props.post ? props.post.title : '')
-    const [content, setContent] = useState<string>(props.post ? props.post.content : '')
-    const [published, setPublished] = useState<boolean>(props.post ? props.post.published : false)
+  const { post, submitText, onClose, onSuccess } = props;
+  const { submitPost, loading, error, success, result } = useSubmitPost();
+  const [valueError, setValueError] = useState<boolean>(false);
+  const [titleError, setTitleError] = useState<boolean>(false);
+  const [contentError, setContentError] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>(
+    props.post ? props.post.title : "",
+  );
+  const [content, setContent] = useState<string>(
+    props.post ? props.post.content : "",
+  );
+  const [published, setPublished] = useState<boolean>(
+    props.post ? props.post.published : false,
+  );
 
-    /**
-     * Updates post state when provided
-     */
-    useEffect(() => {
-        if (post) {
-            setTitle(post.title);
-            setContent(post.content);
-            setPublished(post.published);
-        }
-    }, [post]);
+  /**
+   * Updates post state when provided
+   */
+  useEffect(() => {
+    if (post) {
+      setTitle(post.title);
+      setContent(post.content);
+      setPublished(post.published);
+    }
+  }, [post]);
 
-    /**
-     * Calls callback function onClose upon successful submit
-     */
-    useEffect(() => {
-        if (success) {
-            onClose()
-        }
-    }, [success]);
+  /**
+   * Calls callback function onClose upon successful submit
+   */
+  useEffect(() => {
+    if (success && result) {
+      onSuccess(result.post);
+    }
+  }, [success]);
 
-    const handleSelectChange = (targetValue : string) => {
-        const value = targetValue === "true"; // Convert string to boolean
-        setPublished(value); // Update the state
-    };
+  const handleSelectChange = (targetValue: string) => {
+    const value = targetValue === "true"; // Convert string to boolean
+    setPublished(value); // Update the state
+  };
 
-    /**
-     * Validates that title and content have been filled out. If not sets valueError state to true displaying
-     * error message and sets input border to error state respectively.
-     * If validation passes creates a submittable post object and attempts to submit
-     * constructed post from form data.
-     * @param e
-     */
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-        if (title === '') {
-            setTitleError(true)
-            setValueError(true)
-        }
-        if (content === '') {
-            setContentError(true)
-            setValueError(true)
-        }
+    if (title === "") {
+      setTitleError(true);
+      setValueError(true);
+    }
+    if (content === "") {
+      setContentError(true);
+      setValueError(true);
+    }
+
+    if (title !== "" && content !== "") {
+      const postToSubmit: SubmittablePost = {
+        id: post?.id || null,
+        title,
+        content,
+        authorId: post?.authorId || 1, // TODO: MODIFY TO INCLUDE NEW POST FOR LOGGED IN USER
+        published,
+      };
+
+      submitPost(postToSubmit);
+    }
+  };
+
+  /**
+   * Validates that title and content have been filled out. If not sets valueError state to true displaying
+   * error message and sets input border to error state respectively.
+   * If validation passes creates a submittable post object and attempts to submit
+   * constructed post from form data.
+   * @param e
+   */
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (title === "") {
+      setTitleError(true);
+      setValueError(true);
+    }
+    if (content === "") {
+      setContentError(true);
+      setValueError(true);
+    }
 
         if (title !== '' && content !== '') {
             const postToSubmit: SubmittablePost = {
@@ -86,9 +118,9 @@ export default function PostForm(props: IPostForm) {
                 published,
             };
 
-            submitPost(postToSubmit);
-        }
+      submitPost(postToSubmit);
     }
+  };
 
     return (
         <div className={styles.postFormOverlay}>

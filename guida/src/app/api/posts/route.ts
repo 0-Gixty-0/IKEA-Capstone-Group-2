@@ -5,10 +5,10 @@ import {auth} from "@/auth";
 import {SubmittablePost, UserRole} from "@/types";
 
 interface PutRequestPost {
-    id: number
-    title: string;
-    content: string;
-    published: boolean;
+  id: number;
+  title: string;
+  content: string;
+  published: boolean;
 }
 
 interface PostRequestPost {
