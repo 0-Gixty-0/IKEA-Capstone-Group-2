@@ -2,11 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import Modal from "@/app/components/PostDetailModal/PostDetailModal";
+import PostDetailModal from "@/app/components/PostDetailModal/PostDetailModal";
 import PostForm from "@/app/components/PostForm/PostForm";
+import PostList from "@/app/components/PostList/PostList";
+import SkeletonList from "@/app/components/SkeletonList/SkeletonList";
 import { usePostManagement } from "@/hooks/usePostManagement";
 
-const HomeScreen: React.FC = () => {
+const HomePage: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -39,42 +41,22 @@ const HomeScreen: React.FC = () => {
         {error && <div>Error: {error}</div>}
         <button onClick={handleCreatePost}>Create New Post</button>
         {loading ? (
-          Array.from({ length: 5 }, (_, index) => (
-            <li
-              key={index}
-              className={`${styles.skeleton} ${styles["skeleton-post"]}`}
-            ></li>
-          ))
+          <SkeletonList />
         ) : posts.length === 0 ? (
           <div>All posts read</div>
         ) : (
-          <ul>
-            {posts.map(({ id, title, content, published, authorId }) => (
-              <li
-                key={id}
-                className={styles.post}
-                onClick={() =>
-                  handlePostClick({ id, title, content, published, authorId })
-                }
-              >
-                <div className={styles.postContent}>
-                  <h2>{title}</h2>
-                  <p>{content}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <PostList posts={posts} handlePostClick={handlePostClick} />
         )}
       </div>
       {(clickedPost || isCreating) && (
-        <Modal
+        <PostDetailModal
           onClose={closeModal}
           postId={clickedPost?.id ?? 0}
           onDelete={handlePostDelete}
         >
           {isEditing || isCreating ? (
             <PostForm
-              post={clickedPost || undefined}
+              post={clickedPost || undefined} // Convert null to undefined
               submitText={isCreating ? "Create Post" : "Update Post"}
               onClose={closeModal}
               onSuccess={handleSuccess}
@@ -90,10 +72,10 @@ const HomeScreen: React.FC = () => {
               )}
             </>
           )}
-        </Modal>
+        </PostDetailModal>
       )}
     </div>
   );
 };
 
-export default HomeScreen;
+export default HomePage;

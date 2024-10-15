@@ -1,0 +1,21 @@
+.post {
+  background-color: #494949;
+  border-radius: 8px;
+  margin: 10px 0;
+  padding: 30px;
+  list-style: none;
+  cursor: pointer;
+}
+.post h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+.post p {
+  margin: 0;
+  font-size: 0.7rem;
+}
+.postContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}

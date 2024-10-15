@@ -1,0 +1,24 @@
+.skeleton {
+  background-color: #3a3f44;
+  border-radius: 4px;
+  margin: 10px 0;
+  width: 100%;
+  animation: flash 1.5s ease-in-out infinite;
+  list-style: none;
+}
+
+.skeleton-post {
+  height: 100px;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
