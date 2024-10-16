@@ -15,6 +15,7 @@ model User {
   name  String?
   posts Post[]
   roles Role[]
+  readingList Post[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
