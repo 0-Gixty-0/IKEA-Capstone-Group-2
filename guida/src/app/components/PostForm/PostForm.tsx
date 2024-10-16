@@ -4,7 +4,7 @@ import { useSubmitPost } from "@/hooks/useSubmitPost";
 import styles from "./styles.module.css";
 import Preloader from "@/app/components/Preloader/Preloader";
 import { IPostForm } from "@/types";
-
+import TagInput from "@/app/components/TagInput/TagInput";
 
 /**
  * PostForm modal consists of form for creating a new post or updating existing post.
@@ -28,6 +28,7 @@ export default function PostForm(props: IPostForm) {
   const [published, setPublished] = useState<boolean>(
     props.post ? props.post.published : false,
   );
+  const [tags, setTags] = useState<string[]>(post ? post.tags || [] : []);
 
   /**
    * Updates post state when provided
@@ -37,6 +38,7 @@ export default function PostForm(props: IPostForm) {
       setTitle(post.title);
       setContent(post.content);
       setPublished(post.published);
+      setTags(post.tags || []);
     }
   }, [post]);
 
@@ -73,6 +75,7 @@ export default function PostForm(props: IPostForm) {
         content,
         authorId: post?.authorId || 1, // TODO: MODIFY TO INCLUDE NEW POST FOR LOGGED IN USER
         published,
+        tags,
       };
 
       submitPost(postToSubmit);
@@ -144,6 +147,11 @@ export default function PostForm(props: IPostForm) {
                 setValueError(false);
               }}
             />
+          </div>
+          <div className={styles.postFormElement}>
+            <label>* Tags</label>
+            <TagInput tags={tags} setTags={setTags} />{" "}
+            {/* Pass tags and setTags */}
           </div>
           <div className={styles.postFormElement}>
             <label>Published:</label>

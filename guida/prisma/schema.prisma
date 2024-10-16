@@ -30,6 +30,25 @@ model Post {
   updatedAt DateTime @updatedAt
   author    User     @relation(fields: [authorId], references: [id], name: "UserPosts")
   readers   User[]   @relation("UserReadingList")
+
+  // Opposite field in the Post model to link with PostTag
+  tags      PostTag[]  // Many-to-many relationship with Tag through PostTag
+}
+
+model Tag {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  posts PostTag[]  // Many-to-many relationship with Post through PostTag
+}
+
+model PostTag {
+  postId Int
+  tagId  Int
+
+  post   Post  @relation(fields: [postId], references: [id])  // Link to Post
+  tag    Tag   @relation(fields: [tagId], references: [id])   // Link to Tag
+
+  @@id([postId, tagId])  // Composite primary key
 }
 
 model Role {

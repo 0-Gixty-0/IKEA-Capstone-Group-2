@@ -15,5 +15,20 @@ CREATE TABLE "Post" (
     CONSTRAINT "Post_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
+-- Create the Tag table
+CREATE TABLE "Tag" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL UNIQUE
+);
+
+-- Create the join table for Post and Tag (many-to-many relationship)
+CREATE TABLE "PostTag" (
+    "postId" INTEGER NOT NULL,
+    "tagId" INTEGER NOT NULL,
+    CONSTRAINT "PostTag_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post" ("id") ON DELETE CASCADE,
+    CONSTRAINT "PostTag_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag" ("id") ON DELETE CASCADE,
+    PRIMARY KEY ("postId", "tagId")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");

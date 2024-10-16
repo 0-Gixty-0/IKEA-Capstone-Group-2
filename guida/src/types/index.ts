@@ -5,6 +5,7 @@ export interface Post {
   content: string;
   published: boolean;
   authorId: number;
+  tags?: string[];
 }
 
 export interface ClickablePostProps extends Post {
@@ -22,6 +23,7 @@ export interface SubmittablePost {
   content: string | null;
   published: boolean;
   authorId: number | null;
+  tags?: string[];
 }
 
 export interface SubmittableUser {
