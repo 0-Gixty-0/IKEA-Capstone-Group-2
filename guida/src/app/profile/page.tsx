@@ -2,19 +2,20 @@
 
 import styles from './styles.module.css'
 import {useSession} from "next-auth/react";
-import {auth} from "@/auth";
 import AccessError from "@/app/components/AccessError/AccessError";
+import {useState} from "react";
 import SignOutModal from "@/app/components/SignOutModal/SignOutModal";
 
 export default function Profile() {
     const session = useSession();
+    const [showSignOut, setShowSignOut] = useState<boolean>(false)
 
     if (session && session.data && session.data.user) {
         const userData = session.data.user
 
         return (
             <div className={styles.container}>
-                {/*{JSON.stringify(userData)}*/}
+                {showSignOut && <SignOutModal onClose={() => {setShowSignOut(false)}}/>}
                 <div className={styles.profileContainer}>
                     <div className={styles.basicInfoContainer}>
                         <div className={styles.profilePicture}></div>
@@ -22,6 +23,7 @@ export default function Profile() {
                             <h2>{userData.name}</h2>
                             <h3 id={styles.grayText}>{userData.username}</h3>
                         </div>
+                        <button className={styles.actionButton}>Edit Profile</button>
                         <hr/>
                     </div>
                     <div className={styles.infoContainer}>
@@ -41,6 +43,12 @@ export default function Profile() {
                             <h2>Groups:</h2>
                         </div>
                     </div>
+                    <hr/>
+                    <button
+                        className={styles.actionButton}
+                        onClick={() => {setShowSignOut(true)}}>
+                        Sign Out
+                    </button>
                 </div>
                 <div className={styles.feedContainer}>
                     <div>
