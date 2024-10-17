@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./PostDetailModal.module.css";
 import DeleteButton from "../DeleteButton";
 import { ModalProps } from "@/types";
+import ReadButton from "../ReadButton";
 
 const PostDetailModal: React.FC<ModalProps> = ({
   onClose,
@@ -18,9 +19,7 @@ const PostDetailModal: React.FC<ModalProps> = ({
         <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
-        <button className={styles.readButton} onClick={onRead}>
-          Read
-        </button>
+        <ReadButton postId={postId} onRead={onRead} />{" "}
         {children}{" "}
         {/* Display the children passed, which can be PostForm or post details */}
       </div>

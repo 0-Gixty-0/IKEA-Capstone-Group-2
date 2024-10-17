@@ -28,6 +28,7 @@ const HomePage: React.FC = () => {
     handleEditPost,
     handleCreatePost,
     handleSuccess,
+    handlePostRead,
   } = usePostManagement();
 
   if (!isClient) {
@@ -53,6 +54,7 @@ const HomePage: React.FC = () => {
           onClose={closeModal}
           postId={clickedPost?.id ?? 0}
           onDelete={handlePostDelete}
+          onRead={handlePostRead}
         >
           {isEditing || isCreating ? (
             <PostForm

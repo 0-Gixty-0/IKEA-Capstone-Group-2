@@ -52,6 +52,13 @@ export const usePostManagement = () => {
   };
 
   /**
+   * Handles post read.
+   */
+  const handlePostRead = async () => {
+    closeModal();
+  };
+  
+  /**
    * Sets the state to editing mode.
    */
   const handleEditPost = () => {
@@ -99,5 +106,6 @@ export const usePostManagement = () => {
     handleEditPost,
     handleCreatePost,
     handleSuccess,
+    handlePostRead,
   };
 };
