@@ -1,6 +1,8 @@
 .container {
     color: white;
     display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
     padding: 30px;
 }
 
@@ -16,6 +18,7 @@
     display: flex;
     flex-direction: column;
     row-gap: 30px;
+    margin-right: 30px;
 }
 
 .basicInfoContainer {
@@ -42,7 +45,25 @@
 }
 
 .feedContainer {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
 
+#feedTitle {
+    text-align: center;
+}
+
+#emptyMessage {
+    text-align: center;
+    margin-top: 20px;
+    opacity: 0.7;
+}
+
+.feedContainer div {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
 }
 
 #grayText {

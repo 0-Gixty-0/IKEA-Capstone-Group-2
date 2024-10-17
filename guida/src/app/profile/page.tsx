@@ -3,8 +3,11 @@
 import styles from './styles.module.css'
 import {useSession} from "next-auth/react";
 import AccessError from "@/app/components/AccessError/AccessError";
-import {useState} from "react";
+import React, {useState} from "react";
 import SignOutModal from "@/app/components/SignOutModal/SignOutModal";
+import PostList from "@/app/components/PostList/PostList";
+import {useFetchPosts} from "@/hooks/useFetchPosts";
+import SkeletonList from "@/app/components/SkeletonList/SkeletonList";
 
 export default function Profile() {
     const session = useSession();
@@ -12,6 +15,16 @@ export default function Profile() {
 
     if (session && session.data && session.data.user) {
         const userData = session.data.user
+        const { posts: authoredPosts, loading: loadingAuthored, error: errorAuthored } = useFetchPosts({
+            authorId: Number(userData.id),
+            published: true,
+        });
+
+        // Fetch drafted posts (assuming you need a different param, like a status)
+        const { posts: draftedPosts, loading: loadingDrafted, error: errorDrafted } = useFetchPosts({
+            authorId: Number(userData.id),
+            published: false, // Example: different param for drafts
+        });
 
         return (
             <div className={styles.container}>
@@ -52,10 +65,22 @@ export default function Profile() {
                 </div>
                 <div className={styles.feedContainer}>
                     <div>
-                        <h2>Test</h2>
+                        <h2 id={styles.feedTitle}>Authored Posts</h2>
+                        {loadingAuthored
+                            ? (<SkeletonList></SkeletonList>)
+                            : authoredPosts.length === 0
+                                ? (<h3 id={styles.emptyMessage}>You haven't authored any posts!</h3>)
+                                : (<PostList posts={authoredPosts} handlePostClick={() => {
+                                }}></PostList>)}
                     </div>
                     <div>
-
+                        <h2 id={styles.feedTitle}>Drafted Posts</h2>
+                        {loadingDrafted
+                            ? (<SkeletonList></SkeletonList>)
+                            : authoredPosts.length === 0
+                                ? (<h3 id={styles.emptyMessage}>You have no drafted posts!</h3>)
+                                : (<PostList posts={draftedPosts} handlePostClick={() => {
+                                }}></PostList>)}
                     </div>
                 </div>
             </div>

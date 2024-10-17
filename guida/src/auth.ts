@@ -40,8 +40,6 @@ export const authConfig = {
                         }
                     })
 
-                    console.log("Retrieved User", user)
-
                     if (!user || !user.password) {
                         console.log('Authorize log - USER OR PASSWORD DOES NOT EXIST. RETURN NULL')
                         return null;
