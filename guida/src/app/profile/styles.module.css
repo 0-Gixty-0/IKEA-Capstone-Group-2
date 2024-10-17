@@ -1,0 +1,51 @@
+.container {
+    color: white;
+    display: flex;
+    padding: 30px;
+    height: 100vh;
+}
+
+.profilePicture {
+    width: 250px;
+    height: 250px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.profileContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+}
+
+.basicInfoContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.infoContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+}
+
+.infoContainer div {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.infoContainer div ul {
+    margin-left: 20px;
+}
+
+.feedContainer {
+
+}
+
+#grayText {
+    opacity: 0.7;
+}
