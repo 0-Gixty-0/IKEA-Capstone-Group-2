@@ -53,6 +53,7 @@ const HomePage: React.FC = () => {
           onClose={closeModal}
           postId={clickedPost?.id ?? 0}
           onDelete={handlePostDelete}
+          tags={clickedPost?.tags ?? ["No Tags"]}
         >
           {isEditing || isCreating ? (
             <PostForm

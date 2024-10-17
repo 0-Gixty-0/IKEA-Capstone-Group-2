@@ -4,88 +4,46 @@ import { useSubmitPost } from "@/hooks/useSubmitPost";
 import styles from "./styles.module.css";
 import Preloader from "@/app/components/Preloader/Preloader";
 import { IPostForm } from "@/types";
+import TagInput from "@/app/components/TagInput/TagInput";
 
 
-/**
- * PostForm modal consists of form for creating a new post or updating existing post.
- * Modal covers entire screen and prohibits user actions outside the modal.
- * Passing post to PostForm puts the form into edit mode, otherwise create mode.
- * @param props
- * @constructor
- */
 export default function PostForm(props: IPostForm) {
   const { post, submitText, onClose, onSuccess } = props;
   const { submitPost, loading, error, success, result } = useSubmitPost();
   const [valueError, setValueError] = useState<boolean>(false);
   const [titleError, setTitleError] = useState<boolean>(false);
   const [contentError, setContentError] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>(
-    props.post ? props.post.title : "",
-  );
-  const [content, setContent] = useState<string>(
-    props.post ? props.post.content : "",
-  );
-  const [published, setPublished] = useState<boolean>(
-    props.post ? props.post.published : false,
-  );
+  const tagoptions = [
+    "Management", "Environment", "Guide", "IKEA Family", "Routine",
+    "Sustainability", "Tips", "Wellness"
+  ];
 
-  /**
-   * Updates post state when provided
-   */
+  const [title, setTitle] = useState<string>(props.post ? props.post.title : "");
+  const [content, setContent] = useState<string>(props.post ? props.post.content : "");
+  const [published, setPublished] = useState<boolean>(props.post ? props.post.published : false);
+  const [tags, setTags] = useState<string[]>(props.post ? props.post.tags : []);  // State for selected tags
+
+
   useEffect(() => {
     if (post) {
       setTitle(post.title);
       setContent(post.content);
       setPublished(post.published);
+      setTags(post.tags ?? []);  // Initialize with post's existing tags
     }
   }, [post]);
 
-  /**
-   * Calls callback function onClose upon successful submit
-   */
   useEffect(() => {
     if (success && result) {
       onSuccess(result.post);
     }
-  }, [success]);
+  }, [success, result, onSuccess]);
 
   const handleSelectChange = (targetValue: string) => {
     const value = targetValue === "true"; // Convert string to boolean
     setPublished(value); // Update the state
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (title === "") {
-      setTitleError(true);
-      setValueError(true);
-    }
-    if (content === "") {
-      setContentError(true);
-      setValueError(true);
-    }
-
-    if (title !== "" && content !== "") {
-      const postToSubmit: SubmittablePost = {
-        id: post?.id || null,
-        title,
-        content,
-        authorId: post?.authorId || 1, // TODO: MODIFY TO INCLUDE NEW POST FOR LOGGED IN USER
-        published,
-      };
-
-      submitPost(postToSubmit);
-    }
-  };
-
-  /**
-   * Validates that title and content have been filled out. If not sets valueError state to true displaying
-   * error message and sets input border to error state respectively.
-   * If validation passes creates a submittable post object and attempts to submit
-   * constructed post from form data.
-   * @param e
-   */
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -105,6 +63,7 @@ export default function PostForm(props: IPostForm) {
         content,
         authorId: post?.authorId || null,
         published,
+        tags,  // Use the updated tags array
       };
 
       submitPost(postToSubmit);
@@ -145,11 +104,19 @@ export default function PostForm(props: IPostForm) {
               }}
             />
           </div>
+          <div className={styles.postFormContent}>
+            <label>* Tags</label>
+            <TagInput
+              formFieldName={"Tags"}
+              options={tagoptions}
+              onChange={(selectedTags: string[]) => setTags(selectedTags)}  // Update the tags state
+            />
+          </div>
           <div className={styles.postFormElement}>
             <label>Published:</label>
             <select
-              value={published ? "true" : "false"} // ...force the select's value to match the state variable...
-              onChange={(e) => handleSelectChange(e.target.value)} // ... and update the state variable on any change!
+              value={published ? "true" : "false"}
+              onChange={(e) => handleSelectChange(e.target.value)}
             >
               <option value={"true"}>True</option>
               <option value={"false"}>False</option>

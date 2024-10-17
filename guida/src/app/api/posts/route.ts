@@ -9,6 +9,7 @@ interface PutRequestPost {
   title: string;
   content: string;
   published: boolean;
+  tags: string[];
 }
 
 interface PostRequestPost {
@@ -16,6 +17,7 @@ interface PostRequestPost {
     content: string;
     published: boolean;
     authorId: number | null;
+    tags: string[] | null;
 }
 
 /**
@@ -32,6 +34,7 @@ export async function GET(request : Request) {
             const postId = searchParams.get('id')
             const authorId = Number(searchParams.get('authorId'))
             const published = searchParams.get('published')
+            const tags = searchParams.get('tags')
 
             if (postId) {
                 const post = await prisma.post.findUnique({
@@ -122,17 +125,23 @@ export async function POST(request: Request) {
         if (session) {
             const post : PostRequestPost = await request.json(); // Parse the request body
 
-            // Create the post in the database
             const createdPost = await prisma.post.create({
                 data: {
-                    title: post.title,
-                    content: post.content,
-                    published: post.published,
-                    author: {
-                        connect: { id: Number(session.user.id) }
-                    }
-                } // The fields to update
-            });
+                  title: post.title,
+                  content: post.content,
+                  published: post.published,
+                  author: {
+                    connect: { id: Number(session.user.id) },
+                  },
+                  tags: {
+                    connectOrCreate: post.tags ? post.tags.map((tagName: string) => ({
+                      where: { name: tagName },  // Make sure 'name' is correct based on your schema
+                      create: { name: tagName },  // The name must be created as well
+                    })) : [],
+                  },
+                },
+              });
+              
 
             return NextResponse.json({
                 message: "Successfully created post",
