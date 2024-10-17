@@ -8,16 +8,16 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  username String @unique
-  password String
-  name  String?
-  posts Post[] @relation("UserPosts")
-  readingList Post[] @relation("UserReadingList")
-  roles Role[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  username    String   @unique
+  password    String
+  name        String?
+  posts       Post[]   @relation("UserPosts")
+  readingList Post[]   @relation("UserReadingList")
+  roles       Role[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Post {
@@ -30,11 +30,13 @@ model Post {
   updatedAt DateTime @updatedAt
   author    User     @relation(fields: [authorId], references: [id], name: "UserPosts")
   readers   User[]   @relation("UserReadingList")
+  roleId    Int?
+  role      Role?    @relation(fields: [roleId], references: [id], name: "PostRole")
 }
 
 model Role {
-  id Int @id @default(autoincrement())
-  name String
+  id    Int    @id @default(autoincrement())
+  name  String @unique
   users User[]
+  posts Post[] @relation("PostRole")
 }
-
