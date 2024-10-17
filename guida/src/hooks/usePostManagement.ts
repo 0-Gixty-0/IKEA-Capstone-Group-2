@@ -8,12 +8,14 @@ import { Post } from "@/types";
  * 
  * @returns {Object} The state and handlers for managing posts.
  */
-export const usePostManagement = () => {
-  const { posts, loading, error } = useFetchPosts();
+export const usePostManagement = (apiUrl: string) => {
+  const { posts, loading, error } = useFetchPosts(apiUrl); // Fetches all posts in the database
   const [clickedPost, setClickedPost] = useState<Post | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [displayedPosts, setDisplayedPosts] = useState<Post[]>([]);
+  const { posts: readingList, loading: loadingReadingList, error: errorReadingList } = useFetchPosts('/api/readingList'); // Fetches the reading list
+  
 
   useEffect(() => {
     if (!loading) {
@@ -95,6 +97,9 @@ export const usePostManagement = () => {
 
   return {
     posts: displayedPosts,
+    readingList,
+    loadingReadingList,
+    errorReadingList,
     loading,
     error,
     clickedPost,

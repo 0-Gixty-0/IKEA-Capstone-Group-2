@@ -16,6 +16,41 @@ interface PostRequestPost {
     published: boolean;
     authorId: number | null;
 }
+
+export async function GET(request: Request) {
+    try {
+        const session = await auth();
+
+        if (session) {
+            const userId = Number(session.user.id);
+
+            // Fetch the user's reading list
+            const user = await prisma.user.findUnique({
+                where: { id: userId },
+                include: {
+                    readingList: true, // Include the reading list in the response
+                },
+            });
+
+            if (!user) {
+                return NextResponse.json({ error: 'User not found' }, { status: 404 });
+            }
+
+            const readingList = user.readingList;
+
+            return NextResponse.json({
+                message: `Successfully retrieved ${readingList.length} posts from the reading list`,
+                posts: readingList,
+            }, { status: 200 });
+        } else {
+            return NextResponse.json({ error: 'You must be logged in!' }, { status: 405 });
+        }
+    } catch (error) {
+        console.error("Failed to retrieve reading list:", error);
+        return NextResponse.json({ error: 'Something went wrong when fetching the reading list!' }, { status: 500 });
+    }
+}
+
 export async function DELETE(request: Request) {
     console.log("Reading post WORKS!!!Reading post WORKS!!!Reading post WORKS!!!Reading post WORKS!!!Reading post WORKS!!!Reading post WORKS!!!");
     try {
