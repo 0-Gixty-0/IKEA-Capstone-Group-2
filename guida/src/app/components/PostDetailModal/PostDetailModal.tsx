@@ -8,6 +8,7 @@ const PostDetailModal: React.FC<ModalProps> = ({
   children,
   postId,
   onDelete,
+  onRead,
 }) => {
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
@@ -16,6 +17,9 @@ const PostDetailModal: React.FC<ModalProps> = ({
         {/* Pass onDelete to DeleteButton */}
         <button className={styles.closeButton} onClick={onClose}>
           &times;
+        </button>
+        <button className={styles.readButton} onClick={onRead}>
+          Read
         </button>
         {children}{" "}
         {/* Display the children passed, which can be PostForm or post details */}
