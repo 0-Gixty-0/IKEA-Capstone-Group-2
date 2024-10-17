@@ -29,3 +29,11 @@
   font-size: 1.5rem;
   cursor: pointer;
 }
+
+.readButton {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}

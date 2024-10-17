@@ -4,10 +4,11 @@ import { Post, FetchPostsParams } from "../types/index"; // Adjust the import pa
 /**
  * Custom hook to fetch posts based on provided parameters.
  *
+ * @param {string} apiUrl - The API URL to fetch posts from.
  * @param {FetchPostsParams} [params] - Parameters to filter the posts.
  * @returns {{ posts: Post[], loading: boolean, error: string | null }} - The fetched posts, loading state, and error message.
  */
-export const useFetchPosts = (params?: FetchPostsParams) => {
+export const useFetchPosts = (apiUrl: string, params?: FetchPostsParams) => {
   // State to store fetched posts
   const [posts, setPosts] = useState<Post[]>([]);
   // State to manage loading state
@@ -44,7 +45,7 @@ export const useFetchPosts = (params?: FetchPostsParams) => {
         if (params?.published !== undefined)
           query.append("published", params.published.toString());
 
-        const response = await fetch(`/api/posts?${query.toString()}`);
+        const response = await fetch(`${apiUrl}?${query.toString()}`);
         if (!response.ok) throw new Error("Failed to fetch posts");
 
         const data = await response.json();
@@ -63,7 +64,7 @@ export const useFetchPosts = (params?: FetchPostsParams) => {
     fetchPosts();
     prevParamsRef.current = params; // Update the ref with the current parameters
     initialLoadRef.current = false; // Mark initial load as complete
-  }, [params]);
+  }, [apiUrl, params]);
 
   return { posts, loading, error };
 };
