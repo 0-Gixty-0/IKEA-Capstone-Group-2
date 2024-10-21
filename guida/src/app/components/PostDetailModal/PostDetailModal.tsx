@@ -2,12 +2,14 @@ import React from "react";
 import styles from "./PostDetailModal.module.css";
 import DeleteButton from "../DeleteButton";
 import { ModalProps } from "@/types";
+import ReadButton from "../ReadButton";
 
 const PostDetailModal: React.FC<ModalProps> = ({
   onClose,
   children,
   postId,
   onDelete,
+  onRead,
 }) => {
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
@@ -17,6 +19,7 @@ const PostDetailModal: React.FC<ModalProps> = ({
         <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
+        <ReadButton postId={postId} onRead={onRead} />{" "}
         {children}{" "}
         {/* Display the children passed, which can be PostForm or post details */}
       </div>
