@@ -51,9 +51,6 @@ export default function PostForm(props: IPostForm) {
     fetchRoleName(); // Call the fetch function on component mount or roleId change
   }, [roleId]); // Only re-run if roleId changes
 
-  useEffect(() => {
-    console.log(roleName)
-  }, [roleName])
 
   useEffect(() => {
     if (post) {
@@ -99,7 +96,6 @@ export default function PostForm(props: IPostForm) {
     }
 
     if (title !== "" && content !== "") {
-      console.log("in submit: " + roleName)
       const postToSubmit: SubmittablePost = {
         id: post?.id || null,
         title,
