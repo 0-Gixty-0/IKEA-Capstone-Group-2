@@ -9,13 +9,14 @@ const PostItem: React.FC<ClickablePostProps> = ({
   content,
   published,
   authorId,
+  roleId,
   handlePostClick,
 }) => {
   return (
     <li
       className={styles.post}
       onClick={() =>
-        handlePostClick({ id, title, content, published, authorId })
+        handlePostClick({ id, title, content, published, authorId, roleId })
       }
     >
       <div className={styles.postContent}>

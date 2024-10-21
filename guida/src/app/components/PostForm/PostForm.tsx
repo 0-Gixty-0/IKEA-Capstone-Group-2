@@ -4,6 +4,7 @@ import { useSubmitPost } from "@/hooks/useSubmitPost";
 import styles from "./styles.module.css";
 import Preloader from "@/app/components/Preloader/Preloader";
 import { IPostForm } from "@/types";
+import { useSession } from "next-auth/react";
 
 
 /**
@@ -28,10 +29,32 @@ export default function PostForm(props: IPostForm) {
   const [published, setPublished] = useState<boolean>(
     props.post ? props.post.published : false,
   );
+  
+  const [roleName, setRoleName] = useState<string>("");
+  
+  var roleId = props.post ? props.post.roleId : null;
+    // Fetch role name based on roleId
+  useEffect(() => {
+    async function fetchRoleName() {
+      if (roleId) {
+        try {
+          const response = await fetch(`/api/roles?id=${roleId}`);
+          const data = await response.json();
+          setRoleName(data.role.name); // Set the fetched role name
+        } catch (error) {
+          console.error("Error fetching role name:", error);
+        }
+      } else {
+        setRoleName("none");
+      }
+    }
+    fetchRoleName(); // Call the fetch function on component mount or roleId change
+  }, [roleId]); // Only re-run if roleId changes
 
-  /**
-   * Updates post state when provided
-   */
+  useEffect(() => {
+    console.log(roleName)
+  }, [roleName])
+
   useEffect(() => {
     if (post) {
       setTitle(post.title);
@@ -39,6 +62,8 @@ export default function PostForm(props: IPostForm) {
       setPublished(post.published);
     }
   }, [post]);
+  const session = useSession().data
+  const userRoles = session?.user?.roles || [];
 
   /**
    * Calls callback function onClose upon successful submit
@@ -54,31 +79,6 @@ export default function PostForm(props: IPostForm) {
     setPublished(value); // Update the state
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (title === "") {
-      setTitleError(true);
-      setValueError(true);
-    }
-    if (content === "") {
-      setContentError(true);
-      setValueError(true);
-    }
-
-    if (title !== "" && content !== "") {
-      const postToSubmit: SubmittablePost = {
-        id: post?.id || null,
-        title,
-        content,
-        authorId: post?.authorId || 1, // TODO: MODIFY TO INCLUDE NEW POST FOR LOGGED IN USER
-        published,
-      };
-
-      submitPost(postToSubmit);
-    }
-  };
-
   /**
    * Validates that title and content have been filled out. If not sets valueError state to true displaying
    * error message and sets input border to error state respectively.
@@ -86,7 +86,7 @@ export default function PostForm(props: IPostForm) {
    * constructed post from form data.
    * @param e
    */
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (title === "") {
@@ -99,14 +99,15 @@ export default function PostForm(props: IPostForm) {
     }
 
     if (title !== "" && content !== "") {
+      console.log("in submit: " + roleName)
       const postToSubmit: SubmittablePost = {
         id: post?.id || null,
         title,
         content,
         authorId: post?.authorId || null,
         published,
+        roleName: roleName !== "none" ? roleName : null
       };
-
       submitPost(postToSubmit);
     }
   };
@@ -153,6 +154,22 @@ export default function PostForm(props: IPostForm) {
             >
               <option value={"true"}>True</option>
               <option value={"false"}>False</option>
+            </select>
+          </div>
+          <div className={styles.postFormElement}>
+            <label>* Role</label>
+            <select
+              value={roleName}
+              onChange={(e) => {
+                setRoleName(e.target.value);
+              }}
+            >
+              <option value="none">None</option>
+              {userRoles.map((role: string) => (
+                <option key={role} value={role}>
+                  {role}
+                </option>
+              ))}
             </select>
           </div>
           <button className={styles.submitButton} type="submit">

@@ -23,6 +23,7 @@ export const useSubmitPost = () => {
     setLoading(true);
     setError(null);
     setSuccess(null);
+    console.log("in useSubmitPost" + JSON.stringify(post));
     try {
       const response = await fetch("/api/posts", {
         method: post.id ? "PUT" : "POST", // Use PUT if updating, POST if creating
