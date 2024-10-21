@@ -78,6 +78,7 @@ export async function GET(request : Request) {
 /**
  * PUT method: Update an existing post from post id.
  * Updates only title, content, and published status
+ * If no roleName is provided, it is set to null in the database. Indicating that the post has no role.
  * @param request Body must contain article object.
  * @constructor
  */
@@ -85,14 +86,22 @@ export async function PUT(request: Request) {
     try {
         const session = await auth();
         if (session) {
-            const { id, title, content, published, authorId } : SubmittablePost = await request.json();
+            const { id, title, content, published, authorId, roleName } : SubmittablePost = await request.json();
 
             if (session.user.roles.includes(UserRole.ADMIN) || session.user.id === authorId?.toString()) {
+                let selectedRole = undefined;
+                // if authorRole is provided, find the role's id in the database
+                if (roleName) {
+                    selectedRole = await prisma.role.findUnique({
+                        where: { name: roleName },
+                        select: {id: true}
+                    });
+                }
 
                 // Update the post in the database
                 const updatedPost = await prisma.post.update({
                     where: { id: Number(id) }, // Update post by ID
-                    data: { title, content, published } // The fields to update
+                    data: { title, content, published, roleId: selectedRole ? selectedRole.id : null } // The fields to update
                 });
 
                 return NextResponse.json({
