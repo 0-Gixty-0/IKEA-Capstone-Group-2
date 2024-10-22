@@ -5,6 +5,7 @@ export interface Post {
   content: string;
   published: boolean;
   authorId: number;
+  pdfUrl: string;
 }
 
 export interface ClickablePostProps extends Post {

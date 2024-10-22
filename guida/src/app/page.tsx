@@ -32,6 +32,7 @@ const HomePage: React.FC = () => {
     handlePostRead,
     readingList,
   } = usePostManagement('/api/posts');
+  console.log(clickedPost);
 
 
   if (!isClient) {
@@ -81,6 +82,11 @@ const HomePage: React.FC = () => {
                   <h2>{clickedPost.title}</h2>
                   <p>{clickedPost.content}</p>
                   <button onClick={handleEditPost}>Edit Post</button>
+                  <iframe
+                  src={"/collision.pdf"}
+                  className={styles.pdfViewer}
+                  title="Collision PDF"
+                  />
                 </>
               )}
             </>

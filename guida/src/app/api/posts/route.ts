@@ -32,6 +32,7 @@ export async function GET(request : Request) {
             const postId = searchParams.get('id')
             const authorId = Number(searchParams.get('authorId'))
             const published = searchParams.get('published')
+            const pdfUrl = searchParams.get('pdfUrl')
 
             if (postId) {
                 const post = await prisma.post.findUnique({
