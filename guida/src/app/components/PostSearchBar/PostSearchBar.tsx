@@ -2,7 +2,7 @@ import styles from './styles.module.css';
 
 const PostSearchBar = () => {
     return (
-        <div className={styles.searchContainer}>
+        <div id={styles.searchContainer}>
             <input
                 type="text"
                 className={styles.searchInput}

@@ -3,6 +3,7 @@ import SkeletonList from "@/app/components/SkeletonList/SkeletonList";
 import PostList from "@/app/components/PostList/PostList";
 import React from "react";
 import {Post} from "@/types";
+import PostSearchBar from "@/app/components/PostSearchBar/PostSearchBar";
 
 interface FeedProps {
     title: string,
@@ -27,8 +28,9 @@ interface FeedProps {
  */
 export default function Feed({title, loadingPosts, error, posts, emptyMessage}: FeedProps) {
     return (
-        <div className={styles.container}>
+        <div className={styles.feedContainer}>
             <h2 id={styles.feedTitle}>{title}</h2>
+            <PostSearchBar></PostSearchBar>
             {loadingPosts
                 ? (<SkeletonList></SkeletonList>)
                 : (error)
