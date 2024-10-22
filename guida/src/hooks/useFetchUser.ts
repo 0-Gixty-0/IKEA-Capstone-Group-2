@@ -1,7 +1,12 @@
 import {useState} from "react";
 import {FetchedUser} from "@/types";
 
-export const useFetchUser = (id: number) => {
+/**
+ * Custom hook for fetching a requested user from user id.
+ * Returns fetch function, loading state, and error state.
+ * Uses standard user GET fetch request.
+ */
+export const useFetchUser = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 

@@ -13,6 +13,14 @@ import {User} from "next-auth";
 import {useFetchUser} from "@/hooks/useFetchUser";
 import AccessError from "@/app/components/AccessError/AccessError";
 
+/**
+ * Profile page.
+ * Profile page displays profile picture, name, username, email, roles, and groups for a user.
+ * It also contains two feeds for displaying authored (published) posts and authored (draft) posts for a user.
+ * If the requested user page is the authenticated user also displays a sign-out and edit-profile button
+ * @param params user id to display. Gotten from query
+ * @constructor
+ */
 export default function Profile({ params }: { params: { id: string } }) {
     const { id } = params;
     const session = useSession()
@@ -26,6 +34,11 @@ export default function Profile({ params }: { params: { id: string } }) {
         useFetchPosts({authorId: Number(id), published: false})
     const { fetchUser, loading, error } = useFetchUser(Number(id));
 
+    /**
+     * Sets user data based on if requested profile for user is authenticated.
+     * If authenticated uses session data and sets auth user to true.
+     * Else fetches user data and sets auth user to false
+     */
     useEffect(() => {
         const runEffect = async () => {
             if (session.status === "authenticated" && session.data) {
@@ -49,6 +62,10 @@ export default function Profile({ params }: { params: { id: string } }) {
         runEffect()
     }, [session]);
 
+    /**
+     * Displays preloader if user not fetched.
+     * Otherwise, displays profile page.
+     */
     if (!loadingUserData && userData) {
         return (
             <div className={styles.container}>
@@ -62,6 +79,7 @@ export default function Profile({ params }: { params: { id: string } }) {
                             <h2>{userData.name}</h2>
                             <h3 id={styles.grayText}>{userData.username}</h3>
                         </div>
+                        {/*TODO: Add edit for profile*/}
                         {isAuthUser && <button className={styles.actionButton}>Edit Profile</button>}
                         <hr/>
                     </div>
@@ -118,6 +136,9 @@ export default function Profile({ params }: { params: { id: string } }) {
                 </div>
             </div>
         )
+    /**
+     * Generic error modal if user was unable to be fetched.
+     */
     } else if (error && !loading) {
         return (
             <AccessError message={error}></AccessError>
