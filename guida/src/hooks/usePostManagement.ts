@@ -1,4 +1,3 @@
-// guida/src/hooks/usePostManagement.ts
 import { useState, useEffect } from "react";
 import { useFetchPosts } from "@/hooks/useFetchPosts";
 import { Post } from "@/types";
@@ -15,7 +14,6 @@ export const usePostManagement = (apiUrl: string) => {
   const [isCreating, setIsCreating] = useState(false);
   const [displayedPosts, setDisplayedPosts] = useState<Post[]>([]);
   const { posts: readingList, loading: loadingReadingList, error: errorReadingList } = useFetchPosts('/api/readingList'); // Fetches the reading list
-  
 
   useEffect(() => {
     if (!loading) {
@@ -108,9 +106,9 @@ export const usePostManagement = (apiUrl: string) => {
     handlePostClick,
     closeModal,
     handlePostDelete,
+    handlePostRead,
     handleEditPost,
     handleCreatePost,
     handleSuccess,
-    handlePostRead,
   };
 };

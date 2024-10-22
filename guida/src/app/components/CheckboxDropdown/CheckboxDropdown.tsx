@@ -1,11 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import styles from "./CheckboxDropdown.module.css";
-
-interface CheckboxDropdownProps {
-  options: { label: string; value: string }[];
-  selectedOptions: string[];
-  onChange: (selected: string[]) => void;
-}
+import { CheckboxDropdownProps } from "@/types";
 
 const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({
   options,
@@ -25,7 +20,7 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({
     [selectedOptions, options]
   );
 
-  const handleCheckboxChange = (value: string) => {
+  const handleCheckboxChange = (value: number) => {
     const newSelectedOptions = selectedOptions.includes(value)
       ? selectedOptions.filter((option) => option !== value)
       : [...selectedOptions, value];

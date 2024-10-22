@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import styles from "./CreatePostForm.module.css";
+import React from "react";
+import styles from "./PostForm.module.css";
 import CheckboxDropdown from "@/app/components/CheckboxDropdown/CheckboxDropdown";
 import { usePostForm } from "@/hooks/usePostForm";
-import { useFetchRoles } from "@/hooks/useFetchRoles";
+import { PostFormProps } from "@/types";
+import { mapRolesToOptions } from "@/utils/mapRolesToOptions";
 
-const CreatePostForm: React.FC = ({ post, onSuccess, onClose }) => {
+const PostForm: React.FC<PostFormProps> = ({ post, submitText, onSuccess, onClose }) => {
   const {
     title,
     setTitle,
@@ -14,56 +15,21 @@ const CreatePostForm: React.FC = ({ post, onSuccess, onClose }) => {
     setPublished,
     selectedRoles,
     setSelectedRoles,
-    handleSubmit,
+    handleFormSubmit,
     loading,
     error,
+    roles,
+    rolesError,
+    titleError,
+    contentError,
+    rolesErrorState,
   } = usePostForm(post, onSuccess);
-
-  const { roles, error: rolesError } = useFetchRoles();
-
-  const [titleError, setTitleError] = useState("");
-  const [contentError, setContentError] = useState("");
-  const [rolesErrorState, setRolesErrorState] = useState("");
-
-  const validateFields = () => {
-    let isValid = true;
-
-    if (!title.trim()) {
-      setTitleError("Title is required.");
-      isValid = false;
-    } else {
-      setTitleError("");
-    }
-
-    if (!content.trim()) {
-      setContentError("Content is required.");
-      isValid = false;
-    } else {
-      setContentError("");
-    }
-
-    if (selectedRoles.length === 0) {
-      setRolesErrorState("At least one role must be selected.");
-      isValid = false;
-    } else {
-      setRolesErrorState("");
-    }
-
-    return isValid;
-  };
-
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (validateFields()) {
-      handleSubmit(e);
-    }
-  };
 
   return (
     <div className={styles.overlay}>
       <div className={styles.contentContainer}>
         <div className={styles.header}>
-          <h2>Create Post</h2>
+          <h2>{submitText}</h2>
           <button className={styles.closeButton} onClick={onClose}>
             &times;
           </button>
@@ -82,24 +48,25 @@ const CreatePostForm: React.FC = ({ post, onSuccess, onClose }) => {
                 />
                 {titleError && <p className={styles.error}>{titleError}</p>}
               </div>
-              <div className={styles.postFormElement}>
-                <label>
-                  Add to reading list<span className={styles.asterisk}>*</span>
-                </label>
-                {rolesError ? (
-                  <p>{rolesError}</p>
-                ) : (
-                  <CheckboxDropdown
-                    options={roles}
-                    selectedOptions={selectedRoles}
-                    onChange={setSelectedRoles}
-                  />
-                )}
-                {/* Only show the roles error state when the form is submitted */}
-                {rolesErrorState && (
-                  <p className={styles.error}>{rolesErrorState}</p>
-                )}
-              </div>
+              {!post && ( // Conditionally render the dropdown
+                <div className={styles.postFormElement}>
+                  <label>
+                    Add to reading list
+                  </label>
+                  {rolesError ? (
+                    <p>{rolesError}</p>
+                  ) : (
+                    <CheckboxDropdown
+                      options={mapRolesToOptions(roles)}
+                      selectedOptions={selectedRoles}
+                      onChange={setSelectedRoles}
+                    />
+                  )}
+                  {rolesErrorState && (
+                    <p className={styles.error}>{rolesErrorState}</p>
+                  )}
+                </div>
+              )}
               {error && <p className={styles.error}>{error}</p>}
             </div>
             <div className={styles.contentFormRight}>
@@ -125,7 +92,7 @@ const CreatePostForm: React.FC = ({ post, onSuccess, onClose }) => {
                   />
                 </div>
                 <button type="submit" className={styles.submitButton}>
-                  {loading ? "Submitting..." : "Submit"}
+                  {loading ? "Submitting..." : submitText}
                 </button>
               </div>
             </div>
@@ -136,4 +103,4 @@ const CreatePostForm: React.FC = ({ post, onSuccess, onClose }) => {
   );
 };
 
-export default CreatePostForm;
+export default PostForm;
