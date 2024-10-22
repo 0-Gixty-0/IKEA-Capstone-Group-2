@@ -16,6 +16,7 @@ interface PostRequestPost {
   content: string;
   published: boolean;
   authorId: number | null;
+  roles: number[]; // Use number[] for role IDs
 }
 
 /**
@@ -92,7 +93,7 @@ export async function GET(request: Request) {
 
 /**
  * PUT method: Update an existing post from post id.
- * Updates only title, content, and published status
+ * Updates only title, content, published status, and roles
  * @param request Body must contain article object.
  * @constructor
  */
@@ -100,40 +101,50 @@ export async function PUT(request: Request) {
   try {
     const session = await auth();
     if (session) {
-      const { id, title, content, published, authorId }: SubmittablePost =
-        await request.json();
+      const { postId, roles } = await request.json();
 
-      if (
-        session.user.roles.includes(UserRole.ADMIN) ||
-        session.user.id === authorId?.toString()
-      ) {
-        // Update the post in the database
-        const updatedPost = await prisma.post.update({
-          where: { id: Number(id) }, // Update post by ID
-          data: { title, content, published }, // The fields to update
-        });
-
-        return NextResponse.json(
-          {
-            message: `Successfully updated post with id: ${id}`,
-            post: updatedPost,
+      // Retrieve users with the selected roles
+      const usersWithSelectedRoles = await prisma.user.findMany({
+        where: {
+          roles: {
+            some: {
+              id: {
+                in: roles, // Use role IDs
+              },
+            },
           },
-          { status: 200 },
-        ); // Return the updated post
-      } else {
-        return NextResponse.json({ error: "Not allowed!" }, { status: 405 });
+        },
+      });
+
+      // Add the post to the reading list of users with the selected roles
+      for (const user of usersWithSelectedRoles) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            readingList: {
+              connect: { id: Number(postId) },
+            },
+          },
+        });
       }
+
+      return NextResponse.json(
+        {
+          message: "Successfully added post to reading lists",
+        },
+        { status: 200 }
+      );
     } else {
       return NextResponse.json(
         { error: "You must be logged in!" },
-        { status: 405 },
+        { status: 405 }
       );
     }
   } catch (error) {
-    console.error("Failed to update post:", error);
+    console.error("Failed to add post to reading lists:", error);
     return NextResponse.json(
-      { error: "Failed to update the post!" },
-      { status: 500 },
+      { error: "Failed to add the post to reading lists!" },
+      { status: 500 }
     );
   }
 }
@@ -158,31 +169,55 @@ export async function POST(request: Request) {
           author: {
             connect: { id: Number(session.user.id) },
           },
-        }, // The fields to update
+        },
       });
+
+      // Retrieve users with the selected roles
+      const usersWithSelectedRoles = await prisma.user.findMany({
+        where: {
+          roles: {
+            some: {
+              id: {
+                in: post.roles, // Use role IDs
+              },
+            },
+          },
+        },
+      });
+
+      // Add the post to the reading list of users with the selected roles
+      for (const user of usersWithSelectedRoles) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            readingList: {
+              connect: { id: createdPost.id },
+            },
+          },
+        });
+      }
 
       return NextResponse.json(
         {
-          message: "Successfully created post",
+          message: "Successfully created post and updated reading lists",
           post: createdPost,
         },
-        { status: 200 },
-      ); // Return the updated post
+        { status: 201 }
+      );
     } else {
       return NextResponse.json(
         { error: "You must be logged in!" },
-        { status: 405 },
+        { status: 405 }
       );
     }
   } catch (error) {
-    console.error("Failed to create post:", error);
+    console.error("Failed to create post or update reading lists:", error);
     return NextResponse.json(
       { error: "Failed to create the post!" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
-
 export async function DELETE(request: Request) {
   try {
     const session = await auth();
@@ -219,5 +254,3 @@ export async function DELETE(request: Request) {
     );
   }
 }
-
-
