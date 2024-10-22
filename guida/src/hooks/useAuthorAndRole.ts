@@ -6,20 +6,20 @@ import { useEffect, useState } from "react";
 * @param roleId
 * @param authorId
 */
-export function useAuthorAndRole(roleId: number, authorId: number) {
+export function useAuthorAndRole(roleId: number | undefined, authorId: number | undefined) {
     const [author, setAuthor] = useState<string>("");
     const [role, setRole] = useState<string | undefined>("");
 
     useEffect(() => {
         
-        async function fetchRoleNameAndAuthor(roleId: number, authorId: number) {
+        async function fetchRoleNameAndAuthor(roleId: number | undefined, authorId: number) {
             if (roleId) {
                 try {
-                const response = await fetch(`/api/roles?id=${roleId}`);
-                const data = await response.json();
-                setRole(data.role.name); // Set the role name after fetching it
+                    const response = await fetch(`/api/roles?id=${roleId}`);
+                    const data = await response.json();
+                    setRole(data.role.name); // Set the role name after fetching it
                 } catch (error) {
-                console.error("Error fetching role name:", error);
+                    console.error("Error fetching role name:", error);
                 }
             }else {
                 setRole(undefined)
@@ -33,8 +33,9 @@ export function useAuthorAndRole(roleId: number, authorId: number) {
             }
         
         }
-
-        fetchRoleNameAndAuthor(roleId, authorId); // Fetch role name on component mount or roleId change
+        if (authorId) {
+            fetchRoleNameAndAuthor(roleId, authorId); // Fetch role name on component mount or roleId change
+        }
     }, [roleId, authorId]);
     return [author, role];
 }
