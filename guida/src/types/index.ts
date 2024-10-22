@@ -24,6 +24,17 @@ export interface SubmittablePost {
   authorId: number | null;
 }
 
+export interface FetchedUser {
+  id: number | null;
+  email: string;
+  username: string;
+  password: string | null;
+  name: string | null;
+  createdAt: string;
+  updatedAt: string | null;
+  roles: UserRole[];
+}
+
 export interface SubmittableUser {
   id: number | null;
   email: string;
