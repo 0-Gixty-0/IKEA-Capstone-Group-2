@@ -17,8 +17,7 @@ export const useFetchUser = () => {
         try {
             const response = await fetch(`/api/user?id=${id}`)
             if (!response.ok) throw new Error("Failed to fetch user");
-            const data = await response.json();
-            return data
+            return await response.json()
         } catch (error) {
             if (error instanceof Error) {
                 setError((error.message))
