@@ -35,6 +35,7 @@ export function useAuthorAndRole(roleId: number | undefined, authorId: number | 
         }
         if (authorId) {
             fetchRoleNameAndAuthor(roleId, authorId); // Fetch role name on component mount or roleId change
+            console.log("Author and role: ", author + role)
         }
     }, [roleId, authorId]);
     return [author, role];

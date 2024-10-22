@@ -8,6 +8,7 @@ import PostList from "@/app/components/PostList/PostList";
 import SkeletonList from "@/app/components/SkeletonList/SkeletonList";
 import { usePostManagement } from "@/hooks/usePostManagement";
 import { useAuthorInPosts } from "@/hooks/useAuthorInPosts";
+import Preloader from "./components/Preloader/Preloader";
 
 const HomePage: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
@@ -31,7 +32,7 @@ const HomePage: React.FC = () => {
     handleSuccess,
   } = usePostManagement();
 
-  const author = useAuthorInPosts(clickedPost || undefined)
+  const {authorAndRole: author, loading: authorLoading} = useAuthorInPosts(clickedPost || undefined)
 
   if (!isClient) {
     return null; // or a loading spinner
@@ -69,7 +70,11 @@ const HomePage: React.FC = () => {
               {clickedPost && (
                 <>
                   <h2>{clickedPost.title}</h2>
-                  <h2>{author}</h2>
+                  {authorLoading ? (
+                    <Preloader></Preloader> // Show loading indicator while fetching
+                  ) : (
+                    <h2>{author}</h2> // Display author once fetched
+                  )}
                   <p>{clickedPost.content}</p>
                   <button onClick={handleEditPost}>Edit Post</button>
                 </>
