@@ -7,6 +7,7 @@ import PostForm from "@/app/components/PostForm/PostForm";
 import PostList from "@/app/components/PostList/PostList";
 import SkeletonList from "@/app/components/SkeletonList/SkeletonList";
 import { usePostManagement } from "@/hooks/usePostManagement";
+import Feed from "@/app/components/Feed/Feed";
 
 
 const HomePage: React.FC = () => {
@@ -41,27 +42,24 @@ const HomePage: React.FC = () => {
   return (
     <div className={styles.fullScreen}>
       <div className={styles.postContainer}>
-        <h1>Reading list</h1>
-        {loading ? (
-          <SkeletonList />
-        ) : readingList.length === 0 ? (
-          <div>All posts read! Good job!</div>
-        ) : (
-          <PostList posts={readingList} handlePostClick={handlePostClick} />
-        )}
-        <h1>Suggested posts</h1>
-        {error && <div>Error: {error}</div>}
         <button onClick={handleCreatePost}>Create New Post</button>
-        {loading ? (
-          <SkeletonList />
-        ) : posts.length === 0 ? (
-          <div>No posts in the database</div>
-        ) : (
-          <PostList posts={posts} handlePostClick={handlePostClick} />
-        )}
+        <Feed
+            title={"Reading list"}
+            loadingPosts={loading}
+            error={error}
+            posts={readingList}
+            emptyMessage={"All posts read! Good job!"}>
+        </Feed>
+        <Feed
+            title={"Suggested posts"}
+            loadingPosts={loading}
+            error={error}
+            posts={posts}
+            emptyMessage={"No posts in the database"}>
+        </Feed>
       </div>
       {(clickedPost || isCreating) && (
-        <PostDetailModal
+          <PostDetailModal
           onClose={closeModal}
           postId={clickedPost?.id ?? 0}
           onDelete={handlePostDelete}

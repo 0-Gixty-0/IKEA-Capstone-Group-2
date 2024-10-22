@@ -7,8 +7,9 @@ import {Post} from "@/types";
 interface FeedProps {
     title: string,
     loadingPosts: boolean,
-    error: string | null
-    posts: Post[]
+    error: string | null,
+    posts: Post[],
+    emptyMessage: string
 }
 
 /**
@@ -21,11 +22,12 @@ interface FeedProps {
  * @param loadingPosts Boolean for loading of posts
  * @param error Error message
  * @param posts List of posts to display
+ * @param emptyMessage Message when posts list is empty
  * @constructor
  */
-export default function Feed({title, loadingPosts, error, posts}: FeedProps) {
+export default function Feed({title, loadingPosts, error, posts, emptyMessage}: FeedProps) {
     return (
-        <div>
+        <div className={styles.container}>
             <h2 id={styles.feedTitle}>{title}</h2>
             {loadingPosts
                 ? (<SkeletonList></SkeletonList>)
@@ -34,7 +36,7 @@ export default function Feed({title, loadingPosts, error, posts}: FeedProps) {
                     : (posts && posts.length > 0)
                         ? (<PostList posts={posts} handlePostClick={() => {
                         }}></PostList>)
-                        : (<h3 id={styles.emptyMessage}>No posts found!</h3>)}
+                        : (<h3 id={styles.emptyMessage}>{emptyMessage}</h3>)}
         </div>
     )
 }

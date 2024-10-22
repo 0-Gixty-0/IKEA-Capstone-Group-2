@@ -29,9 +29,9 @@ export default function Profile({ params }: { params: { id: string } }) {
     const [isAuthUser, setIsAuthUser] = useState<boolean>(false)
     const [showSignOut, setShowSignOut] = useState<boolean>(false)
     const { posts: authoredPosts, loading: loadingAuthoredPosts, error: authoredPostsError } =
-        useFetchPosts({authorId: Number(id), published: true})
+        useFetchPosts('/api/posts', {authorId: Number(id), published: true})
     const { posts: draftPosts, loading: loadingDraftPosts, error: draftPostsError } =
-        useFetchPosts({authorId: Number(id), published: false})
+        useFetchPosts('/api/posts', {authorId: Number(id), published: false})
     const { fetchUser, loading, error } = useFetchUser();
 
     /**
@@ -82,13 +82,15 @@ export default function Profile({ params }: { params: { id: string } }) {
                         title={"Authored Posts"}
                         loadingPosts={loadingAuthoredPosts}
                         error={authoredPostsError}
-                        posts={authoredPosts}>
+                        posts={authoredPosts}
+                        emptyMessage={"You don't have any public posts!"}>
                     </Feed>
                     <Feed
                         title={"Drafted Posts"}
                         loadingPosts={loadingDraftPosts}
                         error={draftPostsError}
-                        posts={draftPosts}>
+                        posts={draftPosts}
+                        emptyMessage={"You don't have any drafted posts!"}>
                     </Feed>
                 </div>
             </div>
