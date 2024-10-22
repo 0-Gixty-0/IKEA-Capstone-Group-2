@@ -13,8 +13,8 @@ const PostList: React.FC<PostListProps> = ({ posts, handlePostClick }) => {
           content={post.content}
           published={post.published}
           authorId={post.authorId}
-          handlePostClick={handlePostClick}
-        />
+          handlePostClick={handlePostClick} 
+          pdfUrl={post.pdfUrl}/>
       ))}
     </ul>
   );

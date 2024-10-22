@@ -73,6 +73,7 @@ export default function PostForm(props: IPostForm) {
         content,
         authorId: post?.authorId || 1, // TODO: MODIFY TO INCLUDE NEW POST FOR LOGGED IN USER
         published,
+        pdfUrl: post?.pdfUrl || "",
       };
 
       submitPost(postToSubmit);
@@ -105,6 +106,7 @@ export default function PostForm(props: IPostForm) {
         content,
         authorId: post?.authorId || null,
         published,
+        pdfUrl: post?.pdfUrl || "",
       };
 
       submitPost(postToSubmit);
