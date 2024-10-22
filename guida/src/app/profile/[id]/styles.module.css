@@ -6,94 +6,16 @@
     padding: 30px;
 }
 
-.profilePicture {
-    width: 250px;
-    height: 250px;
-    background-color: white;
-    border-radius: 50%;
-}
-
-.profileContainer {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 30px;
-    margin-right: 30px;
-}
-
-.basicInfoContainer {
-    display: flex;
-    flex-direction: column;
-    row-gap: 10px;
-}
-
-.infoContainer {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 30px;
-}
-
-.infoContainer div {
-    display: flex;
-    flex-direction: column;
-    row-gap: 8px;
-}
-
-.infoContainer div ul {
-    margin-left: 20px;
-}
-
 .feedContainer {
     display: flex;
     width: 100%;
     justify-content: space-around;
 }
 
-#feedTitle {
-    text-align: center;
-}
-
-#emptyMessage {
-    text-align: center;
-    margin-top: 20px;
-    opacity: 0.7;
-}
-
 .feedContainer div {
     width: 40%;
     display: flex;
     flex-direction: column;
-}
-
-#grayText {
-    opacity: 0.7;
-}
-
-.actionButton {
-    margin-top: auto;
-    background-color: #e1e102;
-    border-radius: 4px;
-    border-style: none;
-    color: #161616;
-    cursor: pointer;
-    display: inline-block;
-    font-family: "Farfetch Basis","Helvetica Neue",Arial,sans-serif;
-    font-weight: bold;
-    max-width: none;
-    outline: none;
-    overflow: hidden;
-    padding: 4px;
-    position: relative;
-    text-align: center;
-    text-transform: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-}
-
-.actionButton:hover, .actionButton:focus {
-    opacity: .9;
 }
 
 .preloaderContainer {

@@ -11,6 +11,18 @@ interface FeedProps {
     posts: Post[]
 }
 
+/**
+ * Feed component displays posts in list conditionally.
+ * When loading displays skeletons.
+ * If error displays error message.
+ * If length of supplied posts is 0 displays message
+ * Otherwise display posts
+ * @param title Title of feed
+ * @param loadingPosts Boolean for loading of posts
+ * @param error Error message
+ * @param posts List of posts to display
+ * @constructor
+ */
 export default function Feed({title, loadingPosts, error, posts}: FeedProps) {
     return (
         <div>

@@ -3,8 +3,6 @@
 import styles from './styles.module.css'
 import React, {useEffect, useState} from "react";
 import SignOutModal from "@/app/components/SignOutModal/SignOutModal";
-import PostList from "@/app/components/PostList/PostList";
-import SkeletonList from "@/app/components/SkeletonList/SkeletonList";
 import Preloader from "@/app/components/Preloader/Preloader";
 import {useFetchPosts} from "@/hooks/useFetchPosts";
 import {useSession} from "next-auth/react";
@@ -13,6 +11,7 @@ import {User} from "next-auth";
 import {useFetchUser} from "@/hooks/useFetchUser";
 import AccessError from "@/app/components/AccessError/AccessError";
 import Feed from "@/app/components/Feed/Feed";
+import ProfileColumn from "@/app/components/ProfileColumn/ProfileColumn";
 
 /**
  * Profile page.
@@ -73,48 +72,11 @@ export default function Profile({ params }: { params: { id: string } }) {
                 {showSignOut && <SignOutModal onClose={() => {
                     setShowSignOut(false)
                 }}/>}
-                <div className={styles.profileContainer}>
-                    <div className={styles.basicInfoContainer}>
-                        <div className={styles.profilePicture}></div>
-                        <div>
-                            <h2>{userData.name}</h2>
-                            <h3 id={styles.grayText}>{userData.username}</h3>
-                        </div>
-                        {/*TODO: Add edit for profile*/}
-                        {isAuthUser && <button className={styles.actionButton}>Edit Profile</button>}
-                        <hr/>
-                    </div>
-                    <div className={styles.infoContainer}>
-                        <div>
-                            <h2>Contact:</h2>
-                            <h3 id={styles.grayText}>{userData.email}</h3>
-                        </div>
-                        <div>
-                            <h2>Roles:</h2>
-                            <ul>
-                                {userData.roles.map((role, index) => {
-                                    if (typeof role === 'string') {
-                                        return (<li id={styles.grayText} key={index}>{role}</li>)
-                                    } else {
-                                        const roleObject = role as { id: number, name: string }
-                                        return (<li id={styles.grayText} key={index}>{roleObject.name}</li>)
-                                    }
-                                })}
-                            </ul>
-                        </div>
-                        <div>
-                            <h2>Groups:</h2>
-                        </div>
-                    </div>
-                    <hr/>
-                    {isAuthUser && <button
-                        className={styles.actionButton}
-                        onClick={() => {
-                            setShowSignOut(true)
-                        }}>
-                        Sign Out
-                    </button>}
-                </div>
+                <ProfileColumn
+                    userData={userData}
+                    isAuthUser={isAuthUser}
+                    setShowSignOut={setShowSignOut}>
+                </ProfileColumn>
                 <div className={styles.feedContainer}>
                     <Feed
                         title={"Authored Posts"}
