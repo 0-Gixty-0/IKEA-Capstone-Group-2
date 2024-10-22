@@ -50,6 +50,7 @@ export interface ModalProps {
   children: React.ReactNode;
   postId: number;
   onDelete: () => void;
+  onRead: () => void;
 }
 
 export interface ModalContentProps {
