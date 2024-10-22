@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import {auth} from "@/auth";
 import {SessionProvider} from "next-auth/react";
+import Header from "@/app/components/Header/Header";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +18,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
     <SessionProvider session={session}>
-      <body>{children}</body>
+      <body>
+        <Header></Header>
+        {children}
+      </body>
     </SessionProvider>
     </html>
   );
