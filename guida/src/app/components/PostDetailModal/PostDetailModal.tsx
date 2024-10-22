@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./PostDetailModal.module.css";
 import DeleteButton from "../DeleteButton";
 import { ModalProps } from "@/types";
@@ -11,6 +11,25 @@ const PostDetailModal: React.FC<ModalProps> = ({
   onDelete,
   onRead,
 }) => {
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPostDetails = async () => {
+      try {
+        const response = await fetch(`/api/posts?id=${postId}`);
+        const data = await response.json();
+        console.log("Fetched post details:", data); // Log the fetched data
+        console.log("pdfUrl");
+        console.log(data.post.pdfUrl);
+        setPdfUrl(data.post.pdfUrl);
+      } catch (error) {
+        console.error('Error fetching post details:', error);
+      }
+    };
+
+    fetchPostDetails();
+  }, [postId]);
+
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -22,6 +41,15 @@ const PostDetailModal: React.FC<ModalProps> = ({
         <ReadButton postId={postId} onRead={onRead} />{" "}
         {children}{" "}
         {/* Display the children passed, which can be PostForm or post details */}
+        {pdfUrl ? (
+          <iframe
+            src={pdfUrl}
+            className={styles.pdfViewer}
+            title="Post PDF"
+          />
+        ) : (
+          <p></p>
+        )}
       </div>
     </div>
   );

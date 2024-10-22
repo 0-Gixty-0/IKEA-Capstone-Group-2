@@ -23,6 +23,7 @@ export interface SubmittablePost {
   content: string | null;
   published: boolean;
   authorId: number | null;
+  pdfUrl: string;
 }
 
 export interface SubmittableUser {
