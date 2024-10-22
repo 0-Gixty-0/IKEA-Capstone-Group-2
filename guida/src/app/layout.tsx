@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
-import {auth} from "@/auth";
-import {SessionProvider} from "next-auth/react";
+import { auth } from "@/auth";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,9 +16,9 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang="en">
-    <SessionProvider session={session}>
-      <body>{children}</body>
-    </SessionProvider>
+      <SessionProvider session={session}>
+        <body>{children}</body>
+      </SessionProvider>
     </html>
   );
 }
