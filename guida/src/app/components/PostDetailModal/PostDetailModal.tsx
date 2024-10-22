@@ -22,6 +22,11 @@ const PostDetailModal: React.FC<ModalProps> = ({
         <ReadButton postId={postId} onRead={onRead} />{" "}
         {children}{" "}
         {/* Display the children passed, which can be PostForm or post details */}
+        <iframe
+          src="https://www.antennahouse.com/hubfs/xsl-fo-sample/pdf/basic-link-1.pdf"
+          className={styles.pdfViewer}
+          title="Collision PDF"
+        />
       </div>
     </div>
   );
