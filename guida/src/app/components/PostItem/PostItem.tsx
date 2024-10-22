@@ -1,7 +1,8 @@
 // guida/src/app/components/PostList/PostList.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./PostItem.module.css";
 import { ClickablePostProps } from "@/types";
+import { useAuthorAndRole } from "@/hooks/useAuthorAndRole";
 
 const PostItem: React.FC<ClickablePostProps> = ({
   id,
@@ -12,6 +13,8 @@ const PostItem: React.FC<ClickablePostProps> = ({
   roleId,
   handlePostClick,
 }) => {
+  const [author, role] = useAuthorAndRole(roleId, authorId);
+
   return (
     <li
       className={styles.post}
@@ -21,6 +24,7 @@ const PostItem: React.FC<ClickablePostProps> = ({
     >
       <div className={styles.postContent}>
         <h2>{title}</h2>
+        <h3>{!role ? author : role}</h3>
         <p>{content}</p>
       </div>
     </li>
