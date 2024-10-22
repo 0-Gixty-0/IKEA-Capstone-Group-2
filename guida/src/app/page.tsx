@@ -4,8 +4,6 @@ import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import PostDetailModal from "@/app/components/PostDetailModal/PostDetailModal";
 import PostForm from "@/app/components/PostForm/PostForm";
-import PostList from "@/app/components/PostList/PostList";
-import SkeletonList from "@/app/components/SkeletonList/SkeletonList";
 import { usePostManagement } from "@/hooks/usePostManagement";
 import Feed from "@/app/components/Feed/Feed";
 
