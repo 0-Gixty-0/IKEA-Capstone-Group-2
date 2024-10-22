@@ -12,6 +12,7 @@ import {FetchedUser} from "@/types";
 import {User} from "next-auth";
 import {useFetchUser} from "@/hooks/useFetchUser";
 import AccessError from "@/app/components/AccessError/AccessError";
+import Feed from "@/app/components/Feed/Feed";
 
 /**
  * Profile page.
@@ -32,7 +33,7 @@ export default function Profile({ params }: { params: { id: string } }) {
         useFetchPosts({authorId: Number(id), published: true})
     const { posts: draftPosts, loading: loadingDraftPosts, error: draftPostsError } =
         useFetchPosts({authorId: Number(id), published: false})
-    const { fetchUser, loading, error } = useFetchUser(Number(id));
+    const { fetchUser, loading, error } = useFetchUser();
 
     /**
      * Sets user data based on if requested profile for user is authenticated.
@@ -115,24 +116,18 @@ export default function Profile({ params }: { params: { id: string } }) {
                     </button>}
                 </div>
                 <div className={styles.feedContainer}>
-                    <div>
-                        <h2 id={styles.feedTitle}>Authored Posts</h2>
-                        {loadingAuthoredPosts
-                            ? (<SkeletonList></SkeletonList>)
-                            : (authoredPosts && authoredPosts.length > 0)
-                                ? (<PostList posts={authoredPosts} handlePostClick={() => {
-                                }}></PostList>)
-                                : (<h3 id={styles.emptyMessage}>You haven't authored any posts!</h3>)}
-                    </div>
-                    <div>
-                        <h2 id={styles.feedTitle}>Drafted Posts</h2>
-                        {loadingDraftPosts
-                            ? (<SkeletonList></SkeletonList>)
-                            : (draftPosts && draftPosts.length > 0)
-                                ? (<PostList posts={draftPosts} handlePostClick={() => {
-                                }}></PostList>)
-                                : (<h3 id={styles.emptyMessage}>You don't have any drafted posts!</h3>)}
-                    </div>
+                    <Feed
+                        title={"Authored Posts"}
+                        loadingPosts={loadingAuthoredPosts}
+                        error={authoredPostsError}
+                        posts={authoredPosts}>
+                    </Feed>
+                    <Feed
+                        title={"Drafted Posts"}
+                        loadingPosts={loadingDraftPosts}
+                        error={draftPostsError}
+                        posts={draftPosts}>
+                    </Feed>
                 </div>
             </div>
         )
