@@ -8,7 +8,6 @@ import PostList from "@/app/components/PostList/PostList";
 import SkeletonList from "@/app/components/SkeletonList/SkeletonList";
 import { usePostManagement } from "@/hooks/usePostManagement";
 
-
 const HomePage: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
 
@@ -33,33 +32,41 @@ const HomePage: React.FC = () => {
     readingList,
   } = usePostManagement('/api/posts');
 
-
   if (!isClient) {
     return null; // or a loading spinner
   }
 
   return (
     <div className={styles.fullScreen}>
-      <div className={styles.postContainer}>
-        <h1>Reading list</h1>
-        {loading ? (
-          <SkeletonList />
-        ) : readingList.length === 0 ? (
-          <div>All posts read! Good job!</div>
-        ) : (
-          <PostList posts={readingList} handlePostClick={handlePostClick} />
-        )}
-        <h1>Suggested posts</h1>
-        {error && <div>Error: {error}</div>}
-        <button onClick={handleCreatePost}>Create New Post</button>
-        {loading ? (
-          <SkeletonList />
-        ) : posts.length === 0 ? (
-          <div>No posts in the database</div>
-        ) : (
-          <PostList posts={posts} handlePostClick={handlePostClick} />
-        )}
+      <div className={styles.container}>
+        {/* Reading List Section */}
+        <div className={styles.readingListContainer}>
+          <h1>Reading List</h1>
+          {loading ? (
+            <SkeletonList />
+          ) : readingList.length === 0 ? (
+            <div>All posts read! Good job!</div>
+          ) : (
+            <PostList posts={readingList} handlePostClick={handlePostClick} />
+          )}
+        </div>
+
+        {/* Suggested Posts Section */}
+        <div className={styles.suggestedPostsContainer}>
+          <h1>Suggested Posts</h1>
+          {error && <div>Error: {error}</div>}
+          <button onClick={handleCreatePost}>Create New Post</button>
+          {loading ? (
+            <SkeletonList />
+          ) : posts.length === 0 ? (
+            <div>No posts in the database</div>
+          ) : (
+            <PostList posts={posts} handlePostClick={handlePostClick} />
+          )}
+        </div>
       </div>
+
+      {/* Post Detail Modal */}
       {(clickedPost || isCreating) && (
         <PostDetailModal
           onClose={closeModal}
@@ -69,7 +76,7 @@ const HomePage: React.FC = () => {
         >
           {isEditing || isCreating ? (
             <PostForm
-              post={clickedPost || undefined} // Convert null to undefined
+              post={clickedPost || undefined}
               submitText={isCreating ? "Create Post" : "Update Post"}
               onClose={closeModal}
               onSuccess={handleSuccess}

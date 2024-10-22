@@ -4,9 +4,10 @@ interface ReadButtonProps {
   style?: React.CSSProperties;
   postId: number;
   onRead: () => void;
+  className?: string;
 }
 
-const ReadButton: React.FC<ReadButtonProps> = ({ style, postId, onRead }) => {
+const ReadButton: React.FC<ReadButtonProps> = ({ style, postId, onRead, className }) => {
   const [isInReadingList, setIsInReadingList] = useState(false);
 
   useEffect(() => {
@@ -72,7 +73,7 @@ const ReadButton: React.FC<ReadButtonProps> = ({ style, postId, onRead }) => {
   }
 
   return (
-    <button onClick={handleRead} style={style}>
+    <button onClick={handleRead} className={className}>
       Read post
     </button>
   );

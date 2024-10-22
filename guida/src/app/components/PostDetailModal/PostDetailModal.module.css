@@ -4,7 +4,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6); /* Darkened for a more elegant backdrop */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,28 +12,66 @@
 }
 
 .modalContent {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
+  background-color: #f9f9f9; /* Softer background color */
+  padding: 30px; /* Increased padding for better spacing */
+  border-radius: 12px; /* Larger border radius for a smoother look */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Soft shadow for depth */
   position: relative;
-  width: 80%;
-  height: 80%;
+  width: 60%; /* Reduced width for a more focused look */
+  max-width: 800px; /* Limit width for larger screens */
+  height: auto;
+  max-height: 90vh; /* Avoid overflow */
+  overflow-y: auto; /* Enable scrolling if content overflows */
 }
 
 .closeButton {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 2rem;
+  color: #666;
   cursor: pointer;
+  transition: color 0.3s;
 }
 
-.readButton {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  font-size: 1.5rem;
+.closeButton:hover {
+  color: #333; /* Darken on hover for feedback */
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.readButton,
+.deleteButton {
+  display: inline-block;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 6px;
+  background-color: #0070f3; /* Bright blue for better CTA visibility */
+  color: white;
+  border: none;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.readButton:hover,
+.deleteButton:hover {
+  background-color: #005bb5; /* Darken blue on hover */
+}
+
+.deleteButton {
+  background-color: #ff4d4d; /* Red color for delete button */
+}
+
+.deleteButton:hover {
+  background-color: #cc0000; /* Darken red on hover */
+}
+
+.modalBody {
+  margin-top: 20px;
 }

@@ -2,21 +2,62 @@
   width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  
+  background-color: #1a1a1a; /* Optional: background color for better contrast */
 }
 
-.postContainer {
+.container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  align-items: top;
   justify-content: center;
   width: 80%;
   color: #f7f7f7;
-  gap: 0.8rem;
+  gap: 6rem; /* Adjusted gap for spacing */
   margin-top: 2rem;
 }
 
-.postContainer ul {
-  width: 80%;
+.container ul {
+  width: 100%;
+}
+
+/* New styling for separate PostList containers */
+.readingListContainer{
+  width: 30%;
+  background-color: #2a2a2a; /* Dark background for better contrast */
+  padding: 1rem;
+  border-radius: 10px;
+  margin-top: 5rem;
+  height:100%;
+}
+.suggestedPostsContainer {
+  width: 60%;
+  background-color: #2a2a2a; /* Dark background for better contrast */
+  padding: 1rem;
+  border-radius: 10px;
+  margin-top: 5rem;
+
+}
+
+.readingListContainer h1,
+.suggestedPostsContainer h1 {
+  margin-bottom: 1rem;
+}
+
+.suggestedPostsContainer button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: orange;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.suggestedPostsContainer button:hover {
+  background-color: #facc25;
 }

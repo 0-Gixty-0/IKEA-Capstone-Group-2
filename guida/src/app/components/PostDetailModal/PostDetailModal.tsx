@@ -14,14 +14,19 @@ const PostDetailModal: React.FC<ModalProps> = ({
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <DeleteButton postId={postId} onDelete={onDelete} />{" "}
-        {/* Pass onDelete to DeleteButton */}
         <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
-        <ReadButton postId={postId} onRead={onRead} />{" "}
-        {children}{" "}
-        {/* Display the children passed, which can be PostForm or post details */}
+
+        <div className={styles.actionButtons}>
+          <DeleteButton postId={postId} onDelete={onDelete} className={styles.deleteButton} />
+          <ReadButton postId={postId} onRead={onRead} className={styles.readButton} />
+        </div>
+
+        {/* Render children such as PostForm or post details */}
+        <div className={styles.modalBody}>
+          {children}
+        </div>
       </div>
     </div>
   );
