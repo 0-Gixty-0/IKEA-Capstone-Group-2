@@ -8,7 +8,6 @@ import PostForm from "@/app/components/PostForm/PostForm";
 // Modal-related interfaces
 export interface PostDetailModal {
   onClose: () => void;
-  children: React.ReactNode;
   post: Post;
   onDelete: (arg0: Post) => void;
   onEdit: (arg0: Post) => void;
@@ -39,8 +38,6 @@ const PostDetailModal = ({onClose, children, post, onDelete, onEdit, onRead}: Po
         <p>{post.content}</p>
         <DeleteButton postId={post.id} onDelete={() => {onDelete(post)}}/>{" "}
         <button onClick={handleEditClick}>Edit Post</button>
-        {children}{" "}
-        {/* Display the children passed, which can be PostForm or post details */}
       </div>
     </div>
   );

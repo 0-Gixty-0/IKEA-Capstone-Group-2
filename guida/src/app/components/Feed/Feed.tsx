@@ -4,7 +4,6 @@ import PostList from "@/app/components/PostList/PostList";
 import React, {useEffect, useState} from "react";
 import {Post} from "@/types";
 import PostSearchBar from "@/app/components/PostSearchBar/PostSearchBar";
-import {usePostManagement} from "@/hooks/usePostManagement";
 import PostDetailModal from "@/app/components/PostDetailModal/PostDetailModal";
 import {useFeedManagement} from "@/hooks/useFeedManagement";
 
@@ -47,7 +46,6 @@ export default function Feed({title, loadingPosts, error, posts, emptyMessage}: 
                     onDelete={handleDelete}
                     onEdit={handleEdit}
                     onRead={onClose}>
-                <h2>Test</h2>
             </PostDetailModal>
             }
             <h2 id={styles.feedTitle}>{title}</h2>
