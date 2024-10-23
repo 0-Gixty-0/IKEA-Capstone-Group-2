@@ -18,7 +18,7 @@ export interface IPostDetailModal {
   post: Post;
   onDelete: (arg0: Post) => void;
   onEdit: (arg0: Post) => void;
-  onRead: () => void;
+  onRead: (arg0: Post) => void;
 }
 
 /**
@@ -59,7 +59,7 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
             onDelete(post)
           }}/>{" "}
           <button onClick={handleEditClick}>Edit Post</button>
-          <ReadButton postId={post.id} onRead={onRead}/>{" "}
+          <ReadButton post={post} onRead={onRead}/>{" "}
         </div>
       </div>
     </div>

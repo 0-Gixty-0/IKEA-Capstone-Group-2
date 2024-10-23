@@ -46,7 +46,7 @@ export default function Feed({title, loadingPosts, error, posts, emptyMessage}: 
                     post={clickedPost}
                     onDelete={handleDelete}
                     onEdit={handleEdit}
-                    onRead={onClose}>
+                    onRead={handleDelete}>
             </PostDetailModal>
             }
             <h2 id={styles.feedTitle}>{title}</h2>

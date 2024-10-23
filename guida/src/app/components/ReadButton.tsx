@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
+import {Post} from "@/types";
 
 interface ReadButtonProps {
   style?: React.CSSProperties;
-  postId: number;
-  onRead: () => void;
+  post: Post;
+  onRead: (arg0: Post) => void;
 }
 
-const ReadButton: React.FC<ReadButtonProps> = ({ style, postId, onRead }) => {
+const ReadButton: React.FC<ReadButtonProps> = ({ style, post, onRead }) => {
   const [isInReadingList, setIsInReadingList] = useState(false);
 
   useEffect(() => {
@@ -15,7 +16,7 @@ const ReadButton: React.FC<ReadButtonProps> = ({ style, postId, onRead }) => {
         const response = await fetch('/api/readingList');
         if (response.ok) {
           const data = await response.json();
-          const isPostInReadingList = data.posts.some((post: { id: number }) => post.id === postId);
+          const isPostInReadingList = data.posts.some((p: { id: number }) => p.id === post.id);
           setIsInReadingList(isPostInReadingList);
         } else {
           console.error('Failed to fetch reading list');
@@ -26,10 +27,10 @@ const ReadButton: React.FC<ReadButtonProps> = ({ style, postId, onRead }) => {
     };
 
     checkReadingList();
-  }, [postId]);
+  }, [post]);
 
   const handleRead = async () => {
-    if (!postId) {
+    if (!post) {
       console.error("Invalid post ID");
       return; // Exit early if postId is invalid
     }
@@ -39,11 +40,11 @@ const ReadButton: React.FC<ReadButtonProps> = ({ style, postId, onRead }) => {
       return;
     }
 
-    console.log("Removing post from reading list: ", postId);
+    console.log("Removing post from reading list: ", post.id);
 
     try {
       console.log("Entered try block");
-      const response = await fetch(`/api/readingList?id=${postId}`, {
+      const response = await fetch(`/api/readingList?id=${post.id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +57,7 @@ const ReadButton: React.FC<ReadButtonProps> = ({ style, postId, onRead }) => {
         console.log("Response is ok");
         const data = await response.json();
         console.log("Post deleted: ", data);
-        onRead(); // Call onRead after successful deletion
+        onRead(post); // Call onRead after successful deletion
       } else {
         console.error("Failed to delete post");
         // Optionally notify the user about the failure
