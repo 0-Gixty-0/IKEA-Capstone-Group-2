@@ -152,8 +152,8 @@ export default function PostForm(props: IPostForm) {
               <option value={"false"}>False</option>
             </select>
           </div>
-          <div className={styles.postFormElement}>
-            <label>* Role</label>
+          <div id={styles.postFormElement}>
+            <label>Role</label>
             <select
               value={roleName}
               onChange={(e) => {
