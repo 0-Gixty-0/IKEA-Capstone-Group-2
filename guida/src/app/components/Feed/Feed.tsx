@@ -17,6 +17,7 @@ interface FeedProps {
 
 /**
  * Feed component displays posts in list conditionally.
+ * Component also handles feed state and display of detailed post view.
  * When loading displays skeletons.
  * If error displays error message.
  * If length of supplied posts is 0 displays message

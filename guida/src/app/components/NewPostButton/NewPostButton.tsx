@@ -6,6 +6,13 @@ interface  NewPostButtonProps {
     onSuccess: (arg0: Post) => void
 }
 
+/**
+ * NewPostButton handles creating a new post through
+ * showing the PostForm component.
+ * Contains callback for successful creation of a post
+ * @param onSuccess Callback method for successful creation of a post
+ * @constructor
+ */
 export default function NewPostButton({onSuccess}: NewPostButtonProps) {
     const [showPostForm, setShowPostForm] = useState<boolean>(false)
 

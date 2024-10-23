@@ -5,8 +5,15 @@ import {Post} from "@/types";
 import ReadButton from "../ReadButton";
 import PostForm from "@/app/components/PostForm/PostForm";
 
-// Modal-related interfaces
-export interface PostDetailModal {
+/**
+ * IPostDetailModal contains:
+ * * onClose: Close modal callback
+ * * post: Post to display detailed view for
+ * * onDelete: Callback for deletion of viewed post
+ * * onEdit: Callback for edit of viewed post
+ * * onRead: Callback for read confirmation of viewed post
+ */
+export interface IPostDetailModal {
   onClose: () => void;
   post: Post;
   onDelete: (arg0: Post) => void;
@@ -14,7 +21,17 @@ export interface PostDetailModal {
   onRead: () => void;
 }
 
-const PostDetailModal = ({onClose, children, post, onDelete, onEdit, onRead}: PostDetailModal) => {
+/**
+ * PostDetailModal contains a detailed view of supplied post.
+ * Contains callback buttons for edit, delete, and read post.
+ * @param onClose Close modal callback
+ * @param post Post to display detailed view for
+ * @param onDelete Callback for deletion of viewed post
+ * @param onEdit Callback for edit of viewed post
+ * @param onRead Callback for read confirmation of viewed post
+ * @constructor
+ */
+const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailModal) => {
   const [showEditPostForm, setShowEditPostForm] = useState<boolean>(false)
 
   const handleEditClick = () => {
