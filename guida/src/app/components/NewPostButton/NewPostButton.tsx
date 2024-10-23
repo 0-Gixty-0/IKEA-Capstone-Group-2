@@ -1,6 +1,7 @@
 import {Post} from "@/types";
 import {useState} from "react";
 import PostForm from "@/app/components/PostForm/PostForm";
+import styles from './styles.module.css'
 
 interface  NewPostButtonProps {
     onSuccess: (arg0: Post) => void
@@ -31,7 +32,7 @@ export default function NewPostButton({onSuccess}: NewPostButtonProps) {
                 submitText={"Create Post"}
                 onClose={() => {setShowPostForm(false)}}
                 onSuccess={handleCreateNewPost}/>}
-            <button onClick={handleButtonClick}>Create New Post!</button>
+            <button className={styles.newPostButton} onClick={handleButtonClick}>Create New Post!</button>
         </>
     )
 }
