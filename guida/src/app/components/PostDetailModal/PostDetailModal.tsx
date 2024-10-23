@@ -50,11 +50,17 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
         <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
-        <ReadButton postId={post.id} onRead={onRead}/>{" "}
         <h2>{post.title}</h2>
+        <hr/>
+        <h3>Content:</h3>
         <p>{post.content}</p>
-        <DeleteButton postId={post.id} onDelete={() => {onDelete(post)}}/>{" "}
-        <button onClick={handleEditClick}>Edit Post</button>
+        <div className={styles.buttonContainer}>
+          <DeleteButton postId={post.id} onDelete={() => {
+            onDelete(post)
+          }}/>{" "}
+          <button onClick={handleEditClick}>Edit Post</button>
+          <ReadButton postId={post.id} onRead={onRead}/>{" "}
+        </div>
       </div>
     </div>
   );
