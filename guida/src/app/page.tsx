@@ -30,7 +30,6 @@ const HomePage: React.FC = () => {
     }
   }, [loadingSuggestedPosts]);
 
-  const {authorAndRole: author, loading: authorLoading} = useAuthorInPosts(clickedPost || undefined)
 
   if (!isClient) {
     return null; // or a loading spinner
