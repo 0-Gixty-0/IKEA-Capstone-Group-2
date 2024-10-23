@@ -4,6 +4,9 @@ import PostList from "@/app/components/PostList/PostList";
 import React, {useEffect, useState} from "react";
 import {Post} from "@/types";
 import PostSearchBar from "@/app/components/PostSearchBar/PostSearchBar";
+import {usePostManagement} from "@/hooks/usePostManagement";
+import PostDetailModal from "@/app/components/PostDetailModal/PostDetailModal";
+import {useFeedManagement} from "@/hooks/useFeedManagement";
 
 interface FeedProps {
     title: string,
@@ -27,8 +30,9 @@ interface FeedProps {
  * @constructor
  */
 export default function Feed({title, loadingPosts, error, posts, emptyMessage}: FeedProps) {
-    const [displayedPosts, setDisplayedPosts] = useState<Post[]>(posts)
     const [showNoSearchResults, setShowNoSearchResults] = useState<boolean>(false)
+    const {displayedPosts, setDisplayedPosts, handleDelete,
+        showDetailedPostModal, onClose, handlePostClick, clickedPost} = useFeedManagement(posts)
 
     useEffect(() => {
         setDisplayedPosts(posts)
@@ -36,6 +40,15 @@ export default function Feed({title, loadingPosts, error, posts, emptyMessage}: 
 
     return (
         <div className={styles.feedContainer}>
+            {(showDetailedPostModal && clickedPost) && <PostDetailModal
+                    onClose={onClose}
+                    post={clickedPost}
+                    onDelete={handleDelete}
+                    onEdit={() => {}}
+                    onRead={onClose}>
+                <h2>Test</h2>
+            </PostDetailModal>
+            }
             <h2 id={styles.feedTitle}>{title}</h2>
             <PostSearchBar
                 entries={posts}
@@ -47,8 +60,7 @@ export default function Feed({title, loadingPosts, error, posts, emptyMessage}: 
                 : (error)
                     ? (<h3>{error}</h3>)
                     : (displayedPosts && displayedPosts.length > 0)
-                        ? (<PostList posts={displayedPosts} handlePostClick={() => {
-                        }}></PostList>)
+                        ? (<PostList posts={displayedPosts} handlePostClick={handlePostClick}></PostList>)
                         : (showNoSearchResults)
                             ? (<h3 id={styles.emptyMessage}>No posts match your search!</h3>)
                             : (<h3 id={styles.emptyMessage}>{emptyMessage}</h3>)}

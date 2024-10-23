@@ -44,15 +44,6 @@ export interface SubmittableUser {
   roles: UserRole[];
 }
 
-// Modal-related interfaces
-export interface ModalProps {
-  onClose: () => void;
-  children: React.ReactNode;
-  postId: number;
-  onDelete: () => void;
-  onRead: () => void;
-}
-
 export interface ModalContentProps {
   clickedPost?: Post | null;
   isCreating: boolean;

@@ -1,4 +1,4 @@
-.modalOverlay {
+#modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -8,11 +8,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1005;
 }
 
 .modalContent {
   background-color: white;
+  color: black;
   padding: 20px;
   border-radius: 8px;
   position: relative;
