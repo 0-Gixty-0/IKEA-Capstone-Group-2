@@ -183,3 +183,5 @@ export async function DELETE(request: Request) {
         return NextResponse.json({ error: 'Failed to delete the post!' }, { status: 500 });
     }
 }
+
+

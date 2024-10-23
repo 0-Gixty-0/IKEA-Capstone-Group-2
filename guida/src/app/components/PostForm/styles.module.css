@@ -1,21 +1,24 @@
-.postFormOverlay {
+#postFormOverlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(0,0,0,0.2);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1030;
 }
 
-.postFormContent {
+#postFormContent {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: auto;
     max-height: 70vh;
     max-width: 50vw;
     background-color: white;
@@ -23,19 +26,19 @@
     box-shadow: rgba(0, 0, 0, 0.7) 3px 3px 4px;
 }
 
-.postFormContent h2 {
+#postFormContent h2 {
     color: black;
     margin-top: 10px;
     margin-bottom: 0;
 }
 
-.postFormContent hr {
+#postFormContent hr {
     width: 80%;
     height: 3px;
     background-color: black;
 }
 
-.postFormContent form {
+#postFormContent form {
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -73,7 +76,8 @@
     opacity: .9;
 }
 
-.postFormElement {
+#postFormElement {
+    width: auto;
     display: flex;
     flex-direction: column;
     margin: 5px;
@@ -82,11 +86,11 @@
     padding: 5px;
 }
 
-.postFormElement label {
+#postFormElement label {
     color: black;
 }
 
-.postFormElement textarea {
+#postFormElement textarea {
     width: 300px;
     height: 100px;
     resize: both;

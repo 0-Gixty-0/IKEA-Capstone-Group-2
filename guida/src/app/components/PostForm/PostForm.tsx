@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Post, SubmittablePost } from "@/types";
+import { SubmittablePost } from "@/types";
 import { useSubmitPost } from "@/hooks/useSubmitPost";
 import styles from "./styles.module.css";
 import Preloader from "@/app/components/Preloader/Preloader";
@@ -109,15 +109,15 @@ export default function PostForm(props: IPostForm) {
   };
 
   return (
-    <div className={styles.postFormOverlay}>
-      <div className={styles.postFormContent}>
+    <div id={styles.postFormOverlay}>
+      <div id={styles.postFormContent}>
         <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
         <h2>{submitText}</h2>
         <hr />
         <form onSubmit={onSubmit}>
-          <div className={styles.postFormElement}>
+          <div id={styles.postFormElement}>
             <label>* Title:</label>
             <input
               className={titleError ? styles.errorBorder : ""}
@@ -130,7 +130,7 @@ export default function PostForm(props: IPostForm) {
               }}
             />
           </div>
-          <div className={styles.postFormElement}>
+          <div id={styles.postFormElement}>
             <label>* Content:</label>
             <textarea
               className={contentError ? styles.errorBorder : ""}
@@ -142,7 +142,7 @@ export default function PostForm(props: IPostForm) {
               }}
             />
           </div>
-          <div className={styles.postFormElement}>
+          <div id={styles.postFormElement}>
             <label>Published:</label>
             <select
               value={published ? "true" : "false"} // ...force the select's value to match the state variable...

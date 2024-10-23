@@ -1,0 +1,40 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 15px;
+    padding-right: 10px;
+    align-items: center;
+    height: 10vh;
+    background-color: #242424;
+}
+
+.container h1 {
+    color: white;
+}
+
+.iconContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.iconContent {
+    background-color: yellow;
+    padding: 5px;
+    margin: 5px;
+    height: 60%;
+    width: auto;
+    border-radius: 10%;
+    filter: drop-shadow(3px 3px);
+}
+
+.iconContent:hover {
+    background-color: #989802;
+}
+
+.iconContent img {
+    height: 100%;
+}
