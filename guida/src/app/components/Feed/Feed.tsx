@@ -32,7 +32,8 @@ interface FeedProps {
 export default function Feed({title, loadingPosts, error, posts, emptyMessage}: FeedProps) {
     const [showNoSearchResults, setShowNoSearchResults] = useState<boolean>(false)
     const {displayedPosts, setDisplayedPosts, handleDelete,
-        showDetailedPostModal, onClose, handlePostClick, clickedPost} = useFeedManagement(posts)
+        showDetailedPostModal, onClose, handlePostClick,
+        clickedPost, handleEdit} = useFeedManagement(posts)
 
     useEffect(() => {
         setDisplayedPosts(posts)
@@ -44,7 +45,7 @@ export default function Feed({title, loadingPosts, error, posts, emptyMessage}: 
                     onClose={onClose}
                     post={clickedPost}
                     onDelete={handleDelete}
-                    onEdit={() => {}}
+                    onEdit={handleEdit}
                     onRead={onClose}>
                 <h2>Test</h2>
             </PostDetailModal>

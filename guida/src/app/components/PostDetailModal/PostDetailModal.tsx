@@ -11,7 +11,7 @@ export interface PostDetailModal {
   children: React.ReactNode;
   post: Post;
   onDelete: (arg0: Post) => void;
-  onEdit: () => void;
+  onEdit: (arg0: Post) => void;
   onRead: () => void;
 }
 
@@ -28,10 +28,9 @@ const PostDetailModal = ({onClose, children, post, onDelete, onEdit, onRead}: Po
               post={post}
               submitText={'Update Post'}
               onClose={() => {setShowEditPostForm(false)}}
-              onSuccess={() => {}}/>
+              onSuccess={onEdit}/>
       }
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        {/* Pass onDelete to DeleteButton */}
         <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
