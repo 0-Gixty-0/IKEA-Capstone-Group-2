@@ -56,7 +56,7 @@ const PostForm: React.FC<PostFormProps> = ({ post, submitText, onSuccess, onClos
                 />
                 {titleError && <p className={styles.error}>{titleError}</p>}
               </div>
-              <div id={styles.postFormElement}>
+              <div className={styles.postFormElement}>
                 <label>
                     Publish as Role
                 </label>
@@ -70,8 +70,8 @@ const PostForm: React.FC<PostFormProps> = ({ post, submitText, onSuccess, onClos
                     {role.label}
                   </option>
                 ))}
-            </select>
-          </div>
+                </select>
+              </div>
               {!post && ( // Conditionally render the dropdown
                 <div className={styles.postFormElement}>
                   <label>
