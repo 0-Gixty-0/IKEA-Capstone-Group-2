@@ -2,96 +2,59 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import PostDetailModal from "@/app/components/PostDetailModal/PostDetailModal";
-import PostForm from "@/app/components/PostForm/PostForm";
-import PostList from "@/app/components/PostList/PostList";
-import SkeletonList from "@/app/components/SkeletonList/SkeletonList";
-import { usePostManagement } from "@/hooks/usePostManagement";
+import Feed from "@/app/components/Feed/Feed";
+import {Post} from "@/types";
+import NewPostButton from "@/app/components/NewPostButton/NewPostButton";
+import {useFetchPosts} from "@/hooks/useFetchPosts";
+
 
 const HomePage: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
+  const [displayedSuggestedPosts, setDisplayedSuggestedPosts] = useState<Post[]>([])
+  const { posts: suggestedPosts, loading: loadingSuggestedPosts, error: suggestedPostsError } =
+      useFetchPosts('/api/posts', {published: true})
+  const { posts: readingList, loading: loadingReadingList, error: readingListError } =
+      useFetchPosts('/api/readingList', {published: true})
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const {
-    posts,
-    loading,
-    error,
-    clickedPost,
-    isEditing,
-    isCreating,
-    handlePostClick,
-    closeModal,
-    handlePostDelete,
-    handleEditPost,
-    handleCreatePost,
-    handleSuccess,
-    handlePostRead,
-    readingList,
-    loadingReadingList,
-    errorReadingList,
-  } = usePostManagement("/api/posts");
+  useEffect(() => {
+    if (!loadingSuggestedPosts) {
+      setDisplayedSuggestedPosts(suggestedPosts)
+    } else {
+      return
+    }
+  }, [loadingSuggestedPosts]);
 
   if (!isClient) {
     return null; // or a loading spinner
   }
 
+  const onSuccessfulNewPost = (newPost: Post) => {
+    setDisplayedSuggestedPosts([newPost, ...displayedSuggestedPosts])
+  }
+
   return (
     <div className={styles.fullScreen}>
       <div className={styles.postContainer}>
-        <h1>Reading list</h1>
-        <div className={styles.buttonContainer}>
-          <button onClick={handleCreatePost}>Create New Post</button>
-        </div>
-        {loadingReadingList ? (
-          <SkeletonList />
-        ) : errorReadingList ? (
-          <div>Error: {errorReadingList}</div>
-        ) : readingList.length === 0 ? (
-          <div>All posts read! Good job!</div>
-        ) : (
-          <PostList posts={readingList} handlePostClick={handlePostClick} />
-        )}
-        <h1>Suggested posts</h1>
-        {error && <div>Error: {error}</div>}
-
-        {loading ? (
-          <SkeletonList />
-        ) : posts.length === 0 ? (
-          <div>No posts in the database</div>
-        ) : (
-          <PostList posts={posts} handlePostClick={handlePostClick} />
-        )}
+        <NewPostButton onSuccess={onSuccessfulNewPost}></NewPostButton>
+        <Feed
+            title={"Reading list"}
+            loadingPosts={loadingReadingList}
+            error={readingListError}
+            posts={readingList}
+            emptyMessage={"All posts read! Good job!"}>
+        </Feed>
+        <Feed
+            title={"Suggested posts"}
+            loadingPosts={loadingSuggestedPosts}
+            error={suggestedPostsError}
+            posts={displayedSuggestedPosts}
+            emptyMessage={"No posts in the database"}>
+        </Feed>
       </div>
-      {(clickedPost || isCreating) && (
-        <PostDetailModal
-          onClose={closeModal}
-          postId={clickedPost?.id ?? 0}
-          onDelete={handlePostDelete}
-          onRead={handlePostRead}
-        >
-          {isEditing || isCreating ? (
-            <PostForm
-              post={clickedPost || undefined} // Convert null to undefined
-              submitText={isCreating ? "Create Post" : "Update Post"}
-              onClose={closeModal}
-              onSuccess={handleSuccess}
-            />
-          ) : (
-            <>
-              {clickedPost && (
-                <>
-                  <h2>{clickedPost.title}</h2>
-                  <p>{clickedPost.content}</p>
-                  <button onClick={handleEditPost}>Edit Post</button>
-                </>
-              )}
-            </>
-          )}
-        </PostDetailModal>
-      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-// src/app/api/posts/route.js
+// src/app/api/posts/route.ts
 import prisma from "@/db";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
@@ -9,6 +9,7 @@ interface PutRequestPost {
   title: string;
   content: string;
   published: boolean;
+  roles: number[]; // Use number[] for role IDs
 }
 
 interface PostRequestPost {
@@ -101,7 +102,17 @@ export async function PUT(request: Request) {
   try {
     const session = await auth();
     if (session) {
-      const { postId, roles } = await request.json();
+      const { id, title, content, published, roles }: PutRequestPost = await request.json();
+
+      if (!id) {
+        return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
+      }
+
+      // Update the post in the database
+      const updatedPost = await prisma.post.update({
+        where: { id: Number(id) },
+        data: { title, content, published },
+      });
 
       // Retrieve users with the selected roles
       const usersWithSelectedRoles = await prisma.user.findMany({
@@ -122,7 +133,7 @@ export async function PUT(request: Request) {
           where: { id: user.id },
           data: {
             readingList: {
-              connect: { id: Number(postId) },
+              connect: { id: Number(id) },
             },
           },
         });
@@ -130,7 +141,8 @@ export async function PUT(request: Request) {
 
       return NextResponse.json(
         {
-          message: "Successfully added post to reading lists",
+          message: "Successfully updated post and added to reading lists",
+          post: updatedPost,
         },
         { status: 200 }
       );
@@ -141,9 +153,9 @@ export async function PUT(request: Request) {
       );
     }
   } catch (error) {
-    console.error("Failed to add post to reading lists:", error);
+    console.error("Failed to update post or add to reading lists:", error);
     return NextResponse.json(
-      { error: "Failed to add the post to reading lists!" },
+      { error: "Failed to update the post!" },
       { status: 500 }
     );
   }
@@ -218,6 +230,7 @@ export async function POST(request: Request) {
     );
   }
 }
+
 export async function DELETE(request: Request) {
   try {
     const session = await auth();

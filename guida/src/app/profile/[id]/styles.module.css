@@ -12,7 +12,13 @@
     justify-content: space-around;
 }
 
-.feedContainer div {
+.feedContainer div:nth-child(1) {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.feedContainer div:nth-child(2) {
     width: 40%;
     display: flex;
     flex-direction: column;
