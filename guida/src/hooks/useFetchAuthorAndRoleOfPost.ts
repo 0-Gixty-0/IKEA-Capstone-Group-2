@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 * @param roleId
 * @param authorId
 */
-export function useAuthorAndRole(roleId: number | undefined, authorId: number | undefined) {
+export function useFetchAuthorAndRoleOfPost(roleId: number | undefined, authorId: number | undefined) {
     const [author, setAuthor] = useState<string>("");
     const [role, setRole] = useState<string | undefined>("");
 

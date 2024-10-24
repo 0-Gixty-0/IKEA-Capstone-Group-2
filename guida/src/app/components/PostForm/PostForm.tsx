@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./PostForm.module.css";
 import CheckboxDropdown from "@/app/components/CheckboxDropdown/CheckboxDropdown";
 import { usePostForm } from "@/hooks/usePostForm";
 import { PostFormProps } from "@/types";
 import { mapRolesToOptions } from "@/utils/mapRolesToOptions";
+import { useAuthorInPosts } from "@/hooks/useAuthorInPosts";
 
 const PostForm: React.FC<PostFormProps> = ({ post, submitText, onSuccess, onClose }) => {
   const {
@@ -23,7 +24,14 @@ const PostForm: React.FC<PostFormProps> = ({ post, submitText, onSuccess, onClos
     titleError,
     contentError,
     rolesErrorState,
+    userRoles,
+    userRolesLoading,
+    userRolesError,
+    selectedAuthorRole,
+    setSelectedAuthorRole
   } = usePostForm(post, onSuccess);
+
+  
 
   return (
     <div className={styles.overlay}>
@@ -48,6 +56,22 @@ const PostForm: React.FC<PostFormProps> = ({ post, submitText, onSuccess, onClos
                 />
                 {titleError && <p className={styles.error}>{titleError}</p>}
               </div>
+              <div id={styles.postFormElement}>
+                <label>
+                    Publish as Role
+                </label>
+                <select
+                  value={Number(selectedAuthorRole)}
+                  onChange={(e) => {setSelectedAuthorRole(Number(e.target.value));}}
+                >
+                <option value={undefined}>None</option>
+                {userRoles.map((role) => (
+                  <option key={role.label} value={role.value}>
+                    {role.label}
+                  </option>
+                ))}
+            </select>
+          </div>
               {!post && ( // Conditionally render the dropdown
                 <div className={styles.postFormElement}>
                   <label>

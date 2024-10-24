@@ -37,7 +37,7 @@ export interface SubmittablePost {
   published: boolean;
   authorId: number | null;
   roles: number[];
-  roleName: string | null;
+  roleId: number | null;
 }
 
 export interface FetchedUser {

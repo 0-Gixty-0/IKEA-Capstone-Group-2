@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Post, SubmittablePost } from "@/types";
 import { useSubmitPost } from "@/hooks/useSubmitPost";
 import { useFetchRoles } from "@/hooks/useFetchRoles";
+import { useFetchAuthorRoles } from "./useFetchAuthorRoles";
+import { useSession } from "next-auth/react";
 
 export const usePostForm = (
   post: Post,
@@ -15,6 +17,11 @@ export const usePostForm = (
   );
   const [selectedRoles, setSelectedRoles] = useState<number[]>([]); // Use number[] for role IDs
   const { roles, error: rolesError } = useFetchRoles();
+
+  const {roles: userRoles, loading: userRolesLoading, error: userRolesError } = useFetchAuthorRoles(Number(useSession().data?.user?.id));
+  const [selectedAuthorRole, setSelectedAuthorRole] = useState<number | null>(post?.roleId || null);
+
+  
 
   const [titleError, setTitleError] = useState("");
   const [contentError, setContentError] = useState("");
@@ -65,7 +72,9 @@ export const usePostForm = (
         authorId: post?.authorId || null,
         published,
         roles: selectedRoles, // Include selected roles in the post data
+        roleId: selectedAuthorRole !== undefined ? selectedAuthorRole : null,
       };
+      console.log("selectedAuthorRole" + selectedAuthorRole);
       submitPost(postToSubmit);
     }
   };
@@ -87,5 +96,10 @@ export const usePostForm = (
     titleError,
     contentError,
     rolesErrorState,
+    userRoles,
+    userRolesLoading,
+    userRolesError,
+    selectedAuthorRole,
+    setSelectedAuthorRole,
   };
 };
