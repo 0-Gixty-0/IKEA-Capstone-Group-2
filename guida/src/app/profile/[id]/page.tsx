@@ -85,6 +85,8 @@ export default function Profile({ params }: { params: { id: string } }) {
                         posts={authoredPosts}
                         emptyMessage={"You don't have any public posts!"}>
                     </Feed>
+                    </div>
+                    <div className={styles.feedContainer}>
                     <Feed
                         title={"Drafted Posts"}
                         loadingPosts={loadingDraftPosts}
@@ -92,7 +94,7 @@ export default function Profile({ params }: { params: { id: string } }) {
                         posts={draftPosts}
                         emptyMessage={"You don't have any drafted posts!"}>
                     </Feed>
-                </div>
+                            </div>
             </div>
         )
     /**
