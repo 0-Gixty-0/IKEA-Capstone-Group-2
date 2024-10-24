@@ -73,7 +73,6 @@ export async function GET(request: Request) {
       const posts = await prisma.post.findMany({
         where: Object.keys(where).length ? where : undefined,
       });
-      console.log('route', posts)
       return NextResponse.json(
         {
           message: `Successfully retrieved ${posts.length} posts`,
@@ -187,7 +186,7 @@ export async function POST(request: Request) {
           pdfUrl: post.pdfUrl,
         },
       });
-      console.log('route', createdPost)
+
 
       // Retrieve users with the selected roles
       const usersWithSelectedRoles = await prisma.user.findMany({

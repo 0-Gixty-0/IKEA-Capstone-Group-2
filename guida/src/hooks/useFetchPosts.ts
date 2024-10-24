@@ -49,7 +49,6 @@ export const useFetchPosts = (apiUrl: string, params?: FetchPostsParams) => {
         if (!response.ok) throw new Error("Failed to fetch posts");
 
         const data = await response.json();
-        console.log(data.posts)
         setPosts(data.posts || []);
       } catch (error) {
         if (error instanceof Error) {
