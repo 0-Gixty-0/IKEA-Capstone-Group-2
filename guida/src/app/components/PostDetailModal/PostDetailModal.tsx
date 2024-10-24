@@ -1,8 +1,10 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styles from "./PostDetailModal.module.css";
 import DeleteButton from "../DeleteButton";
 import {Post} from "@/types";
 import ReadButton from "../ReadButton";
+import AddToReadingListModal from "../AddToReadingListModal/AddToReadingListModal";
+import { ModalProps } from "@/types";
 import PostForm from "@/app/components/PostForm/PostForm";
 
 /**
@@ -37,6 +39,16 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
   const handleEditClick = () => {
     setShowEditPostForm(true)
   }
+
+  const [isAddToReadingListModalOpen, setIsAddToReadingListModalOpen] = useState(false);
+
+  const handleOpenAddToReadingListModal = () => {
+    setIsAddToReadingListModalOpen(true);
+  };
+
+  const handleCloseAddToReadingListModal = () => {
+    setIsAddToReadingListModalOpen(false);
+  };
 
   return (
     <div id={styles.modalOverlay}>
