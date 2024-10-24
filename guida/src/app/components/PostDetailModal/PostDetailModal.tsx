@@ -6,7 +6,7 @@ import ReadButton from "../ReadButton";
 import AddToReadingListModal from "../AddToReadingListModal/AddToReadingListModal";
 import { ModalProps } from "@/types";
 import PostForm from "@/app/components/PostForm/PostForm";
-import { useAuthorInPosts } from "@/hooks/useAuthorInPosts";
+import PdfReader from "../PdfReader/PdfReader";
 
 /**
  * IPostDetailModal contains:
@@ -76,6 +76,7 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
         <hr/>
         <h3>Content:</h3>
         <p>{post.content}</p>
+        {post.pdfUrl && <PdfReader pdfUrl={post.pdfUrl}/>}
         <div className={styles.buttonContainer}>
           <DeleteButton postId={post.id} onDelete={() => {
             onDelete(post)

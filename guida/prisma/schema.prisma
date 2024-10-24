@@ -32,6 +32,7 @@ model Post {
   readers   User[]   @relation("UserReadingList")
   roleId    Int?
   role      Role?    @relation(fields: [roleId], references: [id], name: "PostRole")
+  pdfUrl    String?
 }
 
 model Role {

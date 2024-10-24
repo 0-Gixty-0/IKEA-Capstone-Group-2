@@ -12,6 +12,7 @@ export const usePostForm = (
   const { submitPost, loading, error, success, result } = useSubmitPost();
   const [title, setTitle] = useState<string>(post ? post.title : "");
   const [content, setContent] = useState<string>(post ? post.content : "");
+  const [pdfUrl, setPdfUrl] = useState<string>(post ? post.pdfUrl : "");
   const [published, setPublished] = useState<boolean>(
     post ? post.published : false,
   );
@@ -32,6 +33,7 @@ export const usePostForm = (
       setTitle(post.title);
       setContent(post.content);
       setPublished(post.published);
+      setPdfUrl(post.pdfUrl);
     }
   }, [post]);
 
@@ -72,6 +74,7 @@ export const usePostForm = (
         authorId: post?.authorId || null,
         published,
         roles: selectedRoles, // Include selected roles in the post data
+        pdfUrl,
         roleId: selectedAuthorRole !== undefined ? selectedAuthorRole : null,
       };
       console.log("selectedAuthorRole" + selectedAuthorRole);
@@ -82,6 +85,8 @@ export const usePostForm = (
   return {
     title,
     setTitle,
+    pdfUrl,
+    setPdfUrl,
     content,
     setContent,
     published,

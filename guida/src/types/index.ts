@@ -9,6 +9,7 @@ export interface Post {
   content: string;
   published: boolean;
   authorId: number;
+  pdfUrl: string;
   roleId: number;
 }
 
@@ -36,6 +37,7 @@ export interface SubmittablePost {
   content: string | null;
   published: boolean;
   authorId: number | null;
+  pdfUrl: string;
   roles: number[];
   roleId: number | null;
 }
