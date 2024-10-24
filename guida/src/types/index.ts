@@ -9,7 +9,7 @@ export interface Post {
   content: string;
   published: boolean;
   authorId: number;
-  tags: string[];
+  tags: {id: number, name: string}[];
   pdfUrl: string;
 }
 

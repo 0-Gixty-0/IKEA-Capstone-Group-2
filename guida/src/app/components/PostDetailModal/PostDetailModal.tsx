@@ -38,21 +38,21 @@ export interface IPostDetailModal {
  * @constructor
  */
 const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailModal) => {
-  const [showEditPostForm, setShowEditPostForm] = useState<boolean>(false)
+    const [showEditPostForm, setShowEditPostForm] = useState<boolean>(false)
 
-  const handleEditClick = () => {
+    const handleEditClick = () => {
     setShowEditPostForm(true)
-  }
+    }
 
-  const [isAddToReadingListModalOpen, setIsAddToReadingListModalOpen] = useState(false);
+    const [isAddToReadingListModalOpen, setIsAddToReadingListModalOpen] = useState(false);
 
-  const handleOpenAddToReadingListModal = () => {
+    const handleOpenAddToReadingListModal = () => {
     setIsAddToReadingListModalOpen(true);
-  };
+    };
 
-  const handleCloseAddToReadingListModal = () => {
+    const handleCloseAddToReadingListModal = () => {
     setIsAddToReadingListModalOpen(false);
-  };
+    };
 
     const [tags, setTags] = useState<string[]>([]); // State to hold tag names
     const [loading, setLoading] = useState(true); // State to manage loading status
@@ -63,7 +63,7 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
             setLoading(true); // Set loading to true before fetching
             try {
                 // Fetch tags for the given postId
-                const fetchedTags = await fetchTagsForPost(postId);
+                const fetchedTags = await fetchTagsForPost(post.id);
                 setTags(fetchedTags.map((tag: { name: string }) => tag.name)); // Assuming 'name' is the string property of 'Tag'
             } catch (err) {
                 if (err instanceof Error) {
@@ -76,12 +76,12 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
             }
         };
 
-        if (postId) {
+        if (post.id) {
             fetchTags(); // Call the fetchTags function if postId is defined
         }
-    }, [postId]); // Re-run
+    }, [post.id]); // Re-run
 
-  return (
+    return (
     <div id={styles.modalOverlay}>
       {isAddToReadingListModalOpen && (
         <AddToReadingListModal
@@ -135,7 +135,7 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
           )}
       </div>
     </div>
-  );
-};
+    );
+    };
 
 export default PostDetailModal;
