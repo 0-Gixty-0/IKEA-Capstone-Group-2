@@ -59,6 +59,20 @@
   cursor: pointer;
 }
 
+.addToReadingListButton {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.addToReadingListButton:hover {
+  background-color: #45a049;
+}
+
 .buttonContainer {
   display: flex;
   flex-direction: row;

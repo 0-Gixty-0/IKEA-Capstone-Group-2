@@ -1,8 +1,10 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styles from "./PostDetailModal.module.css";
 import DeleteButton from "../DeleteButton";
 import {Post} from "@/types";
 import ReadButton from "../ReadButton";
+import AddToReadingListModal from "../AddToReadingListModal/AddToReadingListModal";
+import { ModalProps } from "@/types";
 import PostForm from "@/app/components/PostForm/PostForm";
 import { useAuthorInPosts } from "@/hooks/useAuthorInPosts";
 
@@ -41,8 +43,24 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
     setShowEditPostForm(true)
   }
 
+  const [isAddToReadingListModalOpen, setIsAddToReadingListModalOpen] = useState(false);
+
+  const handleOpenAddToReadingListModal = () => {
+    setIsAddToReadingListModalOpen(true);
+  };
+
+  const handleCloseAddToReadingListModal = () => {
+    setIsAddToReadingListModalOpen(false);
+  };
+
   return (
     <div id={styles.modalOverlay}>
+      {isAddToReadingListModalOpen && (
+        <AddToReadingListModal
+          postId={post.id}
+          onClose={handleCloseAddToReadingListModal}
+        />
+      )}
       {showEditPostForm && <PostForm
               post={post}
               submitText={'Update Post'}
@@ -64,6 +82,7 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
           }}/>{" "}
           <button onClick={handleEditClick}>Edit Post</button>
           <ReadButton post={post} onRead={onRead}/>{" "}
+          <button onClick={handleOpenAddToReadingListModal}>Add to Reading List</button>
         </div>
       </div>
     </div>
