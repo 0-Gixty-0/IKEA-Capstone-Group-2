@@ -20,3 +20,19 @@
 .postContainer ul {
   width: 80%;
 }
+
+.buttonContainer{
+  display: flex;
+  justify-content: flex-end;
+  width: 80%;
+  margin-top: 2rem;
+}
+
+.buttonContainer button{
+  background-color: #FFDB01;
+  border: none;
+  font-size: 1.1rem;
+  padding: 0.9rem 1.3rem;
+  border-radius: 0.7rem;
+  cursor: pointer;
+}

@@ -12,6 +12,7 @@
     "test:watch": "jest --watchAll"
   },
   "dependencies": {
+    "@next/font": "^14.2.15",
     "@prisma/client": "^5.20.0",
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^2.4.3",

@@ -8,7 +8,6 @@ import PostList from "@/app/components/PostList/PostList";
 import SkeletonList from "@/app/components/SkeletonList/SkeletonList";
 import { usePostManagement } from "@/hooks/usePostManagement";
 
-
 const HomePage: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
 
@@ -31,8 +30,9 @@ const HomePage: React.FC = () => {
     handleSuccess,
     handlePostRead,
     readingList,
-  } = usePostManagement('/api/posts');
-
+    loadingReadingList,
+    errorReadingList,
+  } = usePostManagement("/api/posts");
 
   if (!isClient) {
     return null; // or a loading spinner
@@ -42,8 +42,13 @@ const HomePage: React.FC = () => {
     <div className={styles.fullScreen}>
       <div className={styles.postContainer}>
         <h1>Reading list</h1>
-        {loading ? (
+        <div className={styles.buttonContainer}>
+          <button onClick={handleCreatePost}>Create New Post</button>
+        </div>
+        {loadingReadingList ? (
           <SkeletonList />
+        ) : errorReadingList ? (
+          <div>Error: {errorReadingList}</div>
         ) : readingList.length === 0 ? (
           <div>All posts read! Good job!</div>
         ) : (
@@ -51,7 +56,7 @@ const HomePage: React.FC = () => {
         )}
         <h1>Suggested posts</h1>
         {error && <div>Error: {error}</div>}
-        <button onClick={handleCreatePost}>Create New Post</button>
+
         {loading ? (
           <SkeletonList />
         ) : posts.length === 0 ? (
