@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/db";
 import bcrypt from "bcryptjs";
 import {UserRole} from "@/types";
+import {User} from "next-auth";
 
 function isUserRole(value: any): value is UserRole {
     return Object.values(UserRole).includes(value);
@@ -69,15 +70,22 @@ export const authConfig = {
         })],
     callbacks: {
         async jwt({ token, user }) {
-            if (user && user.id) {
-                token.id = user.id
+            if (user) {
+                token.id = <string>user.id
+                token.name = user.name
+                token.username = user.username
+                token.email = user.email
                 token.roles = user.roles // Store user role in the JWT token
             }
             return token;
         },
         async session({ session, token }) {
-            session.user.id = token.id
-            session.user.roles = token.roles; // Attach user role to session
+            session.user.id = token.id;
+            session.user.name = token.name;
+            session.user.username = token.username;
+            session.user.email = token.email ? token.email : ''
+            session.user.roles = token.roles // Attach user role to session
+
             return session;
         },
     },

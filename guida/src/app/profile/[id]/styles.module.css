@@ -1,0 +1,26 @@
+.container {
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 30px;
+}
+
+.feedContainer {
+    display: flex;
+    width: 40%;
+    justify-content: space-around;
+}
+
+.preloaderContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Gray with 50% transparency */
+    z-index: 1002;
+}

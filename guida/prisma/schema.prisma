@@ -30,6 +30,7 @@ model Post {
   updatedAt DateTime @updatedAt
   author    User     @relation(fields: [authorId], references: [id], name: "UserPosts")
   readers   User[]   @relation("UserReadingList")
+  pdfUrl    String?
   tags      Tag[]
 }
 
