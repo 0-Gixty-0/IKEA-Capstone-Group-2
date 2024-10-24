@@ -9,12 +9,12 @@ export const useAddToReadingList = (postId: number, onClose: () => void) => {
     setError(null);
 
     try {
-      const response = await fetch(`/api/posts`, {
+      const response = await fetch('/api/posts', {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ postId, roles: selectedRoles }),
+        body: JSON.stringify({ id: postId, roles: selectedRoles }),
       });
 
       if (!response.ok) {
