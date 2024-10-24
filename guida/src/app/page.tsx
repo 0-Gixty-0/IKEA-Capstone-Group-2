@@ -7,6 +7,8 @@ import {Post} from "@/types";
 import NewPostButton from "@/app/components/NewPostButton/NewPostButton";
 import {useFetchPosts} from "@/hooks/useFetchPosts";
 
+import { useAuthorInPosts } from "@/hooks/useAuthorInPosts";
+import Preloader from "./components/Preloader/Preloader";
 
 const HomePage: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
@@ -27,6 +29,7 @@ const HomePage: React.FC = () => {
       return
     }
   }, [loadingSuggestedPosts]);
+
 
   if (!isClient) {
     return null; // or a loading spinner

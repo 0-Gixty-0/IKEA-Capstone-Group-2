@@ -37,6 +37,8 @@ export interface IPostDetailModal {
 const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailModal) => {
   const [showEditPostForm, setShowEditPostForm] = useState<boolean>(false)
 
+  const {authorAndRole, loading} = useAuthorInPosts(post);
+  
   const handleEditClick = () => {
     setShowEditPostForm(true)
   }
@@ -70,6 +72,7 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
           &times;
         </button>
         <h2>{post.title}</h2>
+        <h3>Author: {loading ? "Loading" : authorAndRole}</h3>
         <hr/>
         <h3>Content:</h3>
         <p>{post.content}</p>

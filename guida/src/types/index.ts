@@ -10,6 +10,7 @@ export interface Post {
   published: boolean;
   authorId: number;
   pdfUrl: string;
+  roleId: number;
 }
 
 /**
@@ -38,6 +39,7 @@ export interface SubmittablePost {
   authorId: number | null;
   pdfUrl: string;
   roles: number[];
+  roleId: number | null;
 }
 
 export interface FetchedUser {

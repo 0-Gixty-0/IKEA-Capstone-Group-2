@@ -11,6 +11,7 @@ interface PutRequestPost {
   published: boolean;
   pdfUrl: string;
   roles: number[]; // Use number[] for role IDs
+  roleId: number | null;
 }
 
 interface PostRequestPost {
@@ -20,6 +21,7 @@ interface PostRequestPost {
   authorId: number | null;
   pdfUrl: string;
   roles: number[]; // Use number[] for role IDs
+  roleId: number | null;
 }
 
 /**
@@ -104,16 +106,15 @@ export async function PUT(request: Request) {
   try {
     const session = await auth();
     if (session) {
-      const { id, title, content, published, roles, pdfUrl }: PutRequestPost = await request.json();
-
+      const { id, title, content, published, roles, pdfUrl, roleId}: PutRequestPost = await request.json();
       if (!id) {
         return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
       }
 
-      // Update the post in the database
+      // Update the post in the databases
       const updatedPost = await prisma.post.update({
         where: { id: Number(id) },
-        data: { title, content, published, pdfUrl },
+        data: { title, content, published, pdfUrl, roleId },
       });
 
       // Retrieve users with the selected roles
@@ -173,19 +174,31 @@ export async function POST(request: Request) {
     const session = await auth();
     if (session) {
       const post: PostRequestPost = await request.json(); // Parse the request body
-
+      console.log(post);
       // Create the post in the database
-      const createdPost = await prisma.post.create({
-        data: {
-          title: post.title,
-          content: post.content,
-          published: post.published,
-          author: {
-            connect: { id: Number(session.user.id) },
-          },
-          pdfUrl: post.pdfUrl,
+      const data: any = {
+        title: post.title,
+        content: post.content,
+        published: post.published,
+        author: {
+          connect: { id: Number(session.user.id) },
         },
-      });
+        pdfUrl: post.pdfUrl,
+        role: null
+      }
+
+      if (post.roleId) {
+        data.role = {
+          connect: { id: post.roleId },
+        };
+      }
+
+
+      const createdPost = await prisma.post.create({ data });
+
+  
+
+      
 
 
       // Retrieve users with the selected roles
