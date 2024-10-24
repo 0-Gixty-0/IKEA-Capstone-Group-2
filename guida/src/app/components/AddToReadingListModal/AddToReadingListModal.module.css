@@ -1,0 +1,60 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #323232;
+  padding: 2rem;
+  width: 80%;
+  border-radius: 0.5rem;
+  position: relative;
+  max-width: 31.25rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1); /* 0 4px 8px */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: white;
+}
+
+.error {
+  color: red;
+  margin-top: 0.625rem;
+}
+
+.heading {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  color: white;
+}
+
+.addButton {
+  background-color: #FFDB01;
+  color: black;
+  width: 100%;
+  height: 3rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin-top: 3rem;
+  font-size: 1.1rem;
+}
