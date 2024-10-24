@@ -18,7 +18,7 @@ const PostItem: React.FC<ClickablePostProps> = ({
         handlePostClick({ id, title, content, published, authorId })
       }
     >
-      <div className={styles.postContent}>
+      <div id={styles.postContent}>
         <h2>{title}</h2>
         <p>{content}</p>
       </div>

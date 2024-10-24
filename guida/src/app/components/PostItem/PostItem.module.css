@@ -8,19 +8,20 @@
   width: 100%;
   height: 100px;
 }
-.postContent h2 {
+#postContent h2 {
   margin: 0;
   font-size: 1rem;
 }
-.postContent p {
+#postContent p {
   margin: 0;
   font-size: 0.7rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.postContent {
+#postContent {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  width: auto;
 }
