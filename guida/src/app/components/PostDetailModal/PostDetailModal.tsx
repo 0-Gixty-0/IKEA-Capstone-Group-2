@@ -52,6 +52,12 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
 
   return (
     <div id={styles.modalOverlay}>
+      {isAddToReadingListModalOpen && (
+        <AddToReadingListModal
+          postId={post.id}
+          onClose={handleCloseAddToReadingListModal}
+        />
+      )}
       {showEditPostForm && <PostForm
               post={post}
               submitText={'Update Post'}
@@ -72,6 +78,7 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
           }}/>{" "}
           <button onClick={handleEditClick}>Edit Post</button>
           <ReadButton post={post} onRead={onRead}/>{" "}
+          <button onClick={handleOpenAddToReadingListModal}>Add to Reading List</button>
         </div>
       </div>
     </div>

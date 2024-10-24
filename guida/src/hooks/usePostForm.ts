@@ -4,8 +4,8 @@ import { useSubmitPost } from "@/hooks/useSubmitPost";
 import { useFetchRoles } from "@/hooks/useFetchRoles";
 
 export const usePostForm = (
-  post?: Post,
-  onSuccess?: (post: Post) => void,
+  post: Post,
+  onSuccess: (post: Post) => void,
 ) => {
   const { submitPost, loading, error, success, result } = useSubmitPost();
   const [title, setTitle] = useState<string>(post ? post.title : "");
@@ -29,10 +29,11 @@ export const usePostForm = (
   }, [post]);
 
   useEffect(() => {
-    if (success && result && onSuccess) {
+    if (success && result) {
+      console.log(result.post)
       onSuccess(result.post);
     }
-  }, [success, result, onSuccess]);
+  }, [success, result]);
 
   const validateFields = () => {
     let isValid = true;
