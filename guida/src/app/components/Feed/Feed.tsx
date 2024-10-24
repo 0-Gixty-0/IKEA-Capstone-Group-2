@@ -50,11 +50,13 @@ export default function Feed({title, loadingPosts, error, posts, emptyMessage}: 
             </PostDetailModal>
             }
             <h2 id={styles.feedTitle}>{title}</h2>
-            <PostSearchBar
-                entries={posts}
-                setEntries={setDisplayedPosts}
-                setShowNoSearchResults={setShowNoSearchResults}>
-            </PostSearchBar>
+            {(displayedPosts.length !== 0 || showNoSearchResults) &&
+                <PostSearchBar
+                    entries={posts}
+                    setEntries={setDisplayedPosts}
+                    setShowNoSearchResults={setShowNoSearchResults}>
+                </PostSearchBar>
+            }
             {loadingPosts
                 ? (<SkeletonList></SkeletonList>)
                 : (error)
