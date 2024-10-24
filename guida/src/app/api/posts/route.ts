@@ -2,7 +2,7 @@
 import prisma from "@/db";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { SubmittablePost, UserRole } from "@/types";
+import { UserRole } from "@/types";
 
 interface PutRequestPost {
   id: number;
@@ -34,7 +34,6 @@ export async function GET(request: Request) {
             const postId = searchParams.get('id')
             const authorId = Number(searchParams.get('authorId'))
             const published = searchParams.get('published')
-            const pdfUrl = searchParams.get('pdfUrl')
 
       if (postId) {
         const post = await prisma.post.findUnique({
@@ -72,6 +71,7 @@ export async function GET(request: Request) {
       const posts = await prisma.post.findMany({
         where: Object.keys(where).length ? where : undefined,
       });
+      console.log('route', posts)
       return NextResponse.json(
         {
           message: `Successfully retrieved ${posts.length} posts`,
