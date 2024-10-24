@@ -2,13 +2,14 @@
 import prisma from "@/db";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { SubmittablePost, UserRole } from "@/types";
+import { UserRole } from "@/types";
 
 interface PutRequestPost {
   id: number;
   title: string;
   content: string;
   published: boolean;
+  pdfUrl: string;
   roles: number[]; // Use number[] for role IDs
 }
 
@@ -17,6 +18,7 @@ interface PostRequestPost {
   content: string;
   published: boolean;
   authorId: number | null;
+  pdfUrl: string;
   roles: number[]; // Use number[] for role IDs
 }
 
@@ -29,11 +31,11 @@ export async function GET(request: Request) {
   try {
     const session = await auth();
 
-    if (session) {
-      const { searchParams } = new URL(request.url);
-      const postId = searchParams.get("id");
-      const authorId = Number(searchParams.get("authorId"));
-      const published = searchParams.get("published");
+        if (session) {
+            const { searchParams } = new URL(request.url)
+            const postId = searchParams.get('id')
+            const authorId = Number(searchParams.get('authorId'))
+            const published = searchParams.get('published')
 
       if (postId) {
         const post = await prisma.post.findUnique({
@@ -102,7 +104,7 @@ export async function PUT(request: Request) {
   try {
     const session = await auth();
     if (session) {
-      const { id, title, content, published, roles }: PutRequestPost = await request.json();
+      const { id, title, content, published, roles, pdfUrl }: PutRequestPost = await request.json();
 
       if (!id) {
         return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
@@ -111,7 +113,7 @@ export async function PUT(request: Request) {
       // Update the post in the database
       const updatedPost = await prisma.post.update({
         where: { id: Number(id) },
-        data: { title, content, published },
+        data: { title, content, published, pdfUrl },
       });
 
       // Retrieve users with the selected roles
@@ -181,8 +183,10 @@ export async function POST(request: Request) {
           author: {
             connect: { id: Number(session.user.id) },
           },
+          pdfUrl: post.pdfUrl,
         },
       });
+
 
       // Retrieve users with the selected roles
       const usersWithSelectedRoles = await prisma.user.findMany({

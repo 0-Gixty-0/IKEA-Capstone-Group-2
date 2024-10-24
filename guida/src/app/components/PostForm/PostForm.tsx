@@ -9,6 +9,8 @@ const PostForm: React.FC<PostFormProps> = ({ post, submitText, onSuccess, onClos
   const {
     title,
     setTitle,
+    pdfUrl,
+    setPdfUrl,
     content,
     setContent,
     published,
@@ -37,7 +39,8 @@ const PostForm: React.FC<PostFormProps> = ({ post, submitText, onSuccess, onClos
         <form onSubmit={handleFormSubmit} className={styles.form}>
           <div className={styles.contentForm}>
             <div className={styles.contentFormLeft}>
-              <div className={styles.postFormElement}>
+
+              <div className={styles.postFormElement}> {/*Add title box*/}
                 <label>
                   Title<span className={styles.asterisk}>*</span>
                 </label>
@@ -48,6 +51,18 @@ const PostForm: React.FC<PostFormProps> = ({ post, submitText, onSuccess, onClos
                 />
                 {titleError && <p className={styles.error}>{titleError}</p>}
               </div>
+
+              <div className={styles.postFormElement}> {/*Attach file box*/}
+                <label>
+                  Attach file<span className={styles.asterisk}>*</span>
+                </label>
+                <input
+                  type="text"
+                  value={pdfUrl}
+                  onChange={(e) => setPdfUrl(e.target.value)}
+                />
+              </div>
+
               {!post && ( // Conditionally render the dropdown
                 <div className={styles.postFormElement}>
                   <label>
