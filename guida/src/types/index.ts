@@ -38,6 +38,17 @@ export interface SubmittablePost {
   roles: number[];
 }
 
+export interface FetchedUser {
+  id: number | null;
+  email: string;
+  username: string;
+  password: string | null;
+  name: string | null;
+  createdAt: string;
+  updatedAt: string | null;
+  roles: UserRole[];
+}
+
 // User-related interfaces
 
 /**
