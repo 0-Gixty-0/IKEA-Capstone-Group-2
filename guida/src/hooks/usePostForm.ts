@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Post, SubmittablePost } from "@/types";
 import { useSubmitPost } from "@/hooks/useSubmitPost";
 import { useFetchRoles } from "@/hooks/useFetchRoles";
+import {useFetchTags} from "@/hooks/useFetchTags";
 
 export const usePostForm = (
   post: Post,
@@ -14,9 +15,10 @@ export const usePostForm = (
   const [published, setPublished] = useState<boolean>(
     post ? post.published : false,
   );
+  const [selectedTags, setSelectedTags] = useState<number[]>([])
   const [selectedRoles, setSelectedRoles] = useState<number[]>([]); // Use number[] for role IDs
   const { roles, error: rolesError } = useFetchRoles();
-
+  const { tags, error: tagsError } = useFetchTags()
   const [titleError, setTitleError] = useState("");
   const [contentError, setContentError] = useState("");
   const [rolesErrorState, setRolesErrorState] = useState("");
@@ -27,6 +29,7 @@ export const usePostForm = (
       setContent(post.content);
       setPublished(post.published);
       setPdfUrl(post.pdfUrl);
+      setSelectedTags(post.tags.map((tag) => {return tag.id}))
     }
   }, [post]);
 
@@ -82,8 +85,11 @@ export const usePostForm = (
     setContent,
     published,
     setPublished,
+    tags,
     selectedRoles,
     setSelectedRoles,
+    selectedTags,
+    setSelectedTags,
     handleFormSubmit,
     loading,
     error,

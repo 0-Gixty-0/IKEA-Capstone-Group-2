@@ -9,17 +9,19 @@ interface PutRequestPost {
   title: string;
   content: string;
   published: boolean;
+  tags: string[];
   pdfUrl: string;
   roles: number[]; // Use number[] for role IDs
 }
 
 interface PostRequestPost {
-  title: string;
-  content: string;
-  published: boolean;
-  authorId: number | null;
-  pdfUrl: string;
-  roles: number[]; // Use number[] for role IDs
+    title: string;
+    content: string;
+    published: boolean;
+    authorId: number | null;
+    tags: string[] | null;
+    pdfUrl: string;
+    roles: number[];
 }
 
 /**
@@ -36,6 +38,7 @@ export async function GET(request: Request) {
             const postId = searchParams.get('id')
             const authorId = Number(searchParams.get('authorId'))
             const published = searchParams.get('published')
+            const tags = searchParams.get('tags')
 
       if (postId) {
         const post = await prisma.post.findUnique({
@@ -174,44 +177,49 @@ export async function POST(request: Request) {
     if (session) {
       const post: PostRequestPost = await request.json(); // Parse the request body
 
-      // Create the post in the database
-      const createdPost = await prisma.post.create({
-        data: {
-          title: post.title,
-          content: post.content,
-          published: post.published,
-          author: {
-            connect: { id: Number(session.user.id) },
-          },
-          pdfUrl: post.pdfUrl,
-        },
-      });
+            // Create the post in the database
+            const createdPost = await prisma.post.create({
+                data: {
+                    title: post.title,
+                    content: post.content,
+                    published: post.published,
+                    author: {
+                        connect: { id: Number(session.user.id) },
+                    },
+                    pdfUrl: post.pdfUrl,
+                    tags: {
+                        connectOrCreate: post.tags ? post.tags.map((tagName: string) => ({
+                            where: { name: tagName },  // Make sure 'name' is correct based on your schema
+                            create: { name: tagName },  // The name must be created as well
+                        })) : [],
+                    },
+                } // The fields to update
+            });
 
-
-      // Retrieve users with the selected roles
-      const usersWithSelectedRoles = await prisma.user.findMany({
-        where: {
-          roles: {
-            some: {
-              id: {
-                in: post.roles, // Use role IDs
-              },
+        // Retrieve users with the selected roles
+        const usersWithSelectedRoles = await prisma.user.findMany({
+            where: {
+                roles: {
+                    some: {
+                        id: {
+                            in: post.roles, // Use role IDs
+                        },
+                    },
+                },
             },
-          },
-        },
-      });
-
-      // Add the post to the reading list of users with the selected roles
-      for (const user of usersWithSelectedRoles) {
-        await prisma.user.update({
-          where: { id: user.id },
-          data: {
-            readingList: {
-              connect: { id: createdPost.id },
-            },
-          },
         });
-      }
+
+        // Add the post to the reading list of users with the selected roles
+        for (const user of usersWithSelectedRoles) {
+            await prisma.user.update({
+                where: { id: user.id },
+                data: {
+                    readingList: {
+                        connect: { id: createdPost.id },
+                    },
+                },
+            });
+        }
 
       return NextResponse.json(
         {
