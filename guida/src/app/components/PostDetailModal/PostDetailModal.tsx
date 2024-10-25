@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+"use client";
+
+import React, {useState } from "react";
 import styles from "./PostDetailModal.module.css";
 import DeleteButton from "../DeleteButton";
 import {Post} from "@/types";
 import ReadButton from "../ReadButton";
 import AddToReadingListModal from "../AddToReadingListModal/AddToReadingListModal";
-import { ModalProps } from "@/types";
 import PostForm from "@/app/components/PostForm/PostForm";
 import PdfReader from "../PdfReader/PdfReader";
 
@@ -35,23 +36,23 @@ export interface IPostDetailModal {
  * @constructor
  */
 const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailModal) => {
-  const [showEditPostForm, setShowEditPostForm] = useState<boolean>(false)
+    const [showEditPostForm, setShowEditPostForm] = useState<boolean>(false)
 
-  const handleEditClick = () => {
+    const handleEditClick = () => {
     setShowEditPostForm(true)
-  }
+    }
 
-  const [isAddToReadingListModalOpen, setIsAddToReadingListModalOpen] = useState(false);
+    const [isAddToReadingListModalOpen, setIsAddToReadingListModalOpen] = useState(false);
 
-  const handleOpenAddToReadingListModal = () => {
+    const handleOpenAddToReadingListModal = () => {
     setIsAddToReadingListModalOpen(true);
-  };
+    };
 
-  const handleCloseAddToReadingListModal = () => {
+    const handleCloseAddToReadingListModal = () => {
     setIsAddToReadingListModalOpen(false);
-  };
+    };
 
-  return (
+    return (
     <div id={styles.modalOverlay}>
       {isAddToReadingListModalOpen && (
         <AddToReadingListModal
@@ -84,7 +85,7 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
         </div>
       </div>
     </div>
-  );
-};
+    );
+    };
 
 export default PostDetailModal;

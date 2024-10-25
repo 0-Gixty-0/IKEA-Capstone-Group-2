@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { Post, SubmittablePost } from "@/types";
 import { useSubmitPost } from "@/hooks/useSubmitPost";
 import { useFetchRoles } from "@/hooks/useFetchRoles";
+import {useFetchTags} from "@/hooks/useFetchTags";
 
 export const usePostForm = (
-  post: Post,
-  onSuccess: (post: Post) => void,
+    onSuccess: (post: Post) => void,
+  post?: Post,
 ) => {
   const { submitPost, loading, error, success, result } = useSubmitPost();
   const [title, setTitle] = useState<string>(post ? post.title : "");
@@ -14,9 +15,10 @@ export const usePostForm = (
   const [published, setPublished] = useState<boolean>(
     post ? post.published : false,
   );
+  const [selectedTags, setSelectedTags] = useState<number[]>([])
   const [selectedRoles, setSelectedRoles] = useState<number[]>([]); // Use number[] for role IDs
   const { roles, error: rolesError } = useFetchRoles();
-
+  const { tags, error: tagsError } = useFetchTags()
   const [titleError, setTitleError] = useState("");
   const [contentError, setContentError] = useState("");
   const [rolesErrorState, setRolesErrorState] = useState("");
@@ -27,12 +29,12 @@ export const usePostForm = (
       setContent(post.content);
       setPublished(post.published);
       setPdfUrl(post.pdfUrl);
+      setSelectedTags(post.tags.map((tag) => {return tag.id}))
     }
   }, [post]);
 
   useEffect(() => {
     if (success && result) {
-      console.log(result.post)
       onSuccess(result.post);
     }
   }, [success, result]);
@@ -67,6 +69,7 @@ export const usePostForm = (
         authorId: post?.authorId || null,
         published,
         roles: selectedRoles, // Include selected roles in the post data
+        tags: selectedTags,
         pdfUrl,
       };
       submitPost(postToSubmit);
@@ -82,8 +85,11 @@ export const usePostForm = (
     setContent,
     published,
     setPublished,
+    tags,
     selectedRoles,
     setSelectedRoles,
+    selectedTags,
+    setSelectedTags,
     handleFormSubmit,
     loading,
     error,
