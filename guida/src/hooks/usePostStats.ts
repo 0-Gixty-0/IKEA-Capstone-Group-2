@@ -8,7 +8,7 @@ type Stats = {
     nonReadUsers: User[];
 }
 
-export const usePostStats = (postId: number, roles: number[]) => {
+export const usePostStats = (postId: number) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [stats, setStats] = useState<Stats | null>(null)
@@ -17,7 +17,11 @@ export const usePostStats = (postId: number, roles: number[]) => {
         setLoading(true)
         const createStats = async () => {
             try {
-                const response = await fetch(`/api/readingList/?postId=${postId}&roles=${roles}`);
+                const rolesResponse = await fetch(`/api/posts?id=${postId}&includeRoles=true`)
+                if (!rolesResponse.ok) throw new Error("Failed to fetch roles for post");
+                const rolesData = await rolesResponse.json()
+
+                const response = await fetch(`/api/readingList/?postId=${postId}&roles=${rolesData.roles}`);
                 if (!response.ok) throw new Error("Failed to fetch stats");
                 const data = await response.json();
                 const statsObject: Stats = {

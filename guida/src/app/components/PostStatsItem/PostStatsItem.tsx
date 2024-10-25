@@ -6,11 +6,11 @@ interface IPostStatsItem {
 }
 
 export default function PostStatsItem({post}: IPostStatsItem) {
-    const {} = usePostStats(post.id, [1])
+    const {stats, loading, error} = usePostStats(post.id)
 
     return (
         <li>
-            <h2>{post.title}</h2>
+            {!loading && <h2>{JSON.stringify(stats)}</h2>}
         </li>
     )
 }

@@ -3,6 +3,7 @@ import prisma from "@/db";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { UserRole } from "@/types";
+import {tupleExpression} from "@babel/types";
 
 interface PutRequestPost {
   id: number;
@@ -37,6 +38,33 @@ export async function GET(request: Request) {
             const authorId = Number(searchParams.get('authorId'))
             const published = searchParams.get('published')
             const assignerId = Number(searchParams.get('assignerId'))
+            const includeRoles = searchParams.get('includeRoles') === 'true'
+
+      if (postId && includeRoles) {
+        const post = await prisma.post.findUnique({
+          where: { id: Number(postId) },
+          include: {
+            roles: includeRoles,
+          },
+        });
+
+        if (post) {
+          return NextResponse.json(
+              {
+                message: `Successfully retrieved roles for post with id: ${postId}`,
+                roles: post.roles,
+              },
+              { status: 200 },
+          );
+        } else {
+          return NextResponse.json(
+              {
+                message: `Post with: ${postId} not found`,
+              },
+              { status: 200 },
+          );
+        }
+      }
 
       if (postId) {
         const post = await prisma.post.findUnique({
