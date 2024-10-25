@@ -12,6 +12,7 @@ interface PutRequestPost {
   tags: number[];
   pdfUrl: string;
   roles: number[];
+  roleId: number | null;
 }
 
 interface PostRequestPost {
@@ -22,6 +23,7 @@ interface PostRequestPost {
     tags: number[];
     pdfUrl: string;
     roles: number[];
+    roleId: number | null;
 }
 
 /**
@@ -109,13 +111,12 @@ export async function PUT(request: Request) {
   try {
     const session = await auth();
     if (session) {
-      const { id, title, content, published, roles, pdfUrl, tags }: PutRequestPost = await request.json();
-
+      const { id, title, content, published, roles, pdfUrl, tags, roleId}: PutRequestPost = await request.json();
       if (!id) {
         return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
       }
 
-      // Update the post in the database
+      // Update the post in the databases
       await prisma.post.update({
         where: { id: Number(id) },
         data: {
@@ -123,6 +124,7 @@ export async function PUT(request: Request) {
             content,
             published,
             pdfUrl,
+            roleId,
             tags: {
                 set: tags.map((tagId) => ({ id: tagId })), // Replaces existing tags with new tags
             },
@@ -194,24 +196,31 @@ export async function POST(request: Request) {
     if (session) {
       const post: PostRequestPost = await request.json(); // Parse the request body
 
-            // Create the post in the database
-            const createdPost = await prisma.post.create({
-                data: {
-                    title: post.title,
-                    content: post.content,
-                    published: post.published,
-                    author: {
-                        connect: { id: Number(session.user.id) },
-                    },
-                    pdfUrl: post.pdfUrl,
-                    tags: {
-                        connect: post.tags ? post.tags.map((tagId: number) => ({
-                            id: tagId
-                        })) : [],
-                    },
-                } // The fields to update
-            });
+      const data: any = {
+        title: post.title,
+        content: post.content,
+        published: post.published,
+        author: {
+          connect: { id: Number(session.user.id) },
+        },
+        pdfUrl: post.pdfUrl,
+        role: null,
+        tags: {
+          connect: post.tags ? post.tags.map((tagId: number) => ({
+              id: tagId
+          })) : [],
+      },
+      }
 
+      if (post.roleId) {
+        data.role = {
+          connect: { id: post.roleId },
+        };
+      }
+
+
+      const createdPost = await prisma.post.create({ data });
+    
         // Retrieve users with the selected roles
         const usersWithSelectedRoles = await prisma.user.findMany({
             where: {

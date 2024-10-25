@@ -8,6 +8,7 @@ import ReadButton from "../ReadButton";
 import AddToReadingListModal from "../AddToReadingListModal/AddToReadingListModal";
 import PostForm from "@/app/components/PostForm/PostForm";
 import PdfReader from "../PdfReader/PdfReader";
+import { useAuthorInPosts } from "@/hooks/useAuthorInPosts";
 
 /**
  * IPostDetailModal contains:
@@ -38,6 +39,8 @@ export interface IPostDetailModal {
 const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailModal) => {
     const [showEditPostForm, setShowEditPostForm] = useState<boolean>(false)
 
+    const {authorAndRole, loading} = useAuthorInPosts(post);
+  
     const handleEditClick = () => {
     setShowEditPostForm(true)
     }
@@ -73,6 +76,7 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
 
 
         <h2>{post.title}</h2>
+        <h3>Author: {loading ? "Loading" : authorAndRole}</h3>
 
         <div className={styles.contentContainer}>
 

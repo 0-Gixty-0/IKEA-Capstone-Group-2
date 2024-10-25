@@ -11,6 +11,7 @@ export interface Post {
   authorId: number;
   tags: {id: number, name: string}[];
   pdfUrl: string;
+  roleId: number;
 }
 
 /**
@@ -40,6 +41,7 @@ export interface SubmittablePost {
   tags: number[];
   pdfUrl: string;
   roles: number[];
+  roleId: number | null;
 }
 
 export interface FetchedUser {
