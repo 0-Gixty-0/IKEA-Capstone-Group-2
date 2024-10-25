@@ -8,6 +8,7 @@ import styles from './styles.module.css'
 import Feed from "@/app/components/Feed/Feed";
 import {useFetchPosts} from "@/hooks/useFetchPosts";
 import SkeletonList from "@/app/components/SkeletonList/SkeletonList";
+import PostStatsList from "@/app/components/PostStatsList/PostStatsList";
 
 export default function ({params}: { params: { id: string } }) {
     const { id } = params
@@ -29,7 +30,7 @@ export default function ({params}: { params: { id: string } }) {
                     <div className={styles.feedContainer}>
                         {loadingAuthoredPosts
                             ? (<SkeletonList></SkeletonList>)
-                            : (<div></div>)
+                            : (<PostStatsList posts={authoredPosts}/>)
                         }
                     </div>
                     <div className={styles.feedContainer}>

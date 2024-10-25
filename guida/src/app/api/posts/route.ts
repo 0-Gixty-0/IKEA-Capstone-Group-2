@@ -121,6 +121,11 @@ export async function PUT(request: Request) {
         data: { title, content, published, pdfUrl,
           ...(roles && roles.length > 0 && {
             assigner: { connect: { id: Number(session.user.id) } },
+          }),
+          ...(roles && roles.length > 0 && {
+            roles: {
+              set: roles.map((roleId) => ({ id: roleId })), // Replaces all roles with the new ones
+            },
           }),},
       });
 
@@ -192,6 +197,11 @@ export async function POST(request: Request) {
             connect: { id: Number(session.user.id) },
           },
           pdfUrl: post.pdfUrl,
+          ...(post.roles && post.roles.length > 0 && {
+            roles: {
+              connect: post.roles.map((roleId) => ({ id: roleId })), // Connects each role
+            },
+          }),
           ...(post.roles && {
             assigner: { connect: { id: Number(session.user.id) } },
           }),

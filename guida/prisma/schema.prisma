@@ -35,11 +35,13 @@ model Post {
   readers   User[]   @relation("UserReadingList")
   assigner  User?     @relation(fields: [assignerId], references: [id], name: "PostAssigners")
   pdfUrl    String?
+  roles     Role[]   @relation("PostRoles")
 }
 
 model Role {
   id Int @id @default(autoincrement())
   name String
   users User[]
+  posts Post[] @relation("PostRoles")
 }
 
