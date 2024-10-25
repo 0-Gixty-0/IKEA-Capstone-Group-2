@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 export function useFetchAuthorAndRoleOfPost(roleId: number | undefined, authorId: number | undefined) {
     const [author, setAuthor] = useState<string>("");
     const [role, setRole] = useState<string | undefined>("");
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         
@@ -33,10 +34,12 @@ export function useFetchAuthorAndRoleOfPost(roleId: number | undefined, authorId
             }
         
         }
+        setLoading(true);
         if (authorId) {
             fetchRoleNameAndAuthor(roleId, authorId); // Fetch role name on component mount or roleId change
-            console.log("Author and role: ", author + role)
+        
         }
+        setLoading(false)
     }, [roleId, authorId]);
-    return [author, role];
+    return {authorAndRole: [author, role], loading};
 }

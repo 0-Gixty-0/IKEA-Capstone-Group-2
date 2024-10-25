@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./PostItem.module.css";
 import { ClickablePostProps } from "@/types";
 import { useFetchAuthorAndRoleOfPost } from "@/hooks/useFetchAuthorAndRoleOfPost";
+import Preloader from "../Preloader/Preloader";
 
 const PostItem: React.FC<ClickablePostProps> = ({
   id,
@@ -14,7 +15,7 @@ const PostItem: React.FC<ClickablePostProps> = ({
   roleId,
   handlePostClick,
 }) => {
-  const [author, role] = useFetchAuthorAndRoleOfPost(roleId, authorId);
+  const {authorAndRole: [author, role], loading: authorRoleLoading } = useFetchAuthorAndRoleOfPost(roleId, authorId);
 
   return (
     <li
@@ -22,12 +23,12 @@ const PostItem: React.FC<ClickablePostProps> = ({
       onClick={() =>
         handlePostClick({ id, title, content, published, authorId, pdfUrl, roleId })
       }
-    >
-      <div className={styles.postContent}>
-        <h2>{title}</h2>
-        <h3>{!role ? author : role}</h3>
-        <p>{content}</p>
-      </div>
+    >{authorRoleLoading ? <Preloader /> : 
+    <div className={styles.postContent}>
+      <h2>{title}</h2>
+      <h3>{!role ? author : role}</h3>
+      <p>{content}</p>
+    </div>}
     </li>
   );
 };
