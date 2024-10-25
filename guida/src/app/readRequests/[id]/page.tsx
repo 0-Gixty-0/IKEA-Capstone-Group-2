@@ -14,7 +14,7 @@ export default function ({params}: { params: { id: string } }) {
     const { id } = params
     const session = useSession()
     const [showSignOut, setShowSignOut] = useState<boolean>(false)
-    const { posts: authoredPosts, loading: loadingAuthoredPosts, error: authoredPostsError } =
+    const { posts: assignedPosts, loading: loadingAssignedPosts, error: assignedPostsError } =
         useFetchPosts('/api/posts', {published: true, assignerId:Number(id)})
 
     if (session && session.data?.user?.id === id) {
@@ -27,18 +27,18 @@ export default function ({params}: { params: { id: string } }) {
                     userData={session.data.user}
                     isAuthUser={true}
                     setShowSignOut={setShowSignOut}></ProfileColumn>
-                    <div className={styles.feedContainer}>
-                        {loadingAuthoredPosts
+                    <div className={styles.statsContainer}>
+                        {loadingAssignedPosts
                             ? (<SkeletonList></SkeletonList>)
-                            : (<PostStatsList posts={authoredPosts}/>)
+                            : (<PostStatsList posts={assignedPosts}/>)
                         }
                     </div>
                     <div className={styles.feedContainer}>
                         <Feed
                             title={"Read Requested Posts"}
-                            loadingPosts={loadingAuthoredPosts}
-                            error={authoredPostsError}
-                            posts={authoredPosts}
+                            loadingPosts={loadingAssignedPosts}
+                            error={assignedPostsError}
+                            posts={assignedPosts}
                             emptyMessage={"You don't have any public posts!"}>
                         </Feed>
                     </div>

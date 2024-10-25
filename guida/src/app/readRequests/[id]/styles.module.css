@@ -8,6 +8,13 @@
 
 .feedContainer {
     display: flex;
-    width: 40%;
+    width: 50%;
     justify-content: space-around;
+}
+
+.statsContainer {
+    display: flex;
+    flex-direction: column;
+    padding-top: 88px;
+    width: 50%;
 }

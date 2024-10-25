@@ -18,9 +18,12 @@ export default function PostStatsItem({post}: IPostStatsItem) {
                 ? (<Preloader></Preloader>)
                 : (stats
                         ? (<div className={styles.statsContent}>
-                            <h2>Reading Progress</h2>
-                            <ProgressBar a={stats?.numRead} b={stats?.totalAssigned}/>
-                            </div>)
+                            <p>Total assigned: {stats.totalAssigned}</p>
+                            <p>Users Read: {stats.numRead}</p>
+                            <div className={styles.progressBarContainer}>
+                                <ProgressBar a={stats.numRead} b={stats.totalAssigned}/>
+                            </div>
+                        </div>)
                         : <div className={styles.statsContent}>
                             <h1>{error}</h1>
                         </div>
