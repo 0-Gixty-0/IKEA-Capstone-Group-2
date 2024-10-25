@@ -51,6 +51,7 @@ export interface FetchedUser {
   createdAt: string;
   updatedAt: string | null;
   roles: UserRole[];
+  profilePicture: string | null;
 }
 
 // User-related interfaces
