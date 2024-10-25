@@ -66,14 +66,15 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
               onSuccess={onEdit}/>
       }
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <h2>{post.title}</h2>
-
-
-        <div className={styles.contentContainer}>
-
         <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
+
+
+        <h2>{post.title}</h2>
+
+        <div className={styles.contentContainer}>
+
         <p>{post.content}</p>
 
         {post.pdfUrl &&<PdfReader pdfUrl={post.pdfUrl}/>}
