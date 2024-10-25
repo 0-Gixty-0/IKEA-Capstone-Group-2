@@ -18,6 +18,7 @@ model User {
   roles Role[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  profilePicture String?
 }
 
 model Post {
