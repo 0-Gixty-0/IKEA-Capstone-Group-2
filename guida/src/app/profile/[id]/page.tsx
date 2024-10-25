@@ -12,6 +12,7 @@ import {useFetchUser} from "@/hooks/useFetchUser";
 import AccessError from "@/app/components/AccessError/AccessError";
 import Feed from "@/app/components/Feed/Feed";
 import ProfileColumn from "@/app/components/ProfileColumn/ProfileColumn";
+import ProfilePicture from '@/app/components/ProfilePicture/ProfilePicture';
 
 /**
  * Profile page.

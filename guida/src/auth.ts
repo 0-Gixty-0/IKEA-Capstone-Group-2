@@ -59,7 +59,8 @@ export const authConfig = {
                             name: user.name,
                             username: user.username,
                             email: user.email,
-                            roles: userRoles
+                            roles: userRoles,
+                            profilePicture: user.profilePicture
                         }
                     }
                 }
@@ -76,6 +77,7 @@ export const authConfig = {
                 token.username = user.username
                 token.email = user.email
                 token.roles = user.roles // Store user role in the JWT token
+                token.profilePicture = user.profilePicture
             }
             return token;
         },
@@ -85,6 +87,7 @@ export const authConfig = {
             session.user.username = token.username;
             session.user.email = token.email ? token.email : ''
             session.user.roles = token.roles // Attach user role to session
+            session.user.profilePicture = token.profilePicture as string
 
             return session;
         },

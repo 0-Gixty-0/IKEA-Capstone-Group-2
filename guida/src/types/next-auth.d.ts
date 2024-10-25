@@ -14,6 +14,7 @@ declare module "next-auth" {
         username: string;
         email: string;
         roles: UserRole[];
+        profilePicture: string;
     }
 
     interface Session {

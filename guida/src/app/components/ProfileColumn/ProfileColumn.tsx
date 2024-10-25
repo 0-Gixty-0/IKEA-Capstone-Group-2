@@ -4,6 +4,7 @@ import {FetchedUser} from "@/types";
 import {User} from "next-auth";
 import {useSession} from "next-auth/react";
 import Preloader from "@/app/components/Preloader/Preloader";
+import ProfilePicture from "../ProfilePicture/ProfilePicture";
 
 /**
  * Props contains:
@@ -45,6 +46,8 @@ export default function ProfileColumn({userData, isAuthUser, setShowSignOut} : P
     useEffect(() => {
         if (session.status === 'authenticated' && session.data) {
             if (isAuthUser) {
+                console.log("TESTING");
+                console.log(session.data.user.profilePicture);
                 if (session.data.user.id === userData.id) {
                     setCorrectAuth(true)
                 } else {
@@ -56,12 +59,14 @@ export default function ProfileColumn({userData, isAuthUser, setShowSignOut} : P
             setLoadingSession(false)
         }
     }, [session]);
-
+    console.log("userData.profilePicture");
+    console.log(userData);
     if (correctAuth && !loadingSession) {
         return (
             <div className={styles.profileContainer}>
                 <div className={styles.basicInfoContainer}>
-                    <div className={styles.profilePicture}></div>
+                    
+                    {userData.profilePicture && <ProfilePicture imageUrl={userData.profilePicture}/>}
                     <div>
                         <h2>{userData.name}</h2>
                         <h3 id={styles.grayText}>{userData.username}</h3>
