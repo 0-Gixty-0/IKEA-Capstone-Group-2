@@ -5,3 +5,9 @@
     justify-content: flex-start;
     padding: 30px;
 }
+
+.feedContainer {
+    display: flex;
+    width: 40%;
+    justify-content: space-around;
+}
