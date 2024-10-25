@@ -8,16 +8,17 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  email       String   @unique
-  username    String   @unique
-  password    String
-  name        String?
-  posts       Post[]   @relation("UserPosts")
-  readingList Post[]   @relation("UserReadingList")
-  roles       Role[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  username String @unique
+  password String
+  name  String?
+  posts Post[] @relation("UserPosts")
+  readingList Post[] @relation("UserReadingList")
+  roles Role[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profilePicture String? @default("/icons/user_icon.png")
 }
 
 model Post {
@@ -33,6 +34,13 @@ model Post {
   roleId    Int?
   role      Role?    @relation(fields: [roleId], references: [id], name: "PostRole")
   pdfUrl    String?
+  tags      Tag[]
+}
+
+model Tag {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  posts Post[]
 }
 
 model Role {

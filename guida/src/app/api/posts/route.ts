@@ -1,5 +1,5 @@
 // src/app/api/posts/route.ts
-import prisma from "@/db";
+import  prisma from "@/db";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { UserRole } from "@/types";
@@ -9,19 +9,21 @@ interface PutRequestPost {
   title: string;
   content: string;
   published: boolean;
+  tags: number[];
   pdfUrl: string;
-  roles: number[]; // Use number[] for role IDs
+  roles: number[];
   roleId: number | null;
 }
 
 interface PostRequestPost {
-  title: string;
-  content: string;
-  published: boolean;
-  authorId: number | null;
-  pdfUrl: string;
-  roles: number[]; // Use number[] for role IDs
-  roleId: number | null;
+    title: string;
+    content: string;
+    published: boolean;
+    authorId: number | null;
+    tags: number[];
+    pdfUrl: string;
+    roles: number[];
+    roleId: number | null;
 }
 
 /**
@@ -33,11 +35,11 @@ export async function GET(request: Request) {
   try {
     const session = await auth();
 
-        if (session) {
-            const { searchParams } = new URL(request.url)
-            const postId = searchParams.get('id')
-            const authorId = Number(searchParams.get('authorId'))
-            const published = searchParams.get('published')
+    if (session) {
+        const { searchParams } = new URL(request.url)
+        const postId = searchParams.get('id')
+        const authorId = Number(searchParams.get('authorId'))
+        const published = searchParams.get('published')
 
       if (postId) {
         const post = await prisma.post.findUnique({
@@ -74,6 +76,9 @@ export async function GET(request: Request) {
 
       const posts = await prisma.post.findMany({
         where: Object.keys(where).length ? where : undefined,
+          include: {
+              tags: true, // Include tags associated with the post
+          },
       });
       return NextResponse.json(
         {
@@ -106,16 +111,32 @@ export async function PUT(request: Request) {
   try {
     const session = await auth();
     if (session) {
-      const { id, title, content, published, roles, pdfUrl, roleId}: PutRequestPost = await request.json();
+      const { id, title, content, published, roles, pdfUrl, tags, roleId}: PutRequestPost = await request.json();
       if (!id) {
         return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
       }
 
       // Update the post in the databases
-      const updatedPost = await prisma.post.update({
+      await prisma.post.update({
         where: { id: Number(id) },
-        data: { title, content, published, pdfUrl, roleId },
+        data: {
+            title,
+            content,
+            published,
+            pdfUrl,
+            roleId,
+            tags: {
+                set: tags.map((tagId) => ({ id: tagId })), // Replaces existing tags with new tags
+            },
+        },
       });
+
+        const updatedPostWithTags = await prisma.post.findUnique({
+            where: { id: Number(id) },
+            include: {
+                tags: true,
+            },
+        });
 
       // Retrieve users with the selected roles
       const usersWithSelectedRoles = await prisma.user.findMany({
@@ -145,7 +166,7 @@ export async function PUT(request: Request) {
       return NextResponse.json(
         {
           message: "Successfully updated post and added to reading lists",
-          post: updatedPost,
+          post: updatedPostWithTags,
         },
         { status: 200 }
       );
@@ -174,7 +195,7 @@ export async function POST(request: Request) {
     const session = await auth();
     if (session) {
       const post: PostRequestPost = await request.json(); // Parse the request body
-      // Create the post in the database
+
       const data: any = {
         title: post.title,
         content: post.content,
@@ -183,7 +204,12 @@ export async function POST(request: Request) {
           connect: { id: Number(session.user.id) },
         },
         pdfUrl: post.pdfUrl,
-        role: null
+        role: null,
+        tags: {
+          connect: post.tags ? post.tags.map((tagId: number) => ({
+              id: tagId
+          })) : [],
+      },
       }
 
       if (post.roleId) {
@@ -194,36 +220,31 @@ export async function POST(request: Request) {
 
 
       const createdPost = await prisma.post.create({ data });
-
-  
-
-      
-
-
-      // Retrieve users with the selected roles
-      const usersWithSelectedRoles = await prisma.user.findMany({
-        where: {
-          roles: {
-            some: {
-              id: {
-                in: post.roles, // Use role IDs
-              },
+    
+        // Retrieve users with the selected roles
+        const usersWithSelectedRoles = await prisma.user.findMany({
+            where: {
+                roles: {
+                    some: {
+                        id: {
+                            in: post.roles, // Use role IDs
+                        },
+                    },
+                },
             },
-          },
-        },
-      });
-
-      // Add the post to the reading list of users with the selected roles
-      for (const user of usersWithSelectedRoles) {
-        await prisma.user.update({
-          where: { id: user.id },
-          data: {
-            readingList: {
-              connect: { id: createdPost.id },
-            },
-          },
         });
-      }
+
+        // Add the post to the reading list of users with the selected roles
+        for (const user of usersWithSelectedRoles) {
+            await prisma.user.update({
+                where: { id: user.id },
+                data: {
+                    readingList: {
+                        connect: { id: createdPost.id },
+                    },
+                },
+            });
+        }
 
       return NextResponse.json(
         {

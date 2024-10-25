@@ -21,8 +21,10 @@
     -webkit-user-select: none;
     touch-action: manipulation;
     filter: drop-shadow(1px 1px);
+    transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .newPostButton:hover, .newPostButton:focus {
     background-color: #989802;
+    transform: scale(1.05);
 }

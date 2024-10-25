@@ -12,6 +12,7 @@ const PostItem: React.FC<ClickablePostProps> = ({
   published,
   authorId,
   pdfUrl,
+  tags,
   roleId,
   handlePostClick,
 }) => {
@@ -21,7 +22,7 @@ const PostItem: React.FC<ClickablePostProps> = ({
     <li
       className={styles.post}
       onClick={() =>
-        handlePostClick({ id, title, content, published, authorId, pdfUrl, roleId })
+        handlePostClick({ id, title, content, published, authorId, pdfUrl, tags, roleId })
       }
     >{authorRoleLoading ? <Preloader /> : 
     <div className={styles.postContent}>

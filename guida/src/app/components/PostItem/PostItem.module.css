@@ -9,8 +9,14 @@
   height: 100px;
   display: flex;
   align-items: center;
-
+  transition: background 0.3s ease, transform 0.3s ease;
 }
+
+.post:hover{
+  background: #838383;
+  transform: scale(1.05);
+}
+
 .postContent h2 {
   margin: 0;
   font-size: 1rem;

@@ -31,6 +31,7 @@ export async function GET(req: Request) {
           createdAt: true,
           updatedAt: true,
           roles: true,
+          profilePicture: true,
         };
       } else {
         selectStatement = {
@@ -39,6 +40,7 @@ export async function GET(req: Request) {
           name: true,
           createdAt: true,
           roles: true,
+          profilePicture: true,
         };
       }
 
