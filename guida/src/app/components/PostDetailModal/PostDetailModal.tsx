@@ -70,11 +70,18 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
         <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
+
+
         <h2>{post.title}</h2>
-        <hr/>
-        <h3>Content:</h3>
+
+        <div className={styles.contentContainer}>
+
         <p>{post.content}</p>
-        {post.pdfUrl && <PdfReader pdfUrl={post.pdfUrl}/>}
+
+        {post.pdfUrl &&<PdfReader pdfUrl={post.pdfUrl}/>}
+
+          </div>
+
         <div className={styles.buttonContainer}>
           <DeleteButton postId={post.id} onDelete={() => {
             onDelete(post)
