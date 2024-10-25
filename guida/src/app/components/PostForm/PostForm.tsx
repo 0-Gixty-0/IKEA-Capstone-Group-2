@@ -29,7 +29,7 @@ const PostForm: React.FC<PostFormProps> = ({ post, submitText, onSuccess, onClos
     titleError,
     contentError,
     rolesErrorState,
-  } = usePostForm(post, onSuccess);
+  } = usePostForm(onSuccess, post);
 
   return (
     <div className={styles.overlay}>

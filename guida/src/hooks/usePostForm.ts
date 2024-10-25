@@ -5,8 +5,8 @@ import { useFetchRoles } from "@/hooks/useFetchRoles";
 import {useFetchTags} from "@/hooks/useFetchTags";
 
 export const usePostForm = (
-  post: Post,
-  onSuccess: (post: Post) => void,
+    onSuccess: (post: Post) => void,
+  post?: Post,
 ) => {
   const { submitPost, loading, error, success, result } = useSubmitPost();
   const [title, setTitle] = useState<string>(post ? post.title : "");
@@ -35,7 +35,6 @@ export const usePostForm = (
 
   useEffect(() => {
     if (success && result) {
-      console.log(result.post)
       onSuccess(result.post);
     }
   }, [success, result]);

@@ -28,7 +28,11 @@ export async function GET(request: Request) {
             const user = await prisma.user.findUnique({
                 where: { id: userId },
                 include: {
-                    readingList: true, // Include the reading list in the response
+                    readingList: {
+                        include: {
+                            tags: true, // Include tags for each post in the reading list
+                        },
+                    },
                 },
             });
 
