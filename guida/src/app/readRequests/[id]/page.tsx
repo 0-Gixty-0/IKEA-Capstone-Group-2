@@ -14,7 +14,7 @@ export default function ({params}: { params: { id: string } }) {
     const session = useSession()
     const [showSignOut, setShowSignOut] = useState<boolean>(false)
     const { posts: authoredPosts, loading: loadingAuthoredPosts, error: authoredPostsError } =
-        useFetchPosts('/api/posts', {authorId: Number(id), published: true})
+        useFetchPosts('/api/posts', {published: true, assignerId:Number(id)})
 
     if (session && session.data?.user?.id === id) {
         return (

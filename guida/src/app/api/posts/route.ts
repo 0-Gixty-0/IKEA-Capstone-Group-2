@@ -36,6 +36,7 @@ export async function GET(request: Request) {
             const postId = searchParams.get('id')
             const authorId = Number(searchParams.get('authorId'))
             const published = searchParams.get('published')
+            const assignerId = Number(searchParams.get('assignerId'))
 
       if (postId) {
         const post = await prisma.post.findUnique({
@@ -61,6 +62,7 @@ export async function GET(request: Request) {
       const where: {
         authorId?: { equals: number };
         published?: { equals: boolean };
+        assignerId?: { equals: number };
       } = {};
 
       if (authorId) {
@@ -68,6 +70,9 @@ export async function GET(request: Request) {
       }
       if (published !== null) {
         where.published = { equals: published === "true" }; // Convert string to boolean
+      }
+      if (assignerId) {
+        where.assignerId = { equals: assignerId };
       }
 
       const posts = await prisma.post.findMany({
@@ -184,6 +189,9 @@ export async function POST(request: Request) {
             connect: { id: Number(session.user.id) },
           },
           pdfUrl: post.pdfUrl,
+          ...(post.roles && {
+            assigner: { connect: { id: Number(session.user.id) } },
+          }),
         },
       });
 

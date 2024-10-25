@@ -42,6 +42,8 @@ export const useFetchPosts = (apiUrl: string, params?: FetchPostsParams) => {
         if (params?.id) query.append("id", params.id.toString());
         if (params?.authorId)
           query.append("authorId", params.authorId.toString());
+        if (params?.assignerId)
+          query.append("assignerId", params.assignerId.toString());
         if (params?.published !== undefined)
           query.append("published", params.published.toString());
 

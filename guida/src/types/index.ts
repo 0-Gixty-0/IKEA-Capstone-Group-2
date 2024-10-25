@@ -117,6 +117,7 @@ export interface FetchPostsParams {
   id?: number;
   authorId?: number;
   published?: boolean;
+  assignerId?: number
 }
 
 // Form-related interfaces
