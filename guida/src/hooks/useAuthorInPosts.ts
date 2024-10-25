@@ -9,7 +9,7 @@ import { useFetchAuthorAndRoleOfPost } from './useFetchAuthorAndRoleOfPost';
  * @returns Author + role if role for that post exists
  */
 export const useAuthorInPosts = (clickedPost: Post | undefined) => {
-    const [author, role] = useFetchAuthorAndRoleOfPost(clickedPost?.roleId, clickedPost?.authorId);
+    const {authorAndRole: [author, role]} = useFetchAuthorAndRoleOfPost(clickedPost?.roleId, clickedPost?.authorId);
     const [authorAndRole, setAuthorAndRole] = useState<string | undefined>("")
     const [loading, setLoading] = useState<boolean>(true)
 
