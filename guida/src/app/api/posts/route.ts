@@ -174,7 +174,6 @@ export async function POST(request: Request) {
     const session = await auth();
     if (session) {
       const post: PostRequestPost = await request.json(); // Parse the request body
-      console.log(post);
       // Create the post in the database
       const data: any = {
         title: post.title,

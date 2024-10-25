@@ -7,6 +7,7 @@ import AddToReadingListModal from "../AddToReadingListModal/AddToReadingListModa
 import { ModalProps } from "@/types";
 import PostForm from "@/app/components/PostForm/PostForm";
 import PdfReader from "../PdfReader/PdfReader";
+import { useAuthorInPosts } from "@/hooks/useAuthorInPosts";
 
 /**
  * IPostDetailModal contains:
