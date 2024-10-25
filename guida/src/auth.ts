@@ -60,7 +60,7 @@ export const authConfig = {
                             username: user.username,
                             email: user.email,
                             roles: userRoles,
-                            profilePicture: user.profilePicture
+                            profilePicture: user.profilePicture || ''
                         }
                     }
                 }

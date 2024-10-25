@@ -46,8 +46,6 @@ export default function ProfileColumn({userData, isAuthUser, setShowSignOut} : P
     useEffect(() => {
         if (session.status === 'authenticated' && session.data) {
             if (isAuthUser) {
-                console.log("TESTING");
-                console.log(session.data.user.profilePicture);
                 if (session.data.user.id === userData.id) {
                     setCorrectAuth(true)
                 } else {
@@ -59,13 +57,10 @@ export default function ProfileColumn({userData, isAuthUser, setShowSignOut} : P
             setLoadingSession(false)
         }
     }, [session]);
-    console.log("userData.profilePicture");
-    console.log(userData);
     if (correctAuth && !loadingSession) {
         return (
             <div className={styles.profileContainer}>
                 <div className={styles.basicInfoContainer}>
-                    
                     {userData.profilePicture && <ProfilePicture imageUrl={userData.profilePicture}/>}
                     <div>
                         <h2>{userData.name}</h2>
