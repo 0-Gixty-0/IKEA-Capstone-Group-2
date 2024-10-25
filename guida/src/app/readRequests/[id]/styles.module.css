@@ -1,0 +1,7 @@
+.container {
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 30px;
+}
