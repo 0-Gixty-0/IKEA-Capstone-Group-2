@@ -118,7 +118,10 @@ export async function PUT(request: Request) {
       // Update the post in the database
       const updatedPost = await prisma.post.update({
         where: { id: Number(id) },
-        data: { title, content, published, pdfUrl },
+        data: { title, content, published, pdfUrl,
+          ...(roles && roles.length > 0 && {
+            assigner: { connect: { id: Number(session.user.id) } },
+          }),},
       });
 
       // Retrieve users with the selected roles
