@@ -19,7 +19,7 @@ interface PostRequestPost {
     content: string;
     published: boolean;
     authorId: number | null;
-    tags: string[] | null;
+    tags: number[];
     pdfUrl: string;
     roles: number[];
 }
@@ -188,9 +188,8 @@ export async function POST(request: Request) {
                     },
                     pdfUrl: post.pdfUrl,
                     tags: {
-                        connectOrCreate: post.tags ? post.tags.map((tagName: string) => ({
-                            where: { name: tagName },  // Make sure 'name' is correct based on your schema
-                            create: { name: tagName },  // The name must be created as well
+                        connect: post.tags ? post.tags.map((tagId: number) => ({
+                            id: tagId
                         })) : [],
                     },
                 } // The fields to update

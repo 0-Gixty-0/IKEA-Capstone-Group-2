@@ -37,7 +37,7 @@ export interface SubmittablePost {
   content: string | null;
   published: boolean;
   authorId: number | null;
-  tags: string[] | null;
+  tags: number[];
   pdfUrl: string;
   roles: number[];
 }

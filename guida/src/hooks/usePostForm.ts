@@ -70,6 +70,7 @@ export const usePostForm = (
         authorId: post?.authorId || null,
         published,
         roles: selectedRoles, // Include selected roles in the post data
+        tags: selectedTags,
         pdfUrl,
       };
       submitPost(postToSubmit);
