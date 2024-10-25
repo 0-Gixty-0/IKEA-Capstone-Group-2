@@ -11,11 +11,13 @@ const pdfReader: React.FC<PdfReaderProps> = ({
 }) => {
 
   return (
+    <div className={styles.pdfReader}>
     <iframe
           src={pdfUrl}
-          className={styles.pdfReader}
+          className={styles.pdfIframe}
           title="Post PDF"
         />
+    </div>
   );
 }
 
