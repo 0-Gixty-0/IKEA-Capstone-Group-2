@@ -38,7 +38,6 @@ export async function GET(request: Request) {
         const postId = searchParams.get('id')
         const authorId = Number(searchParams.get('authorId'))
         const published = searchParams.get('published')
-        const tags = searchParams.get('tags')
 
       if (postId) {
         const post = await prisma.post.findUnique({
@@ -117,7 +116,7 @@ export async function PUT(request: Request) {
       }
 
       // Update the post in the database
-      const updatedPost = await prisma.post.update({
+      await prisma.post.update({
         where: { id: Number(id) },
         data: {
             title,

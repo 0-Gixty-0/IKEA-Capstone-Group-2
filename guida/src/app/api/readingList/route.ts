@@ -1,7 +1,6 @@
 import prisma from "@/db";
 import { NextResponse } from 'next/server';
 import {auth} from "@/auth";
-import {SubmittablePost, UserRole} from "@/types";
 
 interface PutRequestPost {
   id: number;
