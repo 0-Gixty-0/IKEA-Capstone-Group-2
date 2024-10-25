@@ -87,7 +87,7 @@ export const authConfig = {
             session.user.username = token.username;
             session.user.email = token.email ? token.email : ''
             session.user.roles = token.roles // Attach user role to session
-            session.user.profilePicture = token.profilePicture as string
+            session.user.profilePicture = token.profilePicture
 
             return session;
         },
