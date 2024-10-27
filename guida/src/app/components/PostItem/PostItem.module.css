@@ -6,7 +6,7 @@
   list-style: none;
   cursor: pointer;
   width: 100%;
-  height: 100px;
+  height: 150px;
   display: flex;
   align-items: center;
   transition: background 0.3s ease, transform 0.3s ease;
@@ -21,10 +21,12 @@
 .postContent h2 {
   margin: 0;
   font-size: 1rem;
+  margin-bottom: 0.6rem;
 }
 .postContent h3 {
   margin: 0;
   font-size: 0.8rem;
+  margin-top: 1rem;
 }
 .postContent p {
   margin: 0;
