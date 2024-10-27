@@ -4,7 +4,7 @@ import styles from "./PostItem.module.css";
 import { ClickablePostProps } from "@/types";
 import { useFetchAuthorAndRoleOfPost } from "@/hooks/useFetchAuthorAndRoleOfPost";
 import Preloader from "../Preloader/Preloader";
-
+import TagsList from "../TagsList/TagsList";
 const PostItem: React.FC<ClickablePostProps> = ({
   id,
   title,
@@ -27,8 +27,8 @@ const PostItem: React.FC<ClickablePostProps> = ({
     >{authorRoleLoading ? <Preloader /> : 
     <div className={styles.postContent}>
       <h2>{title}</h2>
+      <TagsList tags={tags} />
       <h3>{!role ? author : role}</h3>
-      <p>{content}</p>
     </div>}
     </li>
   );
