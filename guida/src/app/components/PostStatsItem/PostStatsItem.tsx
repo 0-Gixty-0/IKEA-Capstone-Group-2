@@ -7,21 +7,28 @@ import ProgressBar from "@/app/components/ProgressBar/ProgressBar";
 
 interface IPostStatsItem {
     post: Post;
+    handleItemClick: (arg0: Post) => void
 }
 
-export default function PostStatsItem({post}: IPostStatsItem) {
+export default function PostStatsItem({post, handleItemClick}: IPostStatsItem) {
     const {stats, loading, error} = usePostStats(post.id)
 
     return (
-        <li className={styles.statsContainer}>
+        <li className={styles.statsContainer} onClick={() => {handleItemClick(post)}}>
             {loading
                 ? (<Preloader></Preloader>)
                 : (stats
-                        ? (<div className={styles.statsContent}>
-                            <p>Total assigned: {stats.totalAssigned}</p>
-                            <p>Users Read: {stats.numRead}</p>
-                            <div className={styles.progressBarContainer}>
-                                <ProgressBar a={stats.numRead} b={stats.totalAssigned}/>
+                        ? (<div className={styles.statsContentContainer}>
+                            <div className={styles.postContent}>
+                                <h2>{post.title}</h2>
+                                <p>{post.content}</p>
+                            </div>
+                            <div className={styles.statsContent}>
+                                <p>Total assigned: {stats.totalAssigned}</p>
+                                <p>Users Read: {stats.numRead}</p>
+                                <div className={styles.progressBarContainer}>
+                                    <ProgressBar a={stats.numRead} b={stats.totalAssigned}/>
+                                </div>
                             </div>
                         </div>)
                         : <div className={styles.statsContent}>

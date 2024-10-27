@@ -10,13 +10,42 @@
     display: flex;
 }
 
-.statsContent {
+.statsContentContainer {
     display: flex;
     flex-direction: row;
     align-items: center; /* Center items vertically */
     justify-content: space-around; /* Center items horizontally */
     column-gap: 20px;
     width: 100%;
+}
+
+.postContent h2 {
+    margin: 0;
+    font-size: 1rem;
+}
+.postContent p {
+    margin: 0;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.postContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 50%;
+    margin-right: auto;
+    border-right: solid white 2px;
+}
+
+.statsContent {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* Center items vertically */
+    justify-content: space-around; /* Center items horizontally */
+    column-gap: 20px;
 }
 
 .progressBarContainer {

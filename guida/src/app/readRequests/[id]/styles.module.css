@@ -4,17 +4,16 @@
     flex-direction: row;
     justify-content: flex-start;
     padding: 30px;
+    column-gap: 20px;
 }
 
-.feedContainer {
-    display: flex;
-    width: 50%;
-    justify-content: space-around;
+.profileColumnContainer {
+    width: 20%;
+    height: 100%;
 }
 
 .statsContainer {
     display: flex;
     flex-direction: column;
-    padding-top: 88px;
-    width: 50%;
+    width: 80%;
 }

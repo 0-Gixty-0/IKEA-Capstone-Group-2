@@ -23,25 +23,22 @@ export default function ({params}: { params: { id: string } }) {
                 {showSignOut && <SignOutModal onClose={() => {
                     setShowSignOut(false)
                 }}/>}
-                <ProfileColumn
-                    userData={session.data.user}
-                    isAuthUser={true}
-                    setShowSignOut={setShowSignOut}></ProfileColumn>
-                    <div className={styles.statsContainer}>
-                        {loadingAssignedPosts
-                            ? (<SkeletonList></SkeletonList>)
-                            : (<PostStatsList posts={assignedPosts}/>)
-                        }
-                    </div>
-                    <div className={styles.feedContainer}>
-                        <Feed
-                            title={"Read Requested Posts"}
-                            loadingPosts={loadingAssignedPosts}
-                            error={assignedPostsError}
-                            posts={assignedPosts}
-                            emptyMessage={"You don't have any public posts!"}>
-                        </Feed>
-                    </div>
+                <div className={styles.profileColumnContainer}>
+                    <ProfileColumn
+                        userData={session.data.user}
+                        isAuthUser={true}
+                        setShowSignOut={setShowSignOut}>
+                    </ProfileColumn>
+                </div>
+                <div className={styles.statsContainer}>
+                    <PostStatsList
+                        posts={assignedPosts}
+                        title={"Read Requested Posts"}
+                        loadingPosts={loadingAssignedPosts}
+                        error={assignedPostsError}
+                        emptyMessage={"You have not assigned any posts!"}>
+                    </PostStatsList>
+                </div>
             </div>
         )
     } else {
