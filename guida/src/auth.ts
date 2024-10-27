@@ -39,6 +39,7 @@ export const authConfig = {
                             roles: true
                         }
                     })
+                    console.log(user)
 
                     if (!user || !user.password) {
                         console.log('Authorize log - USER OR PASSWORD DOES NOT EXIST. RETURN NULL')

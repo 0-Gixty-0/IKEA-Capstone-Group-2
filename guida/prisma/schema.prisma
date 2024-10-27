@@ -8,33 +8,37 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  username String @unique
-  password String
-  name  String?
-  posts Post[] @relation("UserPosts")
-  readingList Post[] @relation("UserReadingList")
-  roles Role[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  profilePicture String? @default("/icons/user_icon.png")
+  id             Int      @id @default(autoincrement())
+  email          String   @unique
+  username       String   @unique
+  password       String
+  name           String?
+  posts          Post[]   @relation("UserPosts")
+  postsAssigned  Post[]   @relation("PostAssigners")
+  readingList    Post[]   @relation("UserReadingList")
+  roles          Role[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  profilePicture String?  @default("/icons/user_icon.png")
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  author    User     @relation(fields: [authorId], references: [id], name: "UserPosts")
-  readers   User[]   @relation("UserReadingList")
-  roleId    Int?
-  role      Role?    @relation(fields: [roleId], references: [id], name: "PostRole")
-  pdfUrl    String?
-  tags      Tag[]
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    String?
+  published  Boolean  @default(false)
+  authorId   Int
+  assignerId Int?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  author     User     @relation(fields: [authorId], references: [id], name: "UserPosts")
+  readers    User[]   @relation("UserReadingList")
+  assigner   User?    @relation(fields: [assignerId], references: [id], name: "PostAssigners")
+  pdfUrl     String?
+  roles      Role[]   @relation("PostRoles")
+  roleId     Int?
+  role       Role?    @relation(fields: [roleId], references: [id], name: "PostRole")
+  tags       Tag[]
 }
 
 model Tag {
@@ -44,8 +48,9 @@ model Tag {
 }
 
 model Role {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  users User[]
-  posts Post[] @relation("PostRole")
+  id          Int    @id @default(autoincrement())
+  name        String @unique
+  users       User[]
+  posts       Post[] @relation("PostRoles")
+  roleOrigins Post[] @relation("PostRole")
 }

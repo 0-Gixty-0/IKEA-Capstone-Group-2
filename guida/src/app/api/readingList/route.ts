@@ -21,7 +21,60 @@ export async function GET(request: Request) {
         const session = await auth();
 
         if (session) {
-            const userId = Number(session.user.id);
+            const { searchParams } = new URL(request.url)
+            const postId = Number(searchParams.get('postId'))
+            const roles = searchParams.get('roles')
+
+            if (postId && roles) {
+                const selectStatement = {
+                    id: true,
+                    name: true,
+                    username: true,
+                    email: true,
+                    roles: {
+                        select: {
+                            name: true,
+                        },
+                    },
+                }
+
+                const usersWithPostInReadingList = await prisma.user.findMany({
+                    where: {
+                        readingList: {
+                            some: {
+                                id: postId, // Filter users who have the specified post ID in their reading list
+                            },
+                        },
+                    },
+                    select: selectStatement
+                });
+
+                const usersWithMatchingRoles = await prisma.user.findMany({
+                    where: {
+                        roles: {
+                            some: {
+                                posts: { some: { id: postId } } // Matches any user roles that are associated with the given post ID
+                            },
+                        },
+                    },
+                    select: selectStatement
+                });
+
+                const usersWithPostInReadingListIds = new Set(usersWithPostInReadingList.map(user => user.id));
+
+                const readUsers = usersWithMatchingRoles.filter(user =>
+                    !usersWithPostInReadingListIds.has(user.id)
+                );
+
+                return NextResponse.json({
+                    message: `Successfully retrieved users for post`,
+                    totalAssigned: usersWithMatchingRoles.length,
+                    numRead: readUsers.length,
+                    nonReadUsers: usersWithPostInReadingList,
+                    readUsers: readUsers,
+                }, { status: 200 });
+            } else {
+                const userId = Number(session.user.id);
 
             // Fetch the user's reading list
             const user = await prisma.user.findUnique({
@@ -35,16 +88,17 @@ export async function GET(request: Request) {
                 },
             });
 
-            if (!user) {
-                return NextResponse.json({ error: 'User not found' }, { status: 404 });
+                if (!user) {
+                    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+                }
+
+                const readingList = user.readingList;
+
+                return NextResponse.json({
+                    message: `Successfully retrieved ${readingList.length} posts from the reading list`,
+                    posts: readingList,
+                }, { status: 200 });
             }
-
-            const readingList = user.readingList;
-
-            return NextResponse.json({
-                message: `Successfully retrieved ${readingList.length} posts from the reading list`,
-                posts: readingList,
-            }, { status: 200 });
         } else {
             return NextResponse.json({ error: 'You must be logged in!' }, { status: 405 });
         }
@@ -55,7 +109,6 @@ export async function GET(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-    console.log("Reading post WORKS!!!Reading post WORKS!!!Reading post WORKS!!!Reading post WORKS!!!Reading post WORKS!!!Reading post WORKS!!!");
     try {
         const session = await auth();
         if (session) {
