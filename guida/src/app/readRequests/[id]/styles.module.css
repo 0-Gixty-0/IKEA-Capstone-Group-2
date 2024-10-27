@@ -5,6 +5,8 @@
     justify-content: flex-start;
     padding: 30px;
     column-gap: 20px;
+    width: 100vw;
+    height: auto;
 }
 
 .profileColumnContainer {

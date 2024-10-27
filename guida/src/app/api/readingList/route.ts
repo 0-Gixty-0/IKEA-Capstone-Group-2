@@ -28,6 +28,7 @@ export async function GET(request: Request) {
             if (postId && roles) {
                 const selectStatement = {
                     id: true,
+                    name: true,
                     username: true,
                     email: true,
                     roles: {

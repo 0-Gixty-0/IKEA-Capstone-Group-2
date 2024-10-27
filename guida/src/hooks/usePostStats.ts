@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {User} from "next-auth";
 
-type Stats = {
+export type Stats = {
     totalAssigned: number;
     numRead: number;
     readUsers: User[];

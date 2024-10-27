@@ -34,7 +34,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
-    width: 50%;
+    width: 40%;
     margin-right: auto;
     border-right: solid white 2px;
 }
@@ -51,4 +51,29 @@
 .progressBarContainer {
     width: 40%; /* Keep this width to give the ProgressBar space */
     flex-grow: 1; /* Allow this to take up remaining space */
+}
+
+.actionButton {
+    background-color: #e1e102;
+    border-radius: 4px;
+    border-style: none;
+    color: #161616;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Farfetch Basis","Helvetica Neue",Arial,sans-serif;
+    font-weight: bold;
+    max-width: none;
+    outline: none;
+    overflow: hidden;
+    padding: 6px;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.actionButton:hover, .actionButton:focus {
+    opacity: .9;
 }

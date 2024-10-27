@@ -1,5 +1,5 @@
 import {Post} from "@/types";
-import {usePostStats} from "@/hooks/usePostStats";
+import {Stats, usePostStats} from "@/hooks/usePostStats";
 import React from "react";
 import styles from './PostStatsItem.module.css'
 import Preloader from "@/app/components/Preloader/Preloader";
@@ -7,11 +7,19 @@ import ProgressBar from "@/app/components/ProgressBar/ProgressBar";
 
 interface IPostStatsItem {
     post: Post;
-    handleItemClick: (arg0: Post) => void
+    handleItemClick: (arg0: Post) => void;
+    handleButtonClick: (arg0: Stats) => void
 }
 
-export default function PostStatsItem({post, handleItemClick}: IPostStatsItem) {
+export default function PostStatsItem({post, handleItemClick, handleButtonClick}: IPostStatsItem) {
     const {stats, loading, error} = usePostStats(post.id)
+
+    const buttonClickHandler = (e: { stopPropagation: () => void; }) => {
+        e.stopPropagation()
+        if (stats) {
+            handleButtonClick(stats)
+        }
+    }
 
     return (
         <li className={styles.statsContainer} onClick={() => {handleItemClick(post)}}>
@@ -29,6 +37,9 @@ export default function PostStatsItem({post, handleItemClick}: IPostStatsItem) {
                                 <div className={styles.progressBarContainer}>
                                     <ProgressBar a={stats.numRead} b={stats.totalAssigned}/>
                                 </div>
+                                <button className={styles.actionButton} onClick={buttonClickHandler}>
+                                    View Requested Users
+                                </button>
                             </div>
                         </div>)
                         : <div className={styles.statsContent}>
