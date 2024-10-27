@@ -1,34 +1,28 @@
 .author-container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    border-radius: 10px; /* Rounded corners */
-    border: 1px solid #ccc; /* Optional border */
-    width: 300px; /* Set the width of the container */
-    height: 30px;
+    gap: 20px;
+    
 }
 
-.author {
-    flex: 1;
+#author {
+    display: flex;
+    align-items: center;
     vertical-align: middle;
-    margin-right: 20px;
+    justify-content: center;
+}
+
+#author h2 {
+    vertical-align: middle;
+    align-self: center;
+    justify-self: center;
+    margin-bottom: 0;
 }
 
 .picture {
-    flex-shrink: 0;
     width: 30px; /* Set the width of the profile picture */
     height: 30px; /* Set the height of the profile picture */
     border-radius: 50%; /* Make the picture circular */
-    overflow: hidden; /* Ensure the image fits within the circle */
-}
-
-.ProfilePicture {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    object-fit: cover;
-    background-color: white;
 }
 
 .picture img {

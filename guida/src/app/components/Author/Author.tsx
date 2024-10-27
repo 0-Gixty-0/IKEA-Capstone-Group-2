@@ -40,17 +40,17 @@ export function Author({authorId, roleId}: AuthorProps) {
             {loading ? (
                 <p>Loading...</p>
             ) : (
-                <>
+                <>  {authorData?.profilePicture && (
+                    <div className={styles.picture}>
+                        <ProfilePicture imageUrl={authorData.profilePicture}></ProfilePicture>
+                    </div>
+                )}
                     {authorAndRole && (
-                        <div className={styles.author}>
+                        <div id={styles.author}>
                             <h2>{authorAndRole}</h2>
                         </div>
                     )}
-                    {authorData?.profilePicture && (
-                        <div className={styles.picture}>
-                            <ProfilePicture imageUrl={authorData.profilePicture}></ProfilePicture>
-                        </div>
-                    )}
+                    
                 </>
             )}
         </div>

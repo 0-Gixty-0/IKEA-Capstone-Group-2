@@ -1,5 +1,5 @@
 .post {
-  background-color: #beadad;
+  background-color: #494949;
   border-radius: 8px;
   margin: 10px 0;
   padding: 30px;
@@ -21,7 +21,6 @@
 .postContent h2 {
   margin: 0;
   font-size: 1rem;
-  margin-bottom: 0.6rem;
 }
 .postContent h3 {
   margin: 0;
@@ -38,6 +37,6 @@
 .postContent {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.8rem;
   width: calc(100% - 5%);
 }

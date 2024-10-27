@@ -30,11 +30,11 @@ const PostItem: React.FC<ClickablePostProps> = ({
     <div className={styles.postContent}>
       <h2>{title}</h2>
       {/* <h3>{!role ? author : role}</h3> */}
+      <TagsList tags={tags} />
       <Author 
         authorId={authorId}
         roleId={roleId}>
       </Author>
-      <TagsList tags={tags} />
     </div>}
     </li>
   );
