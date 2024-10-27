@@ -148,8 +148,8 @@ const PostForm: React.FC<PostFormProps> = ({ post, submitText, onSuccess, onClos
                   </label>
                   <input
                     type="checkbox"
-                    checked={published}
-                    onChange={(e) => setPublished(e.target.checked)}
+                    checked={!published}
+                    onChange={(e) => setPublished(!e.target.checked)}
                   />
                 </div>
                 <button type="submit" className={styles.submitButton}>
