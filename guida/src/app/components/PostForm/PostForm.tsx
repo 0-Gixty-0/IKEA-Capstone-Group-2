@@ -100,24 +100,6 @@ const PostForm: React.FC<PostFormProps> = ({ post, submitText, onSuccess, onClos
 
               <div className={styles.postFormElement}> {/*Attach file box*/}
                 <label>
-                Tags
-                </label>
-                {rolesError ? (
-                    <p>{rolesError}</p>
-                ) : (
-                    <CheckboxDropdown
-                        options={mapTagsToOptions(tags)}
-                        selectedOptions={selectedTags}
-                        onChange={setSelectedTags}
-                    />
-                )}
-                {rolesErrorState && (
-                    <p className={styles.error}>{rolesErrorState}</p>
-                )}
-              </div>
-
-              <div className={styles.postFormElement}> {/*Attach file box*/}
-                <label>
                   Attach file
                 </label>
                 <input

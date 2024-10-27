@@ -6,6 +6,7 @@ import { useFetchAuthorAndRoleOfPost } from "@/hooks/useFetchAuthorAndRoleOfPost
 import Preloader from "../Preloader/Preloader";
 import { Author } from "../Author/Author";
 
+import TagsList from "../TagsList/TagsList";
 const PostItem: React.FC<ClickablePostProps> = ({
   id,
   title,
@@ -33,6 +34,7 @@ const PostItem: React.FC<ClickablePostProps> = ({
         authorId={authorId}
         roleId={roleId}>
       </Author>
+      <TagsList tags={tags} />
     </div>}
     </li>
   );
