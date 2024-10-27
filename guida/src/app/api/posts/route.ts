@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { UserRole } from "@/types";
 import {tupleExpression} from "@babel/types";
+import { Prisma } from "@prisma/client";
 
 interface PutRequestPost {
   id: number;
@@ -144,27 +145,40 @@ export async function PUT(request: Request) {
   try {
     const session = await auth();
     if (session) {
-      const { id, title, content, published, roles, pdfUrl, tags, roleId}: PutRequestPost = await request.json();
-      if (!id) {
-        return NextResponse.json({ error: "Post ID is required" }, { status: 400 });
-      }
+        const {id, title, content, published, roles, pdfUrl, tags, roleId}: PutRequestPost = await request.json();
+
+        if (!id) {
+            return NextResponse.json({error: "Post ID is required"}, {status: 400});
+        }
+
+        const data: any = {
+                title, content, published, pdfUrl,
+                ...(tags && tags.length > 0 && {
+                    tags: {
+                        set: tags.map((tagId) => ({id: tagId})), // Replaces existing tags with new tags
+                    },
+                }),
+                ...(roles && roles.length > 0 && {
+                    assigner: {connect: {id: Number(session.user.id)}},
+                }),
+                ...(roles && roles.length > 0 && {
+                    roles: {
+                        set: roles.map((roleId) => ({id: roleId})), // Replaces all roles with the new ones
+                    },
+                })
+            }
+
+        if (roleId) {
+            data.role = {
+                connect: { id: roleId },
+            };
+        }
 
       // Update the post in the databases
       await prisma.post.update({
-        where: { id: Number(id) },
-        data: { title, content, published, pdfUrl, roleId,
-            tags: {
-                set: tags.map((tagId) => ({ id: tagId })), // Replaces existing tags with new tags
-            },
-          ...(roles && roles.length > 0 && {
-            assigner: { connect: { id: Number(session.user.id) } },
-          }),
-          ...(roles && roles.length > 0 && {
-            roles: {
-              set: roles.map((roleId) => ({ id: roleId })), // Replaces all roles with the new ones
-            },
-          }),},
-      });
+          where: {id: Number(id)},
+          data: data
+      })
 
         const updatedPostWithTags = await prisma.post.findUnique({
             where: { id: Number(id) },
