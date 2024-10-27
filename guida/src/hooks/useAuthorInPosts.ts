@@ -8,14 +8,14 @@ import { useFetchAuthorAndRoleOfPost } from './useFetchAuthorAndRoleOfPost';
  * @param clickedPost 
  * @returns Author + role if role for that post exists
  */
-export const useAuthorInPosts = (clickedPost: Post | undefined) => {
-    const {authorAndRole: [author, role]} = useFetchAuthorAndRoleOfPost(clickedPost?.roleId, clickedPost?.authorId);
+export const useAuthorInPosts = (authorId: number | undefined, roleId: number | undefined) => {
+    const {authorAndRole: [author, role]} = useFetchAuthorAndRoleOfPost(roleId, authorId);
     const [authorAndRole, setAuthorAndRole] = useState<string | undefined>("")
     const [loading, setLoading] = useState<boolean>(true)
 
     useEffect(() => {
         setLoading(true)
-        if (clickedPost) {
+        if (authorId) {
             if (role) {
                 setAuthorAndRole(`${author} from ${role}`)
             } else {
@@ -25,7 +25,7 @@ export const useAuthorInPosts = (clickedPost: Post | undefined) => {
             setAuthorAndRole(undefined)
         }
         setLoading(false)
-    }, [clickedPost?.authorId, clickedPost?.roleId, author, role])
+    }, [authorId, roleId, author, role])
 
 
     return {authorAndRole, loading}

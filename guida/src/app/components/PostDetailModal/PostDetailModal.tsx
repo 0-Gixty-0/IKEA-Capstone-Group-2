@@ -9,6 +9,7 @@ import AddToReadingListModal from "../AddToReadingListModal/AddToReadingListModa
 import PostForm from "@/app/components/PostForm/PostForm";
 import PdfReader from "../PdfReader/PdfReader";
 import { useAuthorInPosts } from "@/hooks/useAuthorInPosts";
+import { Author } from "../Author/Author";
 
 /**
  * IPostDetailModal contains:
@@ -39,7 +40,7 @@ export interface IPostDetailModal {
 const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailModal) => {
     const [showEditPostForm, setShowEditPostForm] = useState<boolean>(false)
 
-    const {authorAndRole, loading} = useAuthorInPosts(post);
+    const {authorAndRole, loading} = useAuthorInPosts(post.authorId, post.roleId);
   
     const handleEditClick = () => {
     setShowEditPostForm(true)
@@ -76,7 +77,8 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
 
 
         <h2>{post.title}</h2>
-        <h3>Author: {loading ? "Loading" : authorAndRole}</h3>
+        {/* <h3>Author: {loading ? "Loading" : authorAndRole}</h3> */}
+        {loading ? "Loading" : <Author authorId={post.authorId} roleId={post.roleId}></Author>}
 
         <div className={styles.contentContainer}>
 
