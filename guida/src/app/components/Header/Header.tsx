@@ -31,12 +31,12 @@ export default function Header() {
     if (session.status === "authenticated") {
         return (
             <div className={styles.container}>
-                <h1>GUIDA</h1>
+                <h1 onClick={() => { router.push('/') }} style={{ cursor: 'pointer' }}>GUIDA</h1>
                 <div className={styles.iconContainer}>
-                    <div className={styles.iconContent} onClick={handleProfileClick}>
+                    <div className={styles.iconContent} style={{ cursor: 'pointer' }} onClick={handleProfileClick}>
                         <img src={"/icons/user_icon.png"} alt={'Silhouette of a person'}/>
                     </div>
-                    <div className={styles.iconContent} onClick={() => {router.push('/')}}>
+                    <div className={styles.iconContent} style={{ cursor: 'pointer' }} onClick={() => {router.push('/')}}>
                         <img src={"/icons/home_icon.png"} alt={'Silhouette of a house'}/>
                     </div>
                 </div>

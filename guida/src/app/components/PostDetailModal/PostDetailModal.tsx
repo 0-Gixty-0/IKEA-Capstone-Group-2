@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+"use client";
+
+import React, {useState } from "react";
 import styles from "./PostDetailModal.module.css";
 import DeleteButton from "../DeleteButton";
 import {Post} from "@/types";
 import ReadButton from "../ReadButton";
 import AddToReadingListModal from "../AddToReadingListModal/AddToReadingListModal";
-import { ModalProps } from "@/types";
 import PostForm from "@/app/components/PostForm/PostForm";
 import PdfReader from "../PdfReader/PdfReader";
+import { useAuthorInPosts } from "@/hooks/useAuthorInPosts";
+import { Author } from "../Author/Author";
 
 /**
  * IPostDetailModal contains:
@@ -35,23 +38,25 @@ export interface IPostDetailModal {
  * @constructor
  */
 const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailModal) => {
-  const [showEditPostForm, setShowEditPostForm] = useState<boolean>(false)
+    const [showEditPostForm, setShowEditPostForm] = useState<boolean>(false)
 
-  const handleEditClick = () => {
+    const {authorAndRole, loading} = useAuthorInPosts(post.authorId, post.roleId);
+  
+    const handleEditClick = () => {
     setShowEditPostForm(true)
-  }
+    }
 
-  const [isAddToReadingListModalOpen, setIsAddToReadingListModalOpen] = useState(false);
+    const [isAddToReadingListModalOpen, setIsAddToReadingListModalOpen] = useState(false);
 
-  const handleOpenAddToReadingListModal = () => {
+    const handleOpenAddToReadingListModal = () => {
     setIsAddToReadingListModalOpen(true);
-  };
+    };
 
-  const handleCloseAddToReadingListModal = () => {
+    const handleCloseAddToReadingListModal = () => {
     setIsAddToReadingListModalOpen(false);
-  };
+    };
 
-  return (
+    return (
     <div id={styles.modalOverlay}>
       {isAddToReadingListModalOpen && (
         <AddToReadingListModal
@@ -69,11 +74,20 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
         <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
+
+
         <h2>{post.title}</h2>
-        <hr/>
-        <h3>Content:</h3>
+        {/* <h3>Author: {loading ? "Loading" : authorAndRole}</h3> */}
+        {loading ? "Loading" : <Author authorId={post.authorId} roleId={post.roleId}></Author>}
+
+        <div className={styles.contentContainer}>
+
         <p>{post.content}</p>
-        {post.pdfUrl && <PdfReader pdfUrl={post.pdfUrl}/>}
+
+        {post.pdfUrl &&<PdfReader pdfUrl={post.pdfUrl}/>}
+
+          </div>
+
         <div className={styles.buttonContainer}>
           <DeleteButton postId={post.id} onDelete={() => {
             onDelete(post)
@@ -84,7 +98,7 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
         </div>
       </div>
     </div>
-  );
-};
+    );
+    };
 
 export default PostDetailModal;

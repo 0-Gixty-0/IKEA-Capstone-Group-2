@@ -76,13 +76,17 @@ export async function GET(request: Request) {
             } else {
                 const userId = Number(session.user.id);
 
-                // Fetch the user's reading list
-                const user = await prisma.user.findUnique({
-                    where: { id: userId },
-                    include: {
-                        readingList: true, // Include the reading list in the response
+            // Fetch the user's reading list
+            const user = await prisma.user.findUnique({
+                where: { id: userId },
+                include: {
+                    readingList: {
+                        include: {
+                            tags: true, // Include tags for each post in the reading list
+                        },
                     },
-                });
+                },
+            });
 
                 if (!user) {
                     return NextResponse.json({ error: 'User not found' }, { status: 404 });

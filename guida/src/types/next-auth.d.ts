@@ -28,5 +28,6 @@ declare module "next-auth/jwt" {
         username: string;
         profilePicture: string
         roles: UserRole[];
+        profilePicture: string;
     }
 }

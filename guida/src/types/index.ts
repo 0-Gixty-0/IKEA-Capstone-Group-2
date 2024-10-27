@@ -9,7 +9,9 @@ export interface Post {
   content: string;
   published: boolean;
   authorId: number;
+  tags: {id: number, name: string}[];
   pdfUrl: string;
+  roleId: number;
 }
 
 /**
@@ -36,8 +38,10 @@ export interface SubmittablePost {
   content: string | null;
   published: boolean;
   authorId: number | null;
+  tags: number[];
   pdfUrl: string;
   roles: number[];
+  roleId: number | null;
 }
 
 export interface FetchedUser {
@@ -83,6 +87,7 @@ export interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
   postId: number;
+  tags  : string[];
   onDelete: () => void;
   onRead: () => void;
 }
@@ -124,7 +129,7 @@ export interface FetchPostsParams {
 
 /**
  * Props for the PostForm component.
- * 
+ *
  * @property post - Passed post to edit. Optional, if provided edits post, otherwise creates new post.
  * @property submitText - Text representing action. Should be one of "Update Post" or "Create Post" as needed.
  * @property onClose - Callback function called on successful submit.
