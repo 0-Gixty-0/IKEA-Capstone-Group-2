@@ -28,6 +28,50 @@ interface PostRequestPost {
   roleId: number | null;
 }
 
+type UpdatePostData = {
+  title: string;
+  content: string;
+  published: boolean;
+  pdfUrl?: string | null;
+  author?: {
+    connect: { id: number };
+  };
+  role?: {
+    connect: { id: number }; // Connects a role by id
+  }
+  tags?:
+      | { set: { id: number }[] }     // Set operation for tags
+      | { connect: { id: number }[] };
+  assigner?: {
+    connect: { id: number }; // Connects an assigner by id
+  };
+  roles?:
+      | { set: { id: number }[] }     // Set operation for tags
+      | { connect: { id: number }[] };
+};
+
+type CreatePostData = {
+  title: string;
+  content: string;
+  published: boolean;
+  pdfUrl?: string | null;
+  author: {
+    connect: { id: number };
+  };
+  role?: {
+    connect: { id: number }; // Connects a role by id
+  }
+  tags?:
+      { connect: { id: number }[] };
+  assigner?: {
+    connect: { id: number }; // Connects an assigner by id
+  };
+  roles?: {
+    connect: { id: number }[];
+  };
+};
+
+
 /**
  * GET method returns post with specified post id. Otherwise, returns all posts
  * @param request Request URL can specify specific post id as api/posts?id=1
@@ -163,7 +207,7 @@ export async function PUT(request: Request) {
         );
       }
 
-      const data: any = {
+      const data: UpdatePostData = {
         title,
         content,
         published,
@@ -264,7 +308,7 @@ export async function POST(request: Request) {
       const post: PostRequestPost = await request.json(); // Parse the request body
 
       // Create the post in the database
-      const data: any = {
+      const data: CreatePostData = {
         title: post.title,
         content: post.content,
         published: post.published,
@@ -272,7 +316,6 @@ export async function POST(request: Request) {
           connect: { id: Number(session.user.id) },
         },
         pdfUrl: post.pdfUrl,
-        role: null,
         ...(post.roles &&
           post.roles.length > 0 && {
             roles: {
@@ -297,7 +340,7 @@ export async function POST(request: Request) {
         };
       }
 
-      const createdPost = await prisma.post.create({ data });
+      const createdPost = await prisma.post.create({ data: data });
 
       // Retrieve users with the selected roles
       const usersWithSelectedRoles = await prisma.user.findMany({

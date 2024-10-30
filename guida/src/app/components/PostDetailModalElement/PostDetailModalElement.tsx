@@ -29,7 +29,7 @@ export default function PostDetailModalElement({
             {user.roles
               .map((role) => Object.values(role)) // Filter out any non-matching roles
               .map((role) => (
-                <p>{role}</p>
+                <p key={role.length}>{role}</p>
               ))}
           </div>
         </div>

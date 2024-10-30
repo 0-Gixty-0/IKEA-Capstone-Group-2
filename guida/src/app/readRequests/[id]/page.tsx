@@ -10,7 +10,7 @@ import { useFetchPosts } from "@/hooks/useFetchPosts";
 import SkeletonList from "@/app/components/SkeletonList/SkeletonList";
 import PostStatsList from "@/app/components/PostStatsList/PostStatsList";
 
-export default function ({ params }: { params: { id: string } }) {
+export default function ReadRequestsPage({ params }: { params: { id: string } }) {
   const { id } = params;
   const session = useSession();
   const [showSignOut, setShowSignOut] = useState<boolean>(false);

@@ -85,7 +85,7 @@ export default function PostStatsList({
       ) : displayedPosts && displayedPosts.length > 0 ? (
         <ul>
           {displayedPosts.map((displayedPost) => (
-            <PostStatsItem
+            <PostStatsItem key={displayedPost.id}
               post={displayedPost}
               handleItemClick={handlePostClick}
               handleButtonClick={handleStatsButtonClick}

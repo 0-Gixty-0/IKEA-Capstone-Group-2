@@ -31,7 +31,7 @@ export default function PostStatsModal({ onClose, stats }: IPostStatsModal) {
             <hr />
             <ul>
               {allAssignedUsers.map((user: User) => (
-                <PostDetailModalElement user={user} />
+                <PostDetailModalElement key={user.id} user={user} />
               ))}
             </ul>
           </div>
@@ -40,7 +40,7 @@ export default function PostStatsModal({ onClose, stats }: IPostStatsModal) {
             <hr />
             <ul>
               {stats.readUsers.map((user: User) => (
-                <PostDetailModalElement user={user} />
+                <PostDetailModalElement key={user.id} user={user} />
               ))}
             </ul>
           </div>
@@ -49,7 +49,7 @@ export default function PostStatsModal({ onClose, stats }: IPostStatsModal) {
             <hr />
             <ul>
               {stats.nonReadUsers.map((user: User) => (
-                <PostDetailModalElement user={user} />
+                <PostDetailModalElement key={user.id} user={user} />
               ))}
             </ul>
           </div>

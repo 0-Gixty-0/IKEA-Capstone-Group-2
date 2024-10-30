@@ -5,7 +5,8 @@ import bcrypt from "bcryptjs";
 import { UserRole } from "@/types";
 import { User } from "next-auth";
 
-function isUserRole(value: any): value is UserRole {
+function isUserRole(value: string): value is UserRole {
+  // @ts-ignore
   return Object.values(UserRole).includes(value);
 }
 
