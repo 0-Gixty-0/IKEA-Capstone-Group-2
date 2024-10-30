@@ -3,8 +3,6 @@ import prisma from "@/db";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { UserRole } from "@/types";
-import { tupleExpression } from "@babel/types";
-import { Prisma } from "@prisma/client";
 
 interface PutRequestPost {
   id: number;
