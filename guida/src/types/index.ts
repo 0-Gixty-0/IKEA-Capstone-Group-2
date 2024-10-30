@@ -9,7 +9,7 @@ export interface Post {
   content: string;
   published: boolean;
   authorId: number;
-  tags: {id: number, name: string}[];
+  tags: { id: number; name: string }[];
   pdfUrl: string;
   roleId: number;
 }
@@ -87,7 +87,7 @@ export interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
   postId: number;
-  tags  : string[];
+  tags: string[];
   onDelete: () => void;
   onRead: () => void;
 }
@@ -122,7 +122,7 @@ export interface FetchPostsParams {
   id?: number;
   authorId?: number;
   published?: boolean;
-  assignerId?: number
+  assignerId?: number;
 }
 
 // Form-related interfaces

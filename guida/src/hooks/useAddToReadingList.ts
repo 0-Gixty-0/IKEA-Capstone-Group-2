@@ -9,7 +9,7 @@ export const useAddToReadingList = (postId: number, onClose: () => void) => {
     setError(null);
 
     try {
-      const response = await fetch('/api/posts', {
+      const response = await fetch("/api/posts", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

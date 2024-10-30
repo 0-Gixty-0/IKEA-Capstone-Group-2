@@ -1,12 +1,11 @@
-
-  .tag {
-    display: inline-block;
-    background-color: #323232;
-    color: #97989D;
-    padding: 8px 10px;
-    margin-right: 5px;
-    border-radius: 3px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    border-radius: 16px;
-  }
+.tag {
+  display: inline-block;
+  background-color: #323232;
+  color: #97989d;
+  padding: 8px 10px;
+  margin-right: 5px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  border-radius: 16px;
+}

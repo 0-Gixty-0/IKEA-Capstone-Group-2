@@ -1,18 +1,18 @@
 import styles from "./styles.module.css";
 import SkeletonList from "@/app/components/SkeletonList/SkeletonList";
 import PostList from "@/app/components/PostList/PostList";
-import React, {useEffect, useState} from "react";
-import {Post} from "@/types";
+import React, { useEffect, useState } from "react";
+import { Post } from "@/types";
 import PostSearchBar from "@/app/components/PostSearchBar/PostSearchBar";
 import PostDetailModal from "@/app/components/PostDetailModal/PostDetailModal";
-import {useFeedManagement} from "@/hooks/useFeedManagement";
+import { useFeedManagement } from "@/hooks/useFeedManagement";
 
 interface FeedProps {
-    title: string,
-    loadingPosts: boolean,
-    error: string | null,
-    posts: Post[],
-    emptyMessage: string
+  title: string;
+  loadingPosts: boolean;
+  error: string | null;
+  posts: Post[];
+  emptyMessage: string;
 }
 
 /**
@@ -29,43 +29,63 @@ interface FeedProps {
  * @param emptyMessage Message when posts list is empty
  * @constructor
  */
-export default function Feed({title, loadingPosts, error, posts, emptyMessage}: FeedProps) {
-    const [showNoSearchResults, setShowNoSearchResults] = useState<boolean>(false)
-    const {displayedPosts, setDisplayedPosts, handleDelete,
-        showDetailedPostModal, onClose, handlePostClick,
-        clickedPost, handleEdit} = useFeedManagement(posts)
+export default function Feed({
+  title,
+  loadingPosts,
+  error,
+  posts,
+  emptyMessage,
+}: FeedProps) {
+  const [showNoSearchResults, setShowNoSearchResults] =
+    useState<boolean>(false);
+  const {
+    displayedPosts,
+    setDisplayedPosts,
+    handleDelete,
+    showDetailedPostModal,
+    onClose,
+    handlePostClick,
+    clickedPost,
+    handleEdit,
+  } = useFeedManagement(posts);
 
-    useEffect(() => {
-        setDisplayedPosts(posts)
-    }, [posts]);
+  useEffect(() => {
+    setDisplayedPosts(posts);
+  }, [posts]);
 
-    return (
-        <div className={styles.feedContainer}>
-            {(showDetailedPostModal && clickedPost) && <PostDetailModal
-                    onClose={onClose}
-                    post={clickedPost}
-                    onDelete={handleDelete}
-                    onEdit={handleEdit}
-                    onRead={handleDelete}>
-            </PostDetailModal>
-            }
-            <h2 id={styles.feedTitle}>{title}</h2>
-            {(displayedPosts.length !== 0 || showNoSearchResults) &&
-                <PostSearchBar
-                    entries={posts}
-                    setEntries={setDisplayedPosts}
-                    setShowNoSearchResults={setShowNoSearchResults}>
-                </PostSearchBar>
-            }
-            {loadingPosts
-                ? (<SkeletonList></SkeletonList>)
-                : (error)
-                    ? (<h3>{error}</h3>)
-                    : (displayedPosts && displayedPosts.length > 0)
-                        ? (<PostList posts={displayedPosts} handlePostClick={handlePostClick}></PostList>)
-                        : (showNoSearchResults)
-                            ? (<h3 id={styles.emptyMessage}>No posts match your search!</h3>)
-                            : (<h3 id={styles.emptyMessage}>{emptyMessage}</h3>)}
-        </div>
-    )
+  return (
+    <div className={styles.feedContainer}>
+      {showDetailedPostModal && clickedPost && (
+        <PostDetailModal
+          onClose={onClose}
+          post={clickedPost}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+          onRead={handleDelete}
+        ></PostDetailModal>
+      )}
+      <h2 id={styles.feedTitle}>{title}</h2>
+      {(displayedPosts.length !== 0 || showNoSearchResults) && (
+        <PostSearchBar
+          entries={posts}
+          setEntries={setDisplayedPosts}
+          setShowNoSearchResults={setShowNoSearchResults}
+        ></PostSearchBar>
+      )}
+      {loadingPosts ? (
+        <SkeletonList></SkeletonList>
+      ) : error ? (
+        <h3>{error}</h3>
+      ) : displayedPosts && displayedPosts.length > 0 ? (
+        <PostList
+          posts={displayedPosts}
+          handlePostClick={handlePostClick}
+        ></PostList>
+      ) : showNoSearchResults ? (
+        <h3 id={styles.emptyMessage}>No posts match your search!</h3>
+      ) : (
+        <h3 id={styles.emptyMessage}>{emptyMessage}</h3>
+      )}
+    </div>
+  );
 }

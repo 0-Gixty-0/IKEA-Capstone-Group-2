@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import styles from './styles.module.css'
-import {useRouter} from "next/navigation";
-import {useSession} from "next-auth/react";
+import styles from "./styles.module.css";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 /**
  * Header component.
@@ -14,33 +14,50 @@ import {useSession} from "next-auth/react";
  * @constructor
  */
 export default function Header() {
-    const router = useRouter()
-    const session = useSession()
+  const router = useRouter();
+  const session = useSession();
 
-    /**
-     * Handler for safety ensuring must be logged in to access profile page
-     */
-    const handleProfileClick = () => {
-        if (session && session.data) {
-            router.push(`/profile/${session.data.user.id}`)
-        } else {
-            router.push('/login')
-        }
+  /**
+   * Handler for safety ensuring must be logged in to access profile page
+   */
+  const handleProfileClick = () => {
+    if (session && session.data) {
+      router.push(`/profile/${session.data.user.id}`);
+    } else {
+      router.push("/login");
     }
+  };
 
-    if (session.status === "authenticated") {
-        return (
-            <div className={styles.container}>
-                <h1 onClick={() => { router.push('/') }} style={{ cursor: 'pointer' }}>GUIDA</h1>
-                <div className={styles.iconContainer}>
-                    <div className={styles.iconContent} style={{ cursor: 'pointer' }} onClick={handleProfileClick}>
-                        <img src={"/icons/user_icon.png"} alt={'Silhouette of a person'}/>
-                    </div>
-                    <div className={styles.iconContent} style={{ cursor: 'pointer' }} onClick={() => {router.push('/')}}>
-                        <img src={"/icons/home_icon.png"} alt={'Silhouette of a house'}/>
-                    </div>
-                </div>
-            </div>
-        )
-    }
+  if (session.status === "authenticated") {
+    return (
+      <div className={styles.container}>
+        <h1
+          onClick={() => {
+            router.push("/");
+          }}
+          style={{ cursor: "pointer" }}
+        >
+          GUIDA
+        </h1>
+        <div className={styles.iconContainer}>
+          <div
+            className={styles.iconContent}
+            style={{ cursor: "pointer" }}
+            onClick={handleProfileClick}
+          >
+            <img src={"/icons/user_icon.png"} alt={"Silhouette of a person"} />
+          </div>
+          <div
+            className={styles.iconContent}
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              router.push("/");
+            }}
+          >
+            <img src={"/icons/home_icon.png"} alt={"Silhouette of a house"} />
+          </div>
+        </div>
+      </div>
+    );
+  }
 }

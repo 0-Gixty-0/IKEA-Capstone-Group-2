@@ -1,7 +1,7 @@
-import React from 'react'
-import styles from "./styles.module.css"
+import React from "react";
+import styles from "./styles.module.css";
 interface AccessErrorProps {
-    message: string
+  message: string;
 }
 
 /**
@@ -11,12 +11,12 @@ interface AccessErrorProps {
  * @returns Component
  */
 export default function AccessError({ message }: AccessErrorProps) {
-    return (
-        <div data-testid='access-error-wrapper' className={styles.wrapper}>
-            <div data-testid='access-error-container' className={styles.container}>
-                <h2>{message}</h2>
-                <h3>Contact an admin if you believe you should have access</h3>
-            </div>
-        </div>
-    )
+  return (
+    <div data-testid="access-error-wrapper" className={styles.wrapper}>
+      <div data-testid="access-error-container" className={styles.container}>
+        <h2>{message}</h2>
+        <h3>Contact an admin if you believe you should have access</h3>
+      </div>
+    </div>
+  );
 }

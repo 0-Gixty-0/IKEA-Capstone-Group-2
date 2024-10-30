@@ -1,5 +1,5 @@
 import prisma from "@/db";
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { UserRole } from "@/types";
 
@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
     if (session) {
       const { searchParams } = new URL(request.url);
-      const roleId = searchParams.get('id');
+      const roleId = searchParams.get("id");
 
       if (roleId) {
         const role = await prisma.role.findUnique({
@@ -27,25 +27,40 @@ export async function GET(request: Request) {
         });
 
         if (!role) {
-          return NextResponse.json({ error: 'Role not found' }, { status: 404 });
+          return NextResponse.json(
+            { error: "Role not found" },
+            { status: 404 },
+          );
         }
 
-        return NextResponse.json({
-          message: `Successfully retrieved role with id: ${roleId}`,
-          role: role,
-        }, { status: 200 });
+        return NextResponse.json(
+          {
+            message: `Successfully retrieved role with id: ${roleId}`,
+            role: role,
+          },
+          { status: 200 },
+        );
       }
 
       const roles = await prisma.role.findMany();
-      return NextResponse.json({
-        message: `Successfully retrieved ${roles.length} roles`,
-        roles: roles,
-      }, { status: 200 });
+      return NextResponse.json(
+        {
+          message: `Successfully retrieved ${roles.length} roles`,
+          roles: roles,
+        },
+        { status: 200 },
+      );
     } else {
-      return NextResponse.json({ error: 'You must be logged in!' }, { status: 405 });
+      return NextResponse.json(
+        { error: "You must be logged in!" },
+        { status: 405 },
+      );
     }
   } catch (error) {
-    return NextResponse.json({ error: 'Something went wrong when fetching roles!' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Something went wrong when fetching roles!" },
+      { status: 500 },
+    );
   }
 }
 
@@ -67,16 +82,22 @@ export async function POST(request: Request) {
         },
       });
 
-      return NextResponse.json({
-        message: "Successfully created role",
-        role: createdRole,
-      }, { status: 200 }); // Return the created role
+      return NextResponse.json(
+        {
+          message: "Successfully created role",
+          role: createdRole,
+        },
+        { status: 200 },
+      ); // Return the created role
     } else {
-      return NextResponse.json({ error: 'Not allowed!' }, { status: 405 });
+      return NextResponse.json({ error: "Not allowed!" }, { status: 405 });
     }
   } catch (error) {
     console.error("Failed to create role:", error);
-    return NextResponse.json({ error: 'Failed to create the role!' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to create the role!" },
+      { status: 500 },
+    );
   }
 }
 
@@ -98,16 +119,22 @@ export async function PUT(request: Request) {
         data: { name }, // The fields to update
       });
 
-      return NextResponse.json({
-        message: `Successfully updated role with id: ${id}`,
-        role: updatedRole,
-      }, { status: 200 }); // Return the updated role
+      return NextResponse.json(
+        {
+          message: `Successfully updated role with id: ${id}`,
+          role: updatedRole,
+        },
+        { status: 200 },
+      ); // Return the updated role
     } else {
-      return NextResponse.json({ error: 'Not allowed!' }, { status: 405 });
+      return NextResponse.json({ error: "Not allowed!" }, { status: 405 });
     }
   } catch (error) {
     console.error("Failed to update role:", error);
-    return NextResponse.json({ error: 'Failed to update the role!' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update the role!" },
+      { status: 500 },
+    );
   }
 }
 
@@ -121,21 +148,27 @@ export async function DELETE(request: Request) {
     const session = await auth();
     if (session && session.user.roles.includes(UserRole.ADMIN)) {
       const { searchParams } = new URL(request.url);
-      const roleId = searchParams.get('id');
+      const roleId = searchParams.get("id");
 
       const deletedRole = await prisma.role.delete({
         where: { id: Number(roleId) },
       });
 
-      return NextResponse.json({
-        message: "Successfully deleted role",
-        role: deletedRole,
-      }, { status: 200 });
+      return NextResponse.json(
+        {
+          message: "Successfully deleted role",
+          role: deletedRole,
+        },
+        { status: 200 },
+      );
     } else {
-      return NextResponse.json({ error: 'Not allowed!' }, { status: 405 });
+      return NextResponse.json({ error: "Not allowed!" }, { status: 405 });
     }
   } catch (error) {
     console.error("Failed to delete role:", error);
-    return NextResponse.json({ error: 'Failed to delete the role!' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to delete the role!" },
+      { status: 500 },
+    );
   }
 }

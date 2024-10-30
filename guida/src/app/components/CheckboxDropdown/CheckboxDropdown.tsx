@@ -17,7 +17,7 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({
         .filter((option) => selectedOptions.includes(option.value))
         .map((option) => option.label)
         .join(", "),
-    [selectedOptions, options]
+    [selectedOptions, options],
   );
 
   const handleCheckboxChange = (value: number) => {

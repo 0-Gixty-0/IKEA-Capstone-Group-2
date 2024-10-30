@@ -14,7 +14,7 @@ export const useFetchRoles = () => {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await fetch('/api/roles');
+        const response = await fetch("/api/roles");
         const data = await response.json();
         const roleOptions = data.roles.map((role: Role) => ({
           label: role.name,
