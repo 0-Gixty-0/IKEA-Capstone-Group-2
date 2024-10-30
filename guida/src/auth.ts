@@ -6,7 +6,7 @@ import { UserRole } from "@/types";
 import { User } from "next-auth";
 
 function isUserRole(value: string): value is UserRole {
-  // @ts-expect-error
+  // @ts-expect-error: Type guard has weird matching
   return Object.values(UserRole).includes(value);
 }
 
