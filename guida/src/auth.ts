@@ -6,7 +6,7 @@ import { UserRole } from "@/types";
 import { User } from "next-auth";
 
 function isUserRole(value: string): value is UserRole {
-  // @ts-ignore
+  // @ts-expect-error
   return Object.values(UserRole).includes(value);
 }
 
