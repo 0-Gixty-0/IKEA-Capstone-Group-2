@@ -22,7 +22,7 @@
   flex-direction: column;
 }
 
-.modalContent h2{
+.modalContent h2 {
   padding-top: 1rem;
   padding-bottom: 2rem;
   align-self: center;
@@ -45,7 +45,9 @@
   height: 30px;
   border-radius: 50%; /* Make the button circular */
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease; /* Add transition for smooth effect */
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease; /* Add transition for smooth effect */
 }
 
 .closeButton:hover {
@@ -86,7 +88,7 @@
 }
 
 .buttonContainer button {
-  background-color: #FFDB01;
+  background-color: #ffdb01;
   border-radius: 8px;
   border-style: none;
   color: #161616;
@@ -97,11 +99,12 @@
   font-size: 1rem;
 }
 
-.buttonContainer button:hover, .buttonContainer button:focus {
+.buttonContainer button:hover,
+.buttonContainer button:focus {
   background-color: #989802;
 }
 
-.contentContainer{
+.contentContainer {
   overflow-y: auto;
   flex-grow: 1;
   flex-direction: column;
@@ -113,12 +116,11 @@
 }
 
 @media screen and (max-width: 480px) {
-  .buttonContainer{
+  .buttonContainer {
     flex-direction: column;
     gap: 1rem;
   }
   .buttonContainer button {
     width: 100%;
   }
-  
 }

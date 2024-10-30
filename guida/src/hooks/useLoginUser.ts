@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import {SignInCredentials} from "@/lib/auth-action";
+import { useState } from "react";
+import { SignInCredentials } from "@/lib/auth-action";
 
 /**
  * Wrapper hook for signIn in NextAuth.
@@ -12,28 +12,32 @@ export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSignIn = async (username: string, password: string, redirectUrl = '/') => {
+  const handleSignIn = async (
+    username: string,
+    password: string,
+    redirectUrl = "/",
+  ) => {
     setLoading(true);
     setError(null);
     const res = await SignInCredentials({
       redirect: false, // Prevent automatic redirection
       username,
-      password // Credentials: { username, password }
+      password, // Credentials: { username, password }
     });
 
     setLoading(false);
 
     if (res == undefined) {
-      setError("something went wrong")
+      setError("something went wrong");
     } else {
-    if (res.error) {
-      // Handle errors like invalid credentials
-      setError(res.error);
-    } else {
-      // Optional: Redirect user after successful sign-in
-      window.location.href = redirectUrl;
+      if (res.error) {
+        // Handle errors like invalid credentials
+        setError(res.error);
+      } else {
+        // Optional: Redirect user after successful sign-in
+        window.location.href = redirectUrl;
+      }
     }
-  }
   };
 
   return {

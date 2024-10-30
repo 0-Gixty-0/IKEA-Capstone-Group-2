@@ -2,14 +2,11 @@ import { useState, useEffect } from "react";
 import { Post, SubmittablePost } from "@/types";
 import { useSubmitPost } from "@/hooks/useSubmitPost";
 import { useFetchRoles } from "@/hooks/useFetchRoles";
-import {useFetchTags} from "@/hooks/useFetchTags";
+import { useFetchTags } from "@/hooks/useFetchTags";
 import { useFetchAuthorRoles } from "./useFetchAuthorRoles";
 import { useSession } from "next-auth/react";
 
-export const usePostForm = (
-    onSuccess: (post: Post) => void,
-  post?: Post,
-) => {
+export const usePostForm = (onSuccess: (post: Post) => void, post?: Post) => {
   const { submitPost, loading, error, success, result } = useSubmitPost();
   const [title, setTitle] = useState<string>(post ? post.title : "");
   const [content, setContent] = useState<string>(post ? post.content : "");
@@ -17,15 +14,20 @@ export const usePostForm = (
   const [published, setPublished] = useState<boolean>(
     post ? post.published : false,
   );
-  const [selectedTags, setSelectedTags] = useState<number[]>([])
+  const [selectedTags, setSelectedTags] = useState<number[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<number[]>([]); // Use number[] for role IDs
   const { roles, error: rolesError } = useFetchRoles();
 
-  const {roles: userRoles, loading: userRolesLoading, error: userRolesError } = useFetchAuthorRoles(Number(useSession().data?.user?.id));
-  const [selectedAuthorRole, setSelectedAuthorRole] = useState<number | null>(post?.roleId || null);
+  const {
+    roles: userRoles,
+    loading: userRolesLoading,
+    error: userRolesError,
+  } = useFetchAuthorRoles(Number(useSession().data?.user?.id));
+  const [selectedAuthorRole, setSelectedAuthorRole] = useState<number | null>(
+    post?.roleId || null,
+  );
 
-  
-  const { tags, error: tagsError } = useFetchTags()
+  const { tags, error: tagsError } = useFetchTags();
   const [titleError, setTitleError] = useState("");
   const [contentError, setContentError] = useState("");
   const [rolesErrorState, setRolesErrorState] = useState("");
@@ -36,7 +38,11 @@ export const usePostForm = (
       setContent(post.content);
       setPublished(post.published);
       setPdfUrl(post.pdfUrl);
-      setSelectedTags(post.tags.map((tag) => {return tag.id}))
+      setSelectedTags(
+        post.tags.map((tag) => {
+          return tag.id;
+        }),
+      );
     }
   }, [post]);
 

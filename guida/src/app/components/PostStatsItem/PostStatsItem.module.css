@@ -1,79 +1,80 @@
 .statsContainer {
-    background-color: #494949;
-    border-radius: 8px;
-    margin: 10px 0;
-    padding: 15px;
-    list-style: none;
-    cursor: pointer;
-    width: 100%;
-    height: 100px;
-    display: flex;
+  background-color: #494949;
+  border-radius: 8px;
+  margin: 10px 0;
+  padding: 15px;
+  list-style: none;
+  cursor: pointer;
+  width: 100%;
+  height: 100px;
+  display: flex;
 }
 
 .statsContentContainer {
-    display: flex;
-    flex-direction: row;
-    align-items: center; /* Center items vertically */
-    justify-content: space-around; /* Center items horizontally */
-    column-gap: 20px;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Center items vertically */
+  justify-content: space-around; /* Center items horizontally */
+  column-gap: 20px;
+  width: 100%;
 }
 
 .postContent h2 {
-    margin: 0;
-    font-size: 1rem;
+  margin: 0;
+  font-size: 1rem;
 }
 .postContent p {
-    margin: 0;
-    font-size: 0.7rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  margin: 0;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .postContent {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    width: 40%;
-    margin-right: auto;
-    border-right: solid white 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 40%;
+  margin-right: auto;
+  border-right: solid white 2px;
 }
 
 .statsContent {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center; /* Center items vertically */
-    justify-content: space-around; /* Center items horizontally */
-    column-gap: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Center items vertically */
+  justify-content: space-around; /* Center items horizontally */
+  column-gap: 20px;
 }
 
 .progressBarContainer {
-    width: 40%; /* Keep this width to give the ProgressBar space */
-    flex-grow: 1; /* Allow this to take up remaining space */
+  width: 40%; /* Keep this width to give the ProgressBar space */
+  flex-grow: 1; /* Allow this to take up remaining space */
 }
 
 .actionButton {
-    background-color: #e1e102;
-    border-radius: 4px;
-    border-style: none;
-    color: #161616;
-    cursor: pointer;
-    display: inline-block;
-    font-family: "Farfetch Basis","Helvetica Neue",Arial,sans-serif;
-    font-weight: bold;
-    max-width: none;
-    outline: none;
-    overflow: hidden;
-    padding: 6px;
-    position: relative;
-    text-align: center;
-    text-transform: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
+  background-color: #e1e102;
+  border-radius: 4px;
+  border-style: none;
+  color: #161616;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Farfetch Basis", "Helvetica Neue", Arial, sans-serif;
+  font-weight: bold;
+  max-width: none;
+  outline: none;
+  overflow: hidden;
+  padding: 6px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 }
 
-.actionButton:hover, .actionButton:focus {
-    opacity: .9;
+.actionButton:hover,
+.actionButton:focus {
+  opacity: 0.9;
 }

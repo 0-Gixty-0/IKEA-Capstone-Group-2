@@ -1,38 +1,38 @@
 /* styles/SearchBar.module.css */
 
 #searchContainer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin: 20px auto;
-    width: 100%;
-    max-width: 500px;
-    border-radius: 25px;
-    background-color: #f0f0f0;
-    padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 25px;
+  background-color: #f0f0f0;
+  padding: 5px;
 }
 
 .searchInput {
-    flex: 1;
-    border: none;
-    padding: 8px;
-    border-radius: 25px 0 0 25px;
-    font-size: 16px;
-    outline: none;
+  flex: 1;
+  border: none;
+  padding: 8px;
+  border-radius: 25px 0 0 25px;
+  font-size: 16px;
+  outline: none;
 }
 
 .searchButton {
-    background-color: #0070f3;
-    border: none;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 0 25px 25px 0;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+  background-color: #0070f3;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 0 25px 25px 0;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
 .searchButton:hover {
-    background-color: #005bb5;
+  background-color: #005bb5;
 }

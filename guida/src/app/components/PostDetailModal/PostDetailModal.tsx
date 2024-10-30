@@ -1,9 +1,9 @@
 "use client";
 
-import React, {useState } from "react";
+import React, { useState } from "react";
 import styles from "./PostDetailModal.module.css";
 import DeleteButton from "../DeleteButton";
-import {Post} from "@/types";
+import { Post } from "@/types";
 import ReadButton from "../ReadButton";
 import AddToReadingListModal from "../AddToReadingListModal/AddToReadingListModal";
 import PostForm from "@/app/components/PostForm/PostForm";
@@ -37,26 +37,36 @@ export interface IPostDetailModal {
  * @param onRead Callback for read confirmation of viewed post
  * @constructor
  */
-const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailModal) => {
-    const [showEditPostForm, setShowEditPostForm] = useState<boolean>(false)
+const PostDetailModal = ({
+  onClose,
+  post,
+  onDelete,
+  onEdit,
+  onRead,
+}: IPostDetailModal) => {
+  const [showEditPostForm, setShowEditPostForm] = useState<boolean>(false);
 
-    const {authorAndRole, loading} = useAuthorInPosts(post.authorId, post.roleId);
-  
-    const handleEditClick = () => {
-    setShowEditPostForm(true)
-    }
+  const { authorAndRole, loading } = useAuthorInPosts(
+    post.authorId,
+    post.roleId,
+  );
 
-    const [isAddToReadingListModalOpen, setIsAddToReadingListModalOpen] = useState(false);
+  const handleEditClick = () => {
+    setShowEditPostForm(true);
+  };
 
-    const handleOpenAddToReadingListModal = () => {
+  const [isAddToReadingListModalOpen, setIsAddToReadingListModalOpen] =
+    useState(false);
+
+  const handleOpenAddToReadingListModal = () => {
     setIsAddToReadingListModalOpen(true);
-    };
+  };
 
-    const handleCloseAddToReadingListModal = () => {
+  const handleCloseAddToReadingListModal = () => {
     setIsAddToReadingListModalOpen(false);
-    };
+  };
 
-    return (
+  return (
     <div id={styles.modalOverlay}>
       {isAddToReadingListModalOpen && (
         <AddToReadingListModal
@@ -64,41 +74,51 @@ const PostDetailModal = ({onClose, post, onDelete, onEdit, onRead}: IPostDetailM
           onClose={handleCloseAddToReadingListModal}
         />
       )}
-      {showEditPostForm && <PostForm
-              post={post}
-              submitText={'Update Post'}
-              onClose={() => {setShowEditPostForm(false)}}
-              onSuccess={onEdit}/>
-      }
+      {showEditPostForm && (
+        <PostForm
+          post={post}
+          submitText={"Update Post"}
+          onClose={() => {
+            setShowEditPostForm(false);
+          }}
+          onSuccess={onEdit}
+        />
+      )}
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
 
-
         <h2>{post.title}</h2>
         {/* <h3>Author: {loading ? "Loading" : authorAndRole}</h3> */}
-        {loading ? "Loading" : <Author authorId={post.authorId} roleId={post.roleId}></Author>}
+        {loading ? (
+          "Loading"
+        ) : (
+          <Author authorId={post.authorId} roleId={post.roleId}></Author>
+        )}
 
         <div className={styles.contentContainer}>
+          <p>{post.content}</p>
 
-        <p>{post.content}</p>
-
-        {post.pdfUrl &&<PdfReader pdfUrl={post.pdfUrl}/>}
-
-          </div>
+          {post.pdfUrl && <PdfReader pdfUrl={post.pdfUrl} />}
+        </div>
 
         <div className={styles.buttonContainer}>
-          <DeleteButton postId={post.id} onDelete={() => {
-            onDelete(post)
-          }}/>{" "}
+          <DeleteButton
+            postId={post.id}
+            onDelete={() => {
+              onDelete(post);
+            }}
+          />{" "}
           <button onClick={handleEditClick}>Edit Post</button>
-          <ReadButton post={post} onRead={onRead}/>{" "}
-          <button onClick={handleOpenAddToReadingListModal}>Add to Reading List</button>
+          <ReadButton post={post} onRead={onRead} />{" "}
+          <button onClick={handleOpenAddToReadingListModal}>
+            Add to Reading List
+          </button>
         </div>
       </div>
     </div>
-    );
-    };
+  );
+};
 
 export default PostDetailModal;

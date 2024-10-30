@@ -9,11 +9,13 @@
   height: 150px;
   display: flex;
   align-items: center;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
   overflow: hidden;
 }
 
-.post:hover{
+.post:hover {
   background: #838383;
   transform: scale(1.05);
 }

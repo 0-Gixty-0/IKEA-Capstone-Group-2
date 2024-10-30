@@ -18,24 +18,37 @@ const PostItem: React.FC<ClickablePostProps> = ({
   roleId,
   handlePostClick,
 }) => {
-  const {authorAndRole: [author, role], loading: authorRoleLoading } = useFetchAuthorAndRoleOfPost(roleId, authorId);
+  const {
+    authorAndRole: [author, role],
+    loading: authorRoleLoading,
+  } = useFetchAuthorAndRoleOfPost(roleId, authorId);
 
   return (
     <li
       className={styles.post}
       onClick={() =>
-        handlePostClick({ id, title, content, published, authorId, pdfUrl, tags, roleId })
+        handlePostClick({
+          id,
+          title,
+          content,
+          published,
+          authorId,
+          pdfUrl,
+          tags,
+          roleId,
+        })
       }
-    >{authorRoleLoading ? <Preloader /> : 
-    <div className={styles.postContent}>
-      <h2>{title}</h2>
-      {/* <h3>{!role ? author : role}</h3> */}
-      <TagsList tags={tags} />
-      <Author 
-        authorId={authorId}
-        roleId={roleId}>
-      </Author>
-    </div>}
+    >
+      {authorRoleLoading ? (
+        <Preloader />
+      ) : (
+        <div className={styles.postContent}>
+          <h2>{title}</h2>
+          {/* <h3>{!role ? author : role}</h3> */}
+          <TagsList tags={tags} />
+          <Author authorId={authorId} roleId={roleId}></Author>
+        </div>
+      )}
     </li>
   );
 };

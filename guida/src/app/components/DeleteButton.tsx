@@ -6,20 +6,26 @@ interface DeleteButtonProps {
   onDelete: () => void; // Add onDelete prop
 }
 
-const DeleteButton: React.FC<DeleteButtonProps> = ({ style, postId, onDelete }) => {
+const DeleteButton: React.FC<DeleteButtonProps> = ({
+  style,
+  postId,
+  onDelete,
+}) => {
   const deleteHandle = async () => {
     if (!postId) {
       console.error("Invalid post ID");
       return; // Exit early if postId is invalid
     }
-  
-    const confirmed = window.confirm("Are you sure you want to delete this post?");
+
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this post?",
+    );
     if (!confirmed) {
       return;
     }
 
     console.log("Deleting post with ID: ", postId);
-  
+
     try {
       const response = await fetch(`/api/posts?id=${postId}`, {
         method: "DELETE",
@@ -27,7 +33,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ style, postId, onDelete }) 
           "Content-Type": "application/json",
         },
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         console.log("Post deleted: ", data);

@@ -12,7 +12,10 @@ const AddToReadingListModal: React.FC<AddToReadingListModalProps> = ({
 }) => {
   const { roles, error: rolesError } = useFetchRoles();
   const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
-  const { loading, error, handleAddToReadingList } = useAddToReadingList(postId, onClose);
+  const { loading, error, handleAddToReadingList } = useAddToReadingList(
+    postId,
+    onClose,
+  );
 
   const roleOptions = mapRolesToOptions(roles);
 
@@ -37,7 +40,11 @@ const AddToReadingListModal: React.FC<AddToReadingListModalProps> = ({
           />
         )}
         {error && <p className={styles.error}>{error}</p>}
-        <button onClick={handleSubmit} disabled={loading} className={styles.addButton}>
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className={styles.addButton}
+        >
           {loading ? "Adding..." : "Add to Reading List"}
         </button>
       </div>

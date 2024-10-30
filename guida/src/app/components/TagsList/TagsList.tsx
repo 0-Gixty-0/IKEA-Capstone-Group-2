@@ -1,8 +1,8 @@
-import React from 'react';
-import styles from './TagsList.module.css';
+import React from "react";
+import styles from "./TagsList.module.css";
 
 interface TagsListProps {
-    tags: { id: number; name: string }[];
+  tags: { id: number; name: string }[];
 }
 
 const TagsList: React.FC<TagsListProps> = ({ tags }) => {

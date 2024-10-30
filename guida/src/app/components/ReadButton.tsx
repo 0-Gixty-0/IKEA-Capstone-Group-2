@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {Post} from "@/types";
+import { Post } from "@/types";
 
 interface ReadButtonProps {
   style?: React.CSSProperties;
@@ -13,16 +13,18 @@ const ReadButton: React.FC<ReadButtonProps> = ({ style, post, onRead }) => {
   useEffect(() => {
     const checkReadingList = async () => {
       try {
-        const response = await fetch('/api/readingList');
+        const response = await fetch("/api/readingList");
         if (response.ok) {
           const data = await response.json();
-          const isPostInReadingList = data.posts.some((p: { id: number }) => p.id === post.id);
+          const isPostInReadingList = data.posts.some(
+            (p: { id: number }) => p.id === post.id,
+          );
           setIsInReadingList(isPostInReadingList);
         } else {
-          console.error('Failed to fetch reading list');
+          console.error("Failed to fetch reading list");
         }
       } catch (error) {
-        console.error('Error fetching reading list:', error);
+        console.error("Error fetching reading list:", error);
       }
     };
 

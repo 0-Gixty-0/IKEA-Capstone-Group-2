@@ -5,5 +5,5 @@ import { NextAuthConfig } from "next-auth";
  * DO NOT REMOVE
  */
 export default {
-    providers: [],
-} satisfies NextAuthConfig
+  providers: [],
+} satisfies NextAuthConfig;

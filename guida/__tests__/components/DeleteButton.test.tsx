@@ -9,7 +9,7 @@ global.fetch = jest.fn(() =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve({ message: "Post deleted" }),
-  })
+  }),
 ) as jest.Mock;
 
 describe("DeleteButton", () => {
@@ -56,7 +56,7 @@ describe("DeleteButton", () => {
     (fetch as jest.Mock).mockImplementationOnce(() =>
       Promise.resolve({
         ok: false,
-      })
+      }),
     );
 
     render(<DeleteButton postId={postId} />);
