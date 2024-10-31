@@ -28,6 +28,14 @@ export default function Header() {
     }
   };
 
+    const handleBoardClick = () => {
+        if (session && session.data) {
+            router.push(`/readRequests/${session.data.user.id}`);
+        } else {
+            router.push("/login");
+        }
+    };
+
   if (session.status === "authenticated") {
     return (
       <div className={styles.container}>
@@ -39,24 +47,31 @@ export default function Header() {
         >
           GUIDA
         </h1>
-        <div className={styles.iconContainer}>
-          <div
-            className={styles.iconContent}
-            style={{ cursor: "pointer" }}
-            onClick={handleProfileClick}
-          >
-            <img src={"/icons/user_icon.png"} alt={"Silhouette of a person"} />
+          <div className={styles.iconContainer}>
+              <div
+                  className={styles.iconContent}
+                  style={{cursor: "pointer"}}
+                  onClick={handleBoardClick}
+              >
+                  <img src={"/icons/board.png"} alt={"Silhouette of a bulletin board"}/>
+              </div>
+              <div
+                  className={styles.iconContent}
+                  style={{cursor: "pointer"}}
+                  onClick={handleProfileClick}
+              >
+                  <img src={"/icons/user_icon.png"} alt={"Silhouette of a person"}/>
+              </div>
+              <div
+                  className={styles.iconContent}
+                  style={{cursor: "pointer"}}
+                  onClick={() => {
+                      router.push("/");
+                  }}
+              >
+                  <img src={"/icons/home_icon.png"} alt={"Silhouette of a house"}/>
+              </div>
           </div>
-          <div
-            className={styles.iconContent}
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              router.push("/");
-            }}
-          >
-            <img src={"/icons/home_icon.png"} alt={"Silhouette of a house"} />
-          </div>
-        </div>
       </div>
     );
   }
