@@ -16,7 +16,7 @@ import {
  * Handles routing requests according to constants and login status
  */
 export default auth((req) => {
-  console.log("Middleware log - REQUESTED PATH: ", req.url);
+  // console.log("Middleware log - REQUESTED PATH: ", req.url);
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
@@ -26,7 +26,7 @@ export default auth((req) => {
 
   // Always accept API routes for authentication purposes
   if (isApiAuthRoute) {
-    console.log("Middleware log - ALLOWED ACCESS TO PATH: ", req.url);
+    // console.log("Middleware log - ALLOWED ACCESS TO PATH: ", req.url);
     return NextResponse.next();
   }
 
@@ -34,23 +34,23 @@ export default auth((req) => {
   // For example /login. However, if logged in redirect to default route
   if (isAuthRoute) {
     if (isLoggedIn) {
-      console.log("Middleware log - DENIED ACCESS TO PATH: ", req.url);
-      console.log("Middleware log - REDIRECTED TO: ", DEFAULT_LOGIN_REDIRECT);
+      // console.log("Middleware log - DENIED ACCESS TO PATH: ", req.url);
+      // console.log("Middleware log - REDIRECTED TO: ", DEFAULT_LOGIN_REDIRECT);
       return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-    console.log("Middleware log - ALLOWED ACCESS TO PATH: ", req.url);
+    // console.log("Middleware log - ALLOWED ACCESS TO PATH: ", req.url);
     return NextResponse.next();
   }
 
   // If not logged in and is not public route deny access and redirect to login page
   if (!isLoggedIn && !isPublicRoute) {
-    console.log("Middleware log - DENIED ACCESS TO PATH: ", req.url);
-    console.log("Middleware log - REDIRECTED TO: /login");
+    // console.log("Middleware log - DENIED ACCESS TO PATH: ", req.url);
+    // console.log("Middleware log - REDIRECTED TO: /login");
     return NextResponse.redirect(new URL("/login", nextUrl));
   }
 
   // All other cases allow route
-  console.log("Middleware log - ALLOWED ACCESS TO PATH: ", req.url);
+  // console.log("Middleware log - ALLOWED ACCESS TO PATH: ", req.url);
   return NextResponse.next();
 });
 
